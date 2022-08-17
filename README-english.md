@@ -46,9 +46,9 @@ The content will still be adjusted, and at the end of the training we will have 
 
 ### How to purchase the training?
 
-To purchase the [Uncomplicating Prometheus] training (https://www.linuxtips.io/products/descomplicando-o-prometheus) you must go to the [LinuxTips] store (https://www.linuxtips.io/).
+To purchase the Uncomplicating Prometheus training you must go to the LinuxTips store at https://www.linuxtips.io/.
 
-To go to the training, [CLICK HERE] (https://www.linuxtips.io/products/descomplicando-o-prometheus).
+To go to the training, click on the linkhttps://www.linuxtips.io/products/descomplicando-o-prometheus
 
 
 ## The idea of the training format

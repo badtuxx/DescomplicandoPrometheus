@@ -1,4 +1,4 @@
-# [Uncomplicating Prometheus] (https://www.linuxtips.io/products/descomplicando-o-prometheus) - The Training
+# Uncomplicating Prometheus - The Training
 
 ## DAY-1
 
