@@ -1,6 +1,4 @@
-# [Uncomplicating Prometheus] (https://www.linuxtips.io/products/descomplicando-o-prometheus) - The Training
-
-## The [Uncomplicating Prometheus] Training (https://www.linuxtips.io/products/descomplicando-o-prometheus)
+# The Uncomplicating Prometheus Training
 
 We thought of doing some really practical training. A training where the person can learn the concepts and the whole theory with interesting explanations and excellent didactics, with example and practical challenges so that you can execute all the knowledge acquired. This is very important for you to be able to pin down and further explore the training content.
 And finally, let's simulate some conversations, so that it feels a little more like day-to-day life in the workplace.
