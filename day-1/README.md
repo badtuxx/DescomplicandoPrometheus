@@ -7,8 +7,9 @@
 Durante o dia de hoje, nós iremos focar em o que é o Prometheus e qual problema ele resolve.
 Iremos entender os diferentes tipos de monitoramento e as diferenças entre eles.
 Hoje é dia de conhecer a história do Prometheus e também a motivação para a sua criação lá na SoundCloud.
-Vamos entender a arquitetura do Prometheus e como ele se relaciona com outros aplicativos. Vamos entender o *data model* do Prometheus, descomplicando esse assunto e fazendo com que você domine esse assunto e afaste todos os seus medos. :D
-E por fim, vamos instalar o Prometheus e fazer a nossa primeira configuração para o nosso serviço de monitoração.
+Vamos entender a arquitetura do Prometheus e como ele se relaciona com outros aplicativos.
+E por fim, vamos instalar o Prometheus e fazer a nossa primeira configuração para o nosso mais novo serviço de monitoração.
+Teremos ainda o nosso primeiro contato com a interface web do Prometheus e vamos criar a nossa primeira query.
 
 
 ### Por que precisamos de ferramentas como o Prometheus?
