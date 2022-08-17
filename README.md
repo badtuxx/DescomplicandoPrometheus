@@ -1,4 +1,4 @@
-# [Descomplicando o Prometheus](https://www.linuxtips.io/products/descomplicando-o-prometheus) - O treinamento
+# [Descomplicando o Prometheus](https://www.linuxtips.io/products/descomplicando-o-prometheus) - O Treinamento
 
 ## O treinamento [Descomplicando o Prometheus](https://www.linuxtips.io/products/descomplicando-o-prometheus)
 
