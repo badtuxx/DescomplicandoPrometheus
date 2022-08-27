@@ -368,11 +368,10 @@ Fazendo o download:
 ```bash
 curl -LO https://github.com/prometheus/prometheus/releases/download/v2.38.0/prometheus-2.38.0.linux-amd64.tar.gz
 ```
-Após o download, vamos extrair o arquivo e acessar o diretório extraído.
+Após o download, vamos extrair os arquivos.
 
 ```bash
 tar -xvf prometheus-2.38.0.linux-amd64.tar.gz
-cd prometheus-2.38.0.linux-amd64
 ```
 
 Agora vamos mover os binários para o diretório /usr/local/bin.
