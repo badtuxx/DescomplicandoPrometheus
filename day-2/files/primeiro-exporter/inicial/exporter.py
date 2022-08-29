@@ -3,16 +3,14 @@ import json
 import time
 from prometheus_client import start_http_server, Gauge
 
-# URL para pegar o número de astronautas
-url = 'http://api.open-notify.org/astros.json'
-
+url_numero_pessoas = 'http://api.open-notify.org/astros.json'
 
 def pega_numero_astronautas():
     try:
         """
         Pegar o número de astronautas na estação espacial internacional
         """
-        response = requests.get(url)
+        response = requests.get(url_numero_pessoas)
         data = response.json()
         return data['number']
     except Exception as e:

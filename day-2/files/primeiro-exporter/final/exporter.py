@@ -3,7 +3,6 @@ import json
 import time
 from prometheus_client import start_http_server, Gauge
 
-# URL para pegar o número de astronautas
 url_numero_pessoas = 'http://api.open-notify.org/astros.json'
 url_local_ISS = 'http://api.open-notify.org/iss-now.json'
 
