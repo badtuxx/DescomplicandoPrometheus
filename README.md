@@ -5,9 +5,35 @@
 
 Em construção...
 
-- **[DAY-1](day-1/README.md) - Em revisão...** 
+- **[DAY-1](day-1/README.md) - Em revisão...**
+
+
 
 - **[DAY-2](day-2/README.md) - Em revisão...**
+    - [O Data Model do Prometheus](day-2/README.md#o-data-model-do-prometheus)
+    - [As queries do Prometheus e o PromQL](day-2/README.md#as-queries-do-prometheus-e-o-promql)
+    - [O nosso primeiro exporter](day-2/README.md#o-nosso-primeiro-exporter)
+        - [Nosso Primeiro Exporter no Container](day-2/README.md#nosso-primeiro-exporter-no-container)
+        - [Os Targets do Prometheus](day-2/README.md#os-targets-do-prometheus)
+    - [Visualizando as métricas do nosso primeiro exporter](day-2/README.md#visualizando-as-metricas-do-nosso-primeiro-exporter)
+    - [Conhecendo um pouco mais sobre os tipos de métricas](day-2/README.md#conhecendo-um-pouco-mais-sobre-os-tipos-de-metricas) 
+        - [gauge: Medidor](day-2/README.md#gauge-medidor)
+        - [counter: Contador](day-2/README.md#counter-contador)
+        - [summary: Resumo](day-2/README.md#summary-resumo)
+        - [histogram: Histograma](day-2/README.md#histogram-histograma)
+    - [Conhecendo as primeiras funções para criação de queries](day-2/README.md#conhecendo-as-primeiras-funcoes-para-criacao-de-queries)
+        - [A função sum](day-2/README.md#a-função-sum)
+        - [A função count](day-2/README.md#a-função-count)
+        - [A função avg](day-2/README.md#a-função-avg)
+        - [A função min](day-2/README.md#a-função-min)
+        - [A função max](day-2/README.md#a-função-max)
+        - [A função rate](day-2/README.md#a-função-rate)
+    - [Criando as nossas primeiras queries no Prometheus](day-2/README.md#as-nossas-primeiras-queries)
+    - [Chega por hoje!](day-2/README.md#chega-por-hoje)
+    - [Lição de casa](day-2/README.md#lição-de-casa)]
+
+
+&nbsp;
 
 - [DAY-3](day-3/README.md) - Em construção...
 
@@ -123,6 +149,9 @@ Agora que você já conhece mais detalhes sobre o treinamento, acredito que já 
 
 Lembrando que o treinamento está disponível na plataforma da escola da LINUXtips, que não é o mesmo endereço da [loja](https://www.linuxtips.io/), para acessar a escola [CLIQUE AQUI](https://school.linuxtips.io).
 
+
+### O conteúdo
+
 Como o treinamento é dividido em **days**, acesse o diretório correto para acessar o conteúdo completar do treinamento do **day** em que vc está estudando.
 
 - [ACESSE O DAY-1](day-1/README.md)
@@ -133,7 +162,6 @@ Hoje é dia de conhecer a história do Prometheus e também a motivação para a
 Vamos entender a arquitetura do Prometheus e como ele se relaciona com outros aplicativos.
 E por fim, vamos instalar o Prometheus e fazer a nossa primeira configuração para o nosso mais novo serviço de monitoração.
 Teremos ainda o nosso primeiro contato com a interface web do Prometheus e vamos criar a nossa primeira query.
-
 
 - [ACESSE O DAY-2](day-2/README.md)
 
