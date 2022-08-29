@@ -43,9 +43,12 @@ O conteúdo ainda será ajustado, e no final do treinamento teremos o conteúdo 
 - Integrando com o Grafana
 - Adicionando items de nossa infra no Prometheus
 - Queries
+- Funções
+- Data Model do Prometheus
 - Visualizando as métricas em dashboards
 - Monitorando containers e outros hosts
 - Exporters
+- Criando o nosso exporter
 - Rules
 - Alertas
 - Kubernetes e Prometheus
@@ -110,7 +113,8 @@ Líder imediato da Pessoa_Lider_X e que tem um sobrinho 'jênio' e que está ali
 
 #### A Pessoa_RH_X
 
-A pessoa responsável pelo RH da empresa, no decorrer do treinamento vamos fazendo a história e características dela.
+A pessoa responsável pelo RH da empresa, no decorrer do treinamento vamos faz
+endo a história e características dela.
 
 
 ## Vamos começar?
@@ -121,11 +125,30 @@ Lembrando que o treinamento está disponível na plataforma da escola da LINUXti
 
 Como o treinamento é dividido em **days**, acesse o diretório correto para acessar o conteúdo completar do treinamento do **day** em que vc está estudando.
 
-[DAY-1](day-1/README.md)
-[DAY-2](day-2/README.md)
-[DAY-3](day-3/README.md)
-[DAY-4](day-4/README.md)
-[DAY-5](day-5/README.md)
+- [ACESSE O DAY-1](day-1/README.md)
+
+Durante o dia de hoje, nós iremos focar em o que é o Prometheus e qual problema ele resolve.
+Iremos entender os diferentes tipos de monitoramento e as diferenças entre eles.
+Hoje é dia de conhecer a história do Prometheus e também a motivação para a sua criação lá na SoundCloud.
+Vamos entender a arquitetura do Prometheus e como ele se relaciona com outros aplicativos.
+E por fim, vamos instalar o Prometheus e fazer a nossa primeira configuração para o nosso mais novo serviço de monitoração.
+Teremos ainda o nosso primeiro contato com a interface web do Prometheus e vamos criar a nossa primeira query.
+
+
+- [ACESSE O DAY-2](day-2/README.md)
+
+Seja muito bem-vinda e muito bem-vindo para o seu segundo dia de treinamento! Sim, eu considero esse livro um treinamento e não somente um guia de como obter o melhor do sensacional Prometheus!
+
+Hoje nós vamos aprender como criar as nossa primeiras *queries* e para isso vamos precisar entender o modelo de dados que o Prometheus utiliza, vamos entender no detalhe o que é uma métrica para o Prometheus e vamos aprender como criar a nossa propria métrica e as nossas primeiras queries.
+
+Vamos criar o nosso primeiro exporter utilizando Python Docker. Vamos entender os tipos de dados que o Prometheus utiliza, como utiliza-los e pra que servem.
+
+Vamos conhecer as nossas primeiras funções para que possamos ter ainda mais poderes para criar as nossa queries PromQL.
+
+
+- [ACESSE O DAY-3](day-3/README.md)
+- [ACESSE O DAY-4](day-4/README.md)
+- [ACESSE O DAY-5](day-5/README.md)
 
 
 **Bons estudos!**

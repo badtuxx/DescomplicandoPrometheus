@@ -13,7 +13,37 @@ Vamos criar o nosso primeiro exporter utilizando Python Docker. Vamos entender o
 Vamos conhecer as nossas primeiras funções para que possamos ter ainda mais poderes para criar as nossa queries PromQL.
 
 
-### Data Model do Prometheus
+&nbsp;
+### Conteúdo do Day-2
+
+
+- [O Data Model do Prometheus](#o-data-model-do-prometheus)
+- [As queries do Prometheus e o PromQL](#as-queries-do-prometheus-e-o-promql)
+- [O nosso primeiro exporter](#o-nosso-primeiro-exporter)
+- [Nosso Primeiro Exporter no Container](#nosso-primeiro-exporter-no-container)
+- [Os Targets do Prometheus](#os-targets-do-prometheus)
+- [Visualizando as métricas do nosso primeiro exporter](#visualizando-as-metricas-do-nosso-primeiro-exporter)
+- [Conhecendo um pouco mais sobre os tipos de métricas](#conhecendo-um-pouco-mais-sobre-os-tipos-de-metricas) 
+  - [gauge: Medidor](#gauge-medidor)
+  - [counter: Contador](#counter-contador)
+  - [summary: Resumo](#summary-resumo)
+  - [histogram: Histograma](#histogram-histograma)
+- [Conhecendo as primeiras funções para criação de queries](#conhecendo-as-primeiras-funcoes-para-criacao-de-queries)
+  - [A função sum](#a-função-sum)
+  - [A função count](#a-função-count)
+  - [A função avg](#a-função-avg)
+  - [A função min](#a-função-min)
+  - [A função max](#a-função-max)
+  - [A função rate](#a-função-rate)
+- [As nossas primeiras queries](#as-nossas-primeiras-queries)
+- [Chega por hoje!](#chega-por-hoje)
+- [Lição de casa](#lição-de-casa)
+  
+
+
+&nbsp;
+&nbsp;
+### O Data Model do Prometheus
 
 O formato de dados que o Prometheus utiliza é bastante simples, vamos pegar uma métrica e fazer uma consulta para saber o valor atual dela, assim você poderá entender melhor esse tal de *data model*.
 
@@ -149,7 +179,8 @@ Perceba que agora ele trouxe o @1661595094.114, que é o timestamp da execução
 
 Acho que já entendemos o modelo de dados que o Prometheus retorna, então já podemos ir um pouco mais além, bora entender e descomplicar as queries utilizando a poderossa linguagem de query do Prometheus, a PromQL!
 
-
+&nbsp;
+&nbsp;
 ### As queries do Prometheus e o PromQL
 
 Como mencionado ainda no Day-1, o *PromQL* é uma linguagem de query do Prometheus que permite fazer queries completas e super eficientes, e hoje vamos descomplica-la.
@@ -158,10 +189,14 @@ Eu sei que não é nenhuma novidade para você, pois nós já brincamos um pouco
 
 Antes de qualquer coisa, vamos colocar mais algumas métricas em nosso servidor, para podermos se divertir um pouco mais.
 
-Vamos antes fazer um novo *exporter* para o Prometheus, o *exporter* do Prometheus é um programa que é executado no host alvo e o responsável por exportar as métricas para o Prometheus capturar.
+Antes vamos fazer um novo *exporter* para o Prometheus, o *exporter* é um programa que é executado no host alvo e o responsável por expor as métricas para o Prometheus capturar.
 
-Vamos entender isso melhor.
+Ahhh, PromQL significa *Prometheus Query Language*. :)
 
+Vamos entender isso melhor, mas antes vamos criar o nosso primeiro *exporter* para o Prometheus.
+
+&nbsp;
+&nbsp;
 ### O nosso primeiro exporter
 
 Para o nosso exemplo, vamos criar uma aplicação bem simples feita em Python irá exportar as métricas que queremos.
@@ -175,6 +210,9 @@ Então a métrica que queremos é simples, pelo menos por agora:
 Para saber a quantidade de pessoas que estão no espaço, vamos utilizar a API Rest do [OpenNotify](http://open-notify.org/Open-Notify-API/People-In-Space/).
 
 Vamos criar um arquivo chamado `exporter.py` no diretório `exporter`.
+
+&nbsp;
+
 
 ```python
 import requests # Importa o módulo requests para fazer requisições HTTP
@@ -237,6 +275,7 @@ if __name__ == '__main__': # Se o programa for executado diretamente
     exit(0) # Finaliza o programa
 
 ```
+&nbsp;
 
 Agora vamos executar o nosso script para ver se está tudo certo.
 
@@ -244,12 +283,14 @@ Agora vamos executar o nosso script para ver se está tudo certo.
 chmod +x exporter.py
 python exporter.py
 ```
+&nbsp;
 
 Abra um outro terminal e execute o comando `curl http://localhost:8899/metrics/` para ver se está tudo certo.
 
 ```bash
 curl http://localhost:8899/metrics/
 ```
+&nbsp;
 
 A saída será:
 
@@ -297,6 +338,7 @@ process_max_fds 1024.0
 # TYPE number_of_astronauts gauge
 number_of_astronauts 10.0
 ```
+&nbsp;
 
 Lembrando que você pode acessar via navegador acessando http://localhost:8899/metrics/.
 
@@ -305,12 +347,16 @@ Lembrando que você pode acessar via navegador acessando http://localhost:8899/m
 Perceba que estamos passando o path `/metrics`, mas qualquer path que você passar port agora, o `start_http_serve` irá responder. Por enquanto vamos deixar dessa forma, mas em breve vamos melhorar isso, mas por agora e para fins didáticos, vamos deixar assim.
 
 
+&nbsp;
+
+### Nosso Primeiro Exporter no Container
 Vamos colocar esse nosso primeiro exporter para rodar em um container Docker.
 Antes de mais nada, faça a instalação do Docker na maioria das distribuições Linux, execute o famoso `curl`!
 
 ```bash
 curl -fsSL https://get.docker.com | bash
 ```
+&nbsp;
 
 Caso queira saber mais detalhes de como instalar o Docker em outros sistemas operacionais, clique [aqui](https://docs.docker.com/install/).
 
@@ -320,6 +366,7 @@ Vamos ter certeza de que o Docker está instalado, execute o comando `docker --v
 ```bash
 docker --version
 ```
+&nbsp;
 
 Boa! Agora já podemos criar o nosso Dockerfile para criar a nossa imagem Docker do exporter.
 
@@ -341,6 +388,7 @@ RUN pip3 install -r requirements.txt
 # Executando o exporter
 CMD python3 exporter.py
 ```
+&nbsp;
 
 Muito bom!
 Já temos o nosso `Dockerfile` criado, vamos criar a nossa imagem Docker.
@@ -372,6 +420,7 @@ Step 7/7 : CMD python3 exporter.py
 Successfully built 7f971cbc97ce
 Successfully tagged primeiro-exporter:0.1
 ```
+&nbsp;
 
 Se você quiser ver a imagem criada, execute o comando `docker images` para verificar.
 
@@ -380,23 +429,26 @@ docker images | grep primeiro-exporter
 
 primeiro-exporter   0.1   7f971cbc97ce   4 minutes ago   134MB
 ```
+&nbsp;
 
 Ótimo! Agora vamos rodar o nosso primeiro exporter.
 
 ```bash
 docker run -p 8899:8899 --name primeiro-exporter -d primeiro-exporter:0.1
 ```
+&nbsp;
 
 Bora verificar se o nosso primeiro exporter está rodando.
 
 ```bash
 curl -s http://localhost:8899/metrics
 ```
+&nbsp;
 
 Está rodando maravilhosamente bem!
 
 
-#### Targets para o Prometheus
+#### Os Targets do Prometheus
 
 Agora que já temos o nosso exporter rodando maravilhosamente em nosso container Docker, vamos adicionar um novo host alvo para o Prometheus, ou seja, vamos adicionar o nosso primeiro exporter para o Prometheus.
 
@@ -411,6 +463,7 @@ Vamos ver os hosts alvos, ou `targets`, que estão configurados no Prometheus.
 ```bash
 curl -s http://localhost:9090/api/v1/targets
 ```
+&nbsp;
 
 Para ficar mais bonita essa saída, vamos converter para JSON e para isso vamos utilizar o comando `jq`.
 
@@ -422,6 +475,8 @@ Se você ainda não tem o `jq` instalado, execute o comando `sudo apt install jq
 ```bash
 curl -s http://localhost:9090/api/v1/targets | jq .
 ```
+&nbsp;
+
 A saída deve ter ficado bem mais bonita.
 
 ```json
@@ -458,6 +513,7 @@ A saída deve ter ficado bem mais bonita.
 }
 
 ```
+&nbsp;
 
 Perceba que somente temos um host alvo configurado no Prometheus, que é o próprio Prometheus. Perceba que ele está configurado para buscar as métricas na porta 9090, e ele está configurado para buscar as métricas em um intervalo de 15 segundos. A porta 9090 é a porta padrão do Prometheus, a diferença é o path que ele está buscando, que é `/metrics`.
 
@@ -471,6 +527,7 @@ Voltando a falar dos nossos targets, caso você não goste dessa saída via linh
 ```bash
 http://localhost:9090/targets
 ```
+&nbsp;
 
 No nosso caso, como já sabemos, somente temos um host alvo configurado no Prometheus, que é o próprio Prometheus.
 
@@ -509,18 +566,21 @@ scrape_configs: # Inicio da definição das configurações de coleta, ou seja, 
     static_configs:
       - targets: ["localhost:8899"] # Endereço do alvo monitorado, ou seja, o nosso primeiro exporter.
 ```
+&nbsp;
 
 Agora que já editamos o arquivo e adicionamos um novo job, precisamos atualizar o Prometheus.
 
 ```bash
 sudo systemctl restart prometheus
 ```
+&nbsp;
 
 Bora conferir se o nosso primeiro exporter já está configurado como target no Prometheus.
 
 ```bash
 curl -s http://localhost:9090/api/v1/targets | jq . 
 ```
+&nbsp;
 
 A saída mudou, não?!?
 
@@ -580,6 +640,7 @@ A saída mudou, não?!?
   }
 }
 ```
+&nbsp;
 
 Essa é a saída que é importante para nos sabermos se o nosso primeiro exporter está configurado como target no Prometheus.
 
@@ -609,17 +670,20 @@ Essa é a saída que é importante para nos sabermos se o nosso primeiro exporte
         "scrapeTimeout": "10s"
       },
 ```
+&nbsp;
 
 Caso queira fazer um `grep` na saída para ver se o nosso primeiro exporter está na lista de targets, vamos fazer isso:
 
 ```bash
 curl -s http://localhost:9090/api/v1/targets | jq . | grep -i "localhost:8899"
 ```
+&nbsp;
 
 E ainda podemos ver via navegador, conforme abaixo:
 
 ![O nosso novo target está configurado](images/prometheus-targets-2.png)
 
+&nbsp;
 
 
 ### Visualizando as métricas do nosso primeiro exporter
@@ -635,16 +699,19 @@ Vamos acessar a interface web do Prometheus e digite a seguinte query na barra d
 ```PROMQL
 numero_de_astronautas
 ```
+&nbsp;
 
 Com isso você já receberá o valor da métrica, ou melhor, o último valor que foi armazenado no Prometheus.
 
 ![O valor da métrica](images/prometheus-metric-1.png)
+&nbsp;
 
 Via linha de comando você já sabe como fazer, certo?
 
 ```bash
 curl -s http://localhost:9090/api/v1/query?query=numero_de_astronautas | jq .
 ```
+&nbsp;
 
 Você vai receber a seguinte saída:
 
@@ -669,6 +736,7 @@ Você vai receber a seguinte saída:
   }
 }
 ```
+&nbsp;
 
 Muito bom! A nossa métrica está por lá!
 Uma coisa que podemos fazer é começar a ser mais cirúrgicos, e fazer as queries utilizando o máximo de parâmetros possíveis.
@@ -679,6 +747,7 @@ Por exemplo, podemos passar alguns labels para a query, como o nome do job e o n
 ```PROMQL
 numero_de_astronautas{instance="localhost:8899",job="Primeiro Exporter"}
 ```
+&nbsp;
 
 O resultado será o mesmo que o anterior, porém agora com os labels passados. :D
 
@@ -690,8 +759,10 @@ Claro!
 ```PROMQL
 numero_de_astronautas{instance="localhost:8899",job="Primeiro Exporter"}[5m]
 ```
+&nbsp;
 
 ![O valor da métrica](images/prometheus-metric-2.png)
+&nbsp;
 
 
 O valor não muda, afinal não é tão fácil assim mudar os astronautas que estão na Estação Espacial. hahaha
@@ -705,6 +776,8 @@ Eu sei que o open-notify tem uma API para isso, vamos adicionar essa nova métri
 
 
 Vamos editar e adicionar essa nova configuração em nosso script Python, o arquivo `exporter.py`:
+
+&nbsp;
 
 ```python
 import requests # Importa o módulo requests para fazer requisições HTTP
@@ -786,12 +859,15 @@ if __name__ == '__main__': # Se o programa for executado diretamente
     exit(0) # Finaliza o programa
 
 ```
+&nbsp;
 
 Muito bem, já adicionamos as novas instruções para o nosso exporter.
 Basicamente falamos para a biblioteca `prometheus_client` que temos duas novas métricas:
 
 - longitude_ISS: Longitude da Estação Espacial Internacional
 - latitude_ISS: Latitude da Estação Espacial Internacional
+
+&nbsp;
 
 Vamos executar o nosso script para saber se está tudo funcionando bem:
 
@@ -802,6 +878,7 @@ O número atual de astronautas no espaço é: 10
 A longitude atual da Estação Espacial Internacional é: 57.7301
 A latitude atual da Estação Espacial Internacional é: -32.7545
 ```
+&nbsp;
 
 
 Muito bem, está funcionando! As duas novas métricas já estão disponível e sendo expostas. 
@@ -834,12 +911,14 @@ Step 7/7 : CMD python3 exporter.py
 Successfully built 6d63ade160c4
 Successfully tagged primeiro-exporter:1.0
 ```
+&nbsp;
 
 Vamos executar e conferir o resultado!
 
 ```bash
 docker run -d -p 8899:8899 primeiro-exporter:1.0
 ```
+&nbsp;
 
 Vamos conferir se as nossas métricas estão chegando no Prometheus.
 Vamos primeiro verificar a `longitude_ISS`:
@@ -848,12 +927,14 @@ Vamos primeiro verificar a `longitude_ISS`:
 ```bash
 curl -s http://localhost:9090/api/v1/query\?query\=longitude_ISS | jq .
 ```
+&nbsp;
 
 Agora bora conferir a a `latitude_ISS`:
 
 ```bash
 curl -s http://localhost:9090/api/v1/query\?query\=latitude_ISS | jq .
 ```
+&nbsp;
 
 
 Evidente que podemos conferir tudo isso via interface web. 
@@ -864,9 +945,11 @@ Vamos verificar a `latitude_ISS` nos últimos 05 minutos:
 ```PROMQL
 latitude_ISS{instance="localhost:8899",job="Primeiro Exporter"}[5m]
 ```
+&nbsp;
 
-![resultado da nossa query buscando a métrica sobre a latitude](images/resultado_latitude_ISS.png)
+![resultado da nossa query buscando a métrica sobre a latitude](images/resultado-query-latitude.png)
 
+&nbsp;
 
 ### Conhecendo um pouco mais sobre os tipos de métricas
 
@@ -882,7 +965,9 @@ Quando nós criamos o nosso primeiro exporter, nós apenas utilizamos um tipo de
 
 Esse é apenas um dos tipos de dados que podemos trabalhar no Prometheus, vamos conhecer mais alguns:
 
-- **gauge: Medidor**
+&nbsp;
+
+#### **gauge: Medidor**
   - O tipo de dado `gauge` é o tipo de dado utilizado para criar métricas que podem ter seus valores alterados para cima ou para baixo, por exemplo, a ultilização de memória ou cpu. Se quiser trazer para exemplos da vida real, podemos falar que aquelas filas que você odeia é o tipo de dado `gauge`, ou então a temperatura da sua cidade, ela pode ser alterada para cima ou para baixo, ou seja, é um medidor, é um `gauge`! :D
   Um exemplo de métrica do tipo `gauge` é a métrica `memory_usage`, que é uma métrica que mostra a utilização de memória.
 
@@ -890,8 +975,9 @@ Esse é apenas um dos tipos de dados que podemos trabalhar no Prometheus, vamos 
       memory_usage{instance="localhost:8899",job="Primeiro Exporter"}
       ```
 
+&nbsp;
 
-- **counter: Contador**
+#### **counter: Contador**
   - O tipo de dado `counter` é o tipo de dado utilizado que vai ser incrementado no decorrer do tempo, por exemplo, quando eu quero contar os erros em uma aplicação no decorrer da última hora.
   O valor atual do `counter` quase nunca é importante, pois o que queremos dele são os valores durante uma janela de tempo, por exemplo, quantas vezes a minha aplicação falhou durante o final de semana.
   Normalmente as métricas `counter` possuem o sufixo `_total` para indicar que é o total de valores que foram contados, por exemplo:
@@ -900,8 +986,9 @@ Esse é apenas um dos tipos de dados que podemos trabalhar no Prometheus, vamos 
     requests_total{instance="localhost:8899",job="Primeiro Exporter"}
     ```
 
+&nbsp;
 
-- **histogram: Histograma**
+#### **histogram: Histograma**
   - O tipo de dado `histogram` é o tipo de dado que te permite especificar o seu valor através de buckets predefinidos, por exemplo, o tempo de execução de uma aplicação. Com o `histogram` eu consigo contar todas as requisições que minha aplicação respondeu entre 0 e 0,5 segundos, ou então as requisições que tiveram respostas entre 1,0 e 2,5 e assim por diante.
   Por padrão, os buckets predefinidos são até no máximo 10 segundos, se você quiser mais, você pode criar seus próprios buckets personalizados.
   Um coisa super importante, o Prometheus irá contar cada item em cada bucket, e também a soma dos valores.
@@ -928,8 +1015,9 @@ Esse é apenas um dos tipos de dados que podemos trabalhar no Prometheus, vamos 
 
         O ponto alto do `histogram` é a excelente flexibilidades, pois percentuais e as janelas de tempos podem definidas durante a criação das queries, o ponto negativo é a precisão é um pouco inferior quando comparado com o `summary`.
 
+&nbsp;
 
-- **summary: Resumo**
+#### **summary: Resumo**
   - O tipo de dado `summary` é bem parecido com o `histogram`, com a diferença que os buckets, aqui chamados de `quantiles`, são definidos por um valor entre 0 e 1, ou seja, o valor do bucket é o valor que está entre os quantiles.
 
     Da mesma forma como no `histogram`, podemos criar métricas do tipo `summary` com alguns itens importantes adicionados ao final do nome da métrica, por exemplo:
@@ -951,6 +1039,7 @@ Em voz alta! ahahahha!
 
 Em breve vamos criar outros tipos de dados para o Prometheus tratar, agora vamos focar novamente nas queries! 
 
+&nbsp;
 
 ### Conhecendo as primeiras funções para criação de queries
 
@@ -958,7 +1047,9 @@ Uma coisa muito importante é se sentir confortável com o uso da PromQL, pois �
 
 Vamos conhecer algumas funções para criação de queries mais efetivas. Vou listar algumas e outras funções vamos conhecendo conforme vamos avançando.
 
-##### A função `sum`
+&nbsp;
+&nbsp;
+#### A função *sum*
 
 A primeira que eu quero falar é a palavra chave, que na versdade é uma função, é `sum`, ela representa a soma de todos os valores de uma métrica.
 
@@ -970,13 +1061,9 @@ sum(metrica)
 
 Onde `metrica` é a métrica que você deseja somar.
 
-
-##### a função `rate`
-
-A função `rate` é 
-
-
-##### A função `count`
+&nbsp;
+&nbsp;
+#### A função *count*
 
 Outra função bem utilizada é função `count` representa o contador de uma métrica.
 
@@ -990,8 +1077,9 @@ count(metrica)
 
 Onde `metrica` é a métrica que você deseja contar.
 
-
-##### A função `avg`
+&nbsp;
+&nbsp;
+#### A função *avg*
 
 A função `avg` representa o valor médio de uma métrica.
 
@@ -1005,8 +1093,9 @@ avg(metrica)
 
 Onde `metrica` é a métrica que você deseja calcular a média.
 
-
-##### A função `min`
+&nbsp;
+&nbsp;
+#### A função *min*
 
 A função `min` representa o valor mínimo de uma métrica.
 
@@ -1016,8 +1105,9 @@ min(metrica)
 
 Onde `metrica` é a métrica que você deseja calcular o mínimo.
 
-
-##### A função `max`
+&nbsp;
+&nbsp;
+#### A função *max*
 
 A função `max` representa o valor máximo de uma métrica.
 
@@ -1027,17 +1117,21 @@ max(metrica)
 
 Onde `metrica` é a métrica que você deseja calcular o máximo.
 
-
-##### A função `rate`
+&nbsp;
+&nbsp;
+#### A função *rate*
 
 A função `rate` representa a taxa de aumento de uma métrica durante um intervalo de tempo.
 
 ```PROMQL
 rate(metrica)[5m]
 ```
+&nbsp;
 
 Onde `metrica` é a métrica que você deseja calcular a taxa de aumento durante um intervalo de tempo de 5 minutos.
 
+
+#### As nossas primeiras queries
 
 Agora que já vimos a descrição de algumas funções, vamos começar a praticar e criar algumas queries utilizando as funções.
 
@@ -1047,6 +1141,7 @@ Vamos criar uma query para saber o quanto de cpu está sendo utilizado no nosso 
 ```PROMQL
 sum(rate(process_cpu_seconds_total{job="Primeiro Exporter"}[1m])) by (instance)
 ```
+&nbsp;
 
 Vamos entender melhor a query acima, o que ela faz?
 
@@ -1060,6 +1155,7 @@ Agora vamos dividir a primeira um pouco mais.
 ```PROMQL
 process_cpu_seconds_total{job="Primeiro Exporter"}[1m]
 ```
+&nbsp;
 
 Nessa primeira query, estamos pedindo o valor da métrica `process_cpu_seconds_total` no último 1 minuto.
 
@@ -1067,6 +1163,7 @@ O retorno são 04 valores, pois o scraping do Prometheus é feito em intervalos 
 
 ![Examinando a query - 1](images/examinando-a-query-1.png)
 
+&nbsp;
 
 
 Maravilha, está rolando bem! 
@@ -1075,9 +1172,11 @@ Agora eu quero saber a média do consumo de cpu no nosso primeiro exporter duran
 ```PROMQL
 avg(rate(process_cpu_seconds_total{job="Primeiro Exporter"}[1m]))
 ```
+&nbsp;
 
 ![Examinando a query - 2](images/examinando-a-query-2.png)
 
+&nbsp;
 
 Com isso nós temos a média do consumo de cpu no nosso primeiro exporter durante o último 1 minuto, e perceba que estamos utilizando a função `avg` para calcular a média, porém estamos também utilizando a função `rate`.
 Precisamos do `rate` para calcular a taxa de aumento dos valores da métrica durante o último 1 minuto, conforme solicitado na query acima.
@@ -1087,15 +1186,18 @@ Agora vamos adicionar mais um detalhe a nossa query.
 ```PROMQL
 by (instance)
 ```
+&nbsp;
 
 Então ela ficará assim:
 
 ```PROMQL
 avg(rate(process_cpu_seconds_total{job="Primeiro Exporter"}[1m])) by (instance)
 ```
+&nbsp;
 
 ![Examinando a query - 3](images/examinando-a-query-3.png)
 
+&nbsp;
 
 Com a função `by` adicionada, é possível agrupar os valores da métrica por um determinado campo, no nosso caso estamos agrupando por `instance`.
 
@@ -1106,10 +1208,12 @@ Mas se retirarmos da query o label `job`, o resultado trará também a instânci
 ```PROMQL
 avg(rate(process_cpu_seconds_total[1m])) by (instance)
 ```
+&nbsp;
 
 Agora a saída trará também o valor da métrica para a instância do job `prometheus`.
 
 ![Examinando a query - 4](images/examinando-a-query-4.png)
+&nbsp;
 
 
 Caso queira pegar o menor valor da métrica registrada no último 1 minuto, basta utilizar a função `min`.
@@ -1117,8 +1221,10 @@ Caso queira pegar o menor valor da métrica registrada no último 1 minuto, bast
 ```PROMQL
 min(rate(process_cpu_seconds_total[1m])) by (instance)
 ```
+&nbsp;
 
 ![Examinando a query - 5](images/examinando-a-query-5.png)
+&nbsp;
 
 
 Caso queira pegar o maior valor da métrica registrada no último 1 minuto, basta utilizar a função `max`.
@@ -1126,8 +1232,10 @@ Caso queira pegar o maior valor da métrica registrada no último 1 minuto, bast
 ```PROMQL
 max(rate(process_cpu_seconds_total[1m])) by (instance)
 ```
+&nbsp;
 
 ![Examinando a query - 6](images/examinando-a-query-6.png)
+&nbsp;
 
 
 Eu falei bastante sobre as queries e os valores que elas retornam, porém eu nem falei ainda para vocês clicarem na aba `Graph` e ver os gráficos que são gerados automaticamente.
@@ -1135,6 +1243,8 @@ Eu falei bastante sobre as queries e os valores que elas retornam, porém eu nem
 Vamos ver o gráfico da média do consumo de cpu pelos jobs durante o último 1 minuto.
 
 ![Examinando a query - 7](images/examinando-a-query-7.png)
+
+&nbsp;
 
 
 ### Chega por hoje! 
@@ -1153,8 +1263,11 @@ Curtiu o dia de hoje? Posso contar com o seu feedback nas redes sociais?
 
 Bora ajudar o projeto e o treinamento a ficarem cada dia melhores!
 
+&nbsp;
+
 
 ### Lição de casa
+
 
 Agora você tem uma missão, é hora de brincar com tudo o que aprendemos hoje, e claro, tudo o que você puder adicionar a sessão de estudos para deixar o seu aprendizado mais rápido.
 
