@@ -121,7 +121,7 @@ Pronto, agora acho que já sabemos o que é monitoração, observabilidade e o P
 
 Fiz um desenho da arquitetura do Prometheus para que possamos ter um melhor entendimento de como ele funciona.
 
-![Arquitetura do Prometheus](images/arquitetura-prometheus.png)
+![Arquitetura do Prometheus](images/arquitetura-prometheus.jpg)
 
 Perceba que temos 03 componentes *core* no Prometheus:
 
