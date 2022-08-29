@@ -6,7 +6,12 @@
 
 Seja muito bem-vinda e muito bem-vindo para o seu segundo dia de treinamento! Sim, eu considero esse livro um treinamento e não somente um guia de como obter o melhor do sensacional Prometheus!
 
-Hoje nós vamos aprender como criar as nossa primeiras *queries* e para isso vamos precisar entender o modelo de dados que o Prometheus utiliza.
+Hoje nós vamos aprender como criar as nossa primeiras *queries* e para isso vamos precisar entender o modelo de dados que o Prometheus utiliza, vamos entender no detalhe o que é uma métrica para o Prometheus e vamos aprender como criar a nossa propria métrica e as nossas primeiras queries.
+
+Vamos criar o nosso primeiro exporter utilizando Python Docker. Vamos entender os tipos de dados que o Prometheus utiliza, como utiliza-los e pra que servem.
+
+Vamos conhecer as nossas primeiras funções para que possamos ter ainda mais poderes para criar as nossa queries PromQL.
+
 
 ### Data Model do Prometheus
 
@@ -184,7 +189,7 @@ url = 'http://api.open-notify.org/astros.json'
 def pega_numero_astronautas():
     try:
         """
-        Pegar o número de astronautas na estação espacial internacional
+        Pegar o número de astronautas no espaço
         """
         response = requests.get(url)
         data = response.json()
@@ -198,12 +203,12 @@ def atualiza_metricas():
         """
         Atualiza as métricas com o número de astronautas e local da estação espacial internacional
         """
-        numero_pessoas = Gauge('numero_de_astronautas', 'Número de astronautas na Estação Espacial Internacional')
+        numero_pessoas = Gauge('numero_de_astronautas', 'Número de astronautas no espaço')
         
         while True:
             numero_pessoas.set(pega_numero_astronautas())
             time.sleep(10)
-            print("O número atual de astronautas na Estação Espacial é: %s" % pega_numero_astronautas())
+            print("O número atual de astronautas no espaço é: %s" % pega_numero_astronautas())
     except Exception as e:
         print("A quantidade de astronautas não pode ser atualizada!")
         raise e
@@ -729,7 +734,7 @@ def pega_local_ISS():
 def pega_numero_astronautas():
     try:
         """
-        Pegar o número de astronautas na estação espacial internacional
+        Pegar o número de astronautas no espaço
         """
         response = requests.get(url_numero_pessoas)
         data = response.json()
@@ -743,7 +748,7 @@ def atualiza_metricas():
         """
         Atualiza as métricas com o número de astronautas e local da estação espacial internacional
         """
-        numero_pessoas = Gauge('numero_de_astronautas', 'Número de astronautas na Estação Espacial Internacional')
+        numero_pessoas = Gauge('numero_de_astronautas', 'Número de astronautas no espaço')
         longitude = Gauge('longitude_ISS', 'Longitude da Estação Espacial Internacional')
         latitude = Gauge('latitude_ISS', 'Latitude da Estação Espacial Internacional')
 
@@ -752,7 +757,7 @@ def atualiza_metricas():
             longitude.set(pega_local_ISS()['longitude'])
             latitude.set(pega_local_ISS()['latitude'])
             time.sleep(10)
-            print("O número atual de astronautas na Estação Espacial é: %s" % pega_numero_astronautas())
+            print("O número atual de astronautas no espaço é: %s" % pega_numero_astronautas())
             print("A longitude atual da Estação Espacial Internacional é: %s" % pega_local_ISS()['longitude'])
             print("A latitude atual da Estação Espacial Internacional é: %s" % pega_local_ISS()['latitude'])
     except Exception as e:
@@ -798,7 +803,7 @@ Vamos executar o nosso script para saber se está tudo funcionando bem:
 ```bash
 python3 exporter.py
 
-O número atual de astronautas na Estação Espacial é: 10
+O número atual de astronautas no espaço é: 10
 A longitude atual da Estação Espacial Internacional é: 57.7301
 A latitude atual da Estação Espacial Internacional é: -32.7545
 ```
@@ -858,21 +863,306 @@ curl -s http://localhost:9090/api/v1/query\?query\=latitude_ISS | jq .
 
 Evidente que podemos conferir tudo isso via interface web. 
 
-Vamos verificar a `longitude_ISS` nos últimos 05 minutos:
+
+Vamos verificar a `latitude_ISS` nos últimos 05 minutos:
 
 ```PROMQL
-longitude_ISS{instance="localhost:8899",job="Primeiro Exporter"}[5m]
+latitude_ISS{instance="localhost:8899",job="Primeiro Exporter"}[5m]
 ```
 
+![resultado da nossa query buscando a métrica sobre a latitude](images/resultado_latitude_ISS.png)
+
+
+### Conhecendo um pouco mais sobre os tipos de métricas
+
+Vocês sabem que quando estamos descomplicando algo, nós gostamos de ir a fundo e conhecer no detalhe, tudo o que precisamos para ser um expert no assunto. 
+
+Aqui com o Prometheus não seria diferente, queremos que você conheça o Prometheus da forma como nós acreditamos ser importante para os desafios do mundo atual, no ambiente das melhores empresas de tecnologia da mundo.
+
+Estou dizendo isso, pois vamos ter que conhecer com um pouco mais de detalhes os tipos de métricas que podemos criar.
+
+Quais os tipos de dados que o Prometheus suporta e que podemos utilizar quando estamos criando os nossos exporters?
+
+Quando nós criamos o nosso primeiro exporter, nós apenas utilizamos um tipo de dado, o `gauge` que é o tipo de dado utilizado para crirar métricas que podem ser atualizadas.
+
+Esse é apenas um dos tipos de dados que podemos trabalhar no Prometheus, vamos conhecer mais alguns:
+
+- **gauge: Medidor**
+  - O tipo de dado `gauge` é o tipo de dado utilizado para criar métricas que podem ter seus valores alterados para cima ou para baixo, por exemplo, a ultilização de memória ou cpu. Se quiser trazer para exemplos da vida real, podemos falar que aquelas filas que você odeia é o tipo de dado `gauge`, ou então a temperatura da sua cidade, ela pode ser alterada para cima ou para baixo, ou seja, é um medidor, é um `gauge`! :D
+  Um exemplo de métrica do tipo `gauge` é a métrica `memory_usage`, que é uma métrica que mostra a utilização de memória.
+
+      ```PROMQL
+      memory_usage{instance="localhost:8899",job="Primeiro Exporter"}
+      ```
+
+
+- **counter: Contador**
+  - O tipo de dado `counter` é o tipo de dado utilizado que vai ser incrementado no decorrer do tempo, por exemplo, quando eu quero contar os erros em uma aplicação no decorrer da última hora.
+  O valor atual do `counter` quase nunca é importante, pois o que queremos dele são os valores durante uma janela de tempo, por exemplo, quantas vezes a minha aplicação falhou durante o final de semana.
+  Normalmente as métricas `counter` possuem o sufixo `_total` para indicar que é o total de valores que foram contados, por exemplo:
+
+    ```PROMQL
+    requests_total{instance="localhost:8899",job="Primeiro Exporter"}
+    ```
+
+
+- **histogram: Histograma**
+  - O tipo de dado `histogram` é o tipo de dado que te permite especificar o seu valor através de buckets predefinidos, por exemplo, o tempo de execução de uma aplicação. Com o `histogram` eu consigo contar todas as requisições que minha aplicação respondeu entre 0 e 0,5 segundos, ou então as requisições que tiveram respostas entre 1,0 e 2,5 e assim por diante.
+  Por padrão, os buckets predefinidos são até no máximo 10 segundos, se você quiser mais, você pode criar seus próprios buckets personalizados.
+  Um coisa super importante, o Prometheus irá contar cada item em cada bucket, e também a soma dos valores.
+  Uma métrica do tipo `histogram` inclui alguns itens importantes são adicionados ao final do nome da métrica para indicar o tipo de dado e o tamanho do bucket, por exemplo:
+
+    ```PROMQL
+    requests_duration_seconds_bucket{le="0.5"}
+    ```
+
+    Onde `le` é o valor limite do bucket, o valor `0.5` indica que o valor do bucket é até 0,5 segundos, ou seja, aqui nesse bucket poderiam estar os requisições que tiveram respostas entre 0 e 0,5 segundos.
+
+    O `_bucket` é um sufixo que indica que o valor é um bucket.
+
+    Ainda temos alguns sufixos que são importantes e que podem ser úteis para nós:
+
+    - _count: Contador
+        - O sufixo `_count` indica que o valor é um contador, ou seja, o valor é incrementado a cada vez que a métrica é atualizada.
+
+    - _sum: Soma
+       - O sufixo `_sum` indica que o valor é uma soma, ou seja, o valor é somado a cada vez que a métrica é atualizada.
+
+  - _bucket: Bucket
+      - O sufixo `_bucket` indica que o valor é um bucket, ou seja, o valor é um bucket.
+
+        O ponto alto do `histogram` é a excelente flexibilidades, pois percentuais e as janelas de tempos podem definidas durante a criação das queries, o ponto negativo é a precisão é um pouco inferior quando comparado com o `summary`.
+
+
+- **summary: Resumo**
+  - O tipo de dado `summary` é bem parecido com o `histogram`, com a diferença que os buckets, aqui chamados de `quantiles`, são definidos por um valor entre 0 e 1, ou seja, o valor do bucket é o valor que está entre os quantiles.
+
+    Da mesma forma como no `histogram`, podemos criar métricas do tipo `summary` com alguns itens importantes adicionados ao final do nome da métrica, por exemplo:
+  
+    ```PROMQL
+    requests_duration_seconds_sum{instance="localhost:8899",job="Primeiro Exporter"}
+    ```
+
+    Utilizamos o sufixo `_sum` indica que o valor é uma soma, ou seja, o valor é somado a cada vez que a métrica é atualizada e o sufixo `_count` para indicar que o valor é um contador, ou seja, o valor é incrementado a cada vez que a métrica é atualizada.
+
+    O ponto alto do `summary` é a excelente precisão e o ponto baixo é a baixa flexibilidades, pois percentuais e as janelas de tempos precisam ser definidos durante a criação da métrica e não é possível agregar métricas do tipo `summary` com outras métricas do tipo `summary` durante a criação das queries.
+
+
+Percebam que em nosso primeiro exporter, nós somente utilizamos métricas do tipo `gauge`, pois queremos saber quantas pessoas estão no espaço e também a localização da ISS (International Space Station) ao longo do tempo. 
+
+Faz sentido agora? 
+Fala a verdade!
+Em voz alta! ahahahha!
+
+Em breve vamos criar outros tipos de dados para o Prometheus tratar, agora vamos focar novamente nas queries! 
+
+
+### Conhecendo as primeiras funções para criação de queries
+
+Uma coisa muito importante é se sentir confortável com o uso da PromQL, pois é com ela que iremos extrair o máximo de nossas métricas e também do mundo sensacional das `time series`.
+
+Vamos conhecer algumas funções para criação de queries mais efetivas. Vou listar algumas e outras funções vamos conhecendo conforme vamos avançando.
+
+##### A função `sum`
+
+A primeira que eu quero falar é a palavra chave, que na versdade é uma função, é `sum`, ela representa a soma de todos os valores de uma métrica.
+
+Você pode utilizar a função `sum` nos tipos de dados `counter`, `gauge`, `histogram` e `summary`.
+
+```PROMQL
+sum(metrica)
+```
+
+Onde `metrica` é a métrica que você deseja somar.
+
+
+##### a função `rate`
+
+A função `rate` é 
+
+
+##### A função `count`
+
+Outra função bem utilizada é função `count` representa o contador de uma métrica.
+
+Você pode utilizar a função `count` nos tipos de dados `counter`, `gauge`, `histogram` e `summary`.
+
+```PROMQL
+
+```PROMQL
+count(metrica)
+```
+
+Onde `metrica` é a métrica que você deseja contar.
+
+
+##### A função `avg`
+
+A função `avg` representa o valor médio de uma métrica.
+
+Você pode utilizar a função `avg` nos tipos de dados `counter`, `gauge`, `histogram` e `summary`.
+
+```PROMQL
+
+```PROMQL
+avg(metrica)
+```
+
+Onde `metrica` é a métrica que você deseja calcular a média.
+
+
+##### A função `min`
+
+A função `min` representa o valor mínimo de uma métrica.
+
+```PROMQL
+min(metrica)
+```
+
+Onde `metrica` é a métrica que você deseja calcular o mínimo.
+
+
+##### A função `max`
+
+A função `max` representa o valor máximo de uma métrica.
+
+```PROMQL
+max(metrica)
+```
+
+Onde `metrica` é a métrica que você deseja calcular o máximo.
+
+
+##### A função `rate`
+
+A função `rate` representa a taxa de aumento de uma métrica durante um intervalo de tempo.
+
+```PROMQL
+rate(metrica)[5m]
+```
+
+Onde `metrica` é a métrica que você deseja calcular a taxa de aumento durante um intervalo de tempo de 5 minutos.
+
+
+Agora que já vimos a descrição de algumas funções, vamos começar a praticar e criar algumas queries utilizando as funções.
+
+Vamos criar uma query para saber o quanto de cpu está sendo utilizado no nosso primeiro exporter durante cada execução.
+
+
+```PROMQL
+sum(rate(process_cpu_seconds_total{job="Primeiro Exporter"}[1m])) by (instance)
+```
+
+Vamos entender melhor a query acima, o que ela faz?
+
+  - Onde `sum(rate(process_cpu_seconds_total{job="Primeiro Exporter"}[1m]))` é a métrica que você deseja extrair.
+  - Onde `by (instance)` é o agrupamento que você deseja fazer.
+
+Ok, conseguimos dividir a query em duas partes, a primeira é a métrica e seus detalhes e a segunda é o agrupamento.
+
+Agora vamos dividir a primeira um pouco mais.
+
+```PROMQL
+process_cpu_seconds_total{job="Primeiro Exporter"}[1m]
+```
+
+Nessa primeira query, estamos pedindo o valor da métrica `process_cpu_seconds_total` no último 1 minuto.
+
+O retorno são 04 valores, pois o scraping do Prometheus é feito em intervalos de 15 segundos.
+
+![Examinando a query - 1](images/examinando-a-query-1.png)
 
 
 
+Maravilha, está rolando bem! 
+Agora eu quero saber a média do consumo de cpu no nosso primeiro exporter durante o último 1 minuto.
 
+```PROMQL
+avg(rate(process_cpu_seconds_total{job="Primeiro Exporter"}[1m]))
+```
+
+![Examinando a query - 2](images/examinando-a-query-2.png)
+
+
+Com isso nós temos a média do consumo de cpu no nosso primeiro exporter durante o último 1 minuto, e perceba que estamos utilizando a função `avg` para calcular a média, porém estamos também utilizando a função `rate`.
+Precisamos do `rate` para calcular a taxa de aumento dos valores da métrica durante o último 1 minuto, conforme solicitado na query acima.
+
+Agora vamos adicionar mais um detalhe a nossa query.
+
+```PROMQL
+by (instance)
+```
+
+Então ela ficará assim:
+
+```PROMQL
+avg(rate(process_cpu_seconds_total{job="Primeiro Exporter"}[1m])) by (instance)
+```
+
+![Examinando a query - 3](images/examinando-a-query-3.png)
+
+
+Com a função `by` adicionada, é possível agrupar os valores da métrica por um determinado campo, no nosso caso estamos agrupando por `instance`.
+
+Em nosso exemplo somente temos uma instância no job `Primeiro Exporter`, então o agrupamente não tem efeito.
+
+Mas se retirarmos da query o label `job`, o resultado trará também a instância do job `prometheus`.
+
+```PROMQL
+avg(rate(process_cpu_seconds_total[1m])) by (instance)
+```
+
+Agora a saída trará também o valor da métrica para a instância do job `prometheus`.
+
+![Examinando a query - 4](images/examinando-a-query-4.png)
+
+
+Caso queira pegar o menor valor da métrica registrada no último 1 minuto, basta utilizar a função `min`.
+
+```PROMQL
+min(rate(process_cpu_seconds_total[1m])) by (instance)
+```
+
+![Examinando a query - 5](images/examinando-a-query-5.png)
+
+
+Caso queira pegar o maior valor da métrica registrada no último 1 minuto, basta utilizar a função `max`.
+
+```PROMQL
+max(rate(process_cpu_seconds_total[1m])) by (instance)
+```
+
+![Examinando a query - 6](images/examinando-a-query-6.png)
+
+
+Eu falei bastante sobre as queries e os valores que elas retornam, porém eu nem falei ainda para vocês clicarem na aba `Graph` e ver os gráficos que são gerados automaticamente.
+
+Vamos ver o gráfico da média do consumo de cpu pelos jobs durante o último 1 minuto.
+
+![Examinando a query - 7](images/examinando-a-query-7.png)
+
+
+### Chega por hoje! 
 
 Muito bem! 
 
-Já estamos com o nosso primeiro exporter configurado como target no Prometheus.
-Durante essa parte do treinamento entendemos o que é um exporter, como ele funciona e até criamos um novo exporter para chamar de nosso.
+Agora é hora de reforçar os conceitos aprendidos até agora.
 
-Aprendemos como configurar o nosso primeiro exporter como um target no Prometheus, entendemos o que é um job, aprendemos a configuração básica dele e como consultar os targets do Prometheus, seja via linha de comando ou via interface web.
+Então é hora de você ler novamente todo o material e começar a práticar. 
 
+Não esqueça, a coisa mais importante aqui nesse momento é a prática, e não apenas o conhecimento. O conhecimento é a base, mas o que faz com que você domine o assunto é a prática.
+
+Então já sabe, né?
+
+Curtiu o dia de hoje? Posso contar com o seu feedback nas redes sociais?
+
+Bora ajudar o projeto e o treinamento a ficarem cada dia melhores!
+
+
+### Lição de casa
+
+Agora você tem uma missão, é hora de brincar com tudo o que aprendemos hoje, e claro, tudo o que você puder adicionar a sessão de estudos para deixar o seu aprendizado mais rápido.
+
+A sua lição hoje é criar novas queries somente consumindo as métricas que já estão disponíveis no Prometheus e que você conhece.
+
+Sem preguiça e deixar a imaginação comandar, vamos criar novas queries para nos ajudar a entender melhor o que está acontecendo, certo?
