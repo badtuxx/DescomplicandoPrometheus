@@ -67,7 +67,7 @@ Se liga no print do navegador:
 ![Query buscando o valor atual da métrica up](images/resultado-query-up.png)
 
 
-Aqui o resultado dessa query é:
+Aqui, o resultado dessa query é:
 
 ```
 up{instance="localhost:9090",job="prometheus"} 1.0
