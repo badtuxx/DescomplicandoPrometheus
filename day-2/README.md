@@ -50,9 +50,9 @@ O formato de dados que o Prometheus utiliza é bastante simples, vamos pegar uma
 Vamos fazer uma query para saber o valor atual da métrica `up` do servidor onde Prometheus está rodando.
 
 ```
-# up
 up
 ```
+&nbsp;
 
 Lembrando que estamos executando a query na porta 9090, que é a porta padrão do Prometheus, lá no navegador, certo?
 
@@ -62,9 +62,13 @@ Somente para que você não tenha duvidas, vamos abrir o navegador e digitar:
 http://localhost:9090/
 
 ```
+&nbsp;
+
 
 Se liga no print do navegador:
 ![Query buscando o valor atual da métrica up](images/resultado-query-up.png)
+
+&nbsp;
 
 
 Aqui, o resultado dessa query é:
@@ -72,6 +76,8 @@ Aqui, o resultado dessa query é:
 ```
 up{instance="localhost:9090",job="prometheus"} 1.0
 ```
+&nbsp;
+
 
 Nós precisamos entender o que essa linha está dizendo, o Prometheus sempre vai seguir um padrão, e você entendendo essa padrão tudo ficará muito mais fácil.
 
@@ -80,8 +86,12 @@ Ahhh, caso você queira pegar o resultado da query via terminal, basta digitar:
 ```
 curl -GET http://localhost:9090/api/v1/query --data-urlencode "query=up"
 ```
+&nbsp;
+
 
 Somente para explicar o que a linha do curl acima faz, vamos explicar o que está acontecendo.
+
+&nbsp;
 
 Vamos lá!
 
@@ -92,6 +102,8 @@ Vamos lá!
 - O `curl` está passando uma query para o Prometheus, que é a query que você estamos querendo saber o valor, ou seja, a nossa métrica `up`. *"query=up"*
 
 - E ainda estamos passando o parâmetro `--data-urlencode` para o `curl`, que é um parâmetro que permite você fazer um  POST com dados via URL, similar ao parâmetro `--data` do `curl`.
+
+&nbsp;
 
 
 O resultado será algo parecido com a saída abaixo:
@@ -117,6 +129,8 @@ O resultado será algo parecido com a saída abaixo:
     }
 }
 ```
+&nbsp;
+
 
 Bem, o resultado da query que queriamos já está aqui, mostrei das duas formas, via interface web usando o navegador ou via terminal usando o `curl`.
 
@@ -136,12 +150,16 @@ Se liga no desenho que eu fiz para você entender melhor, vamos lá:
 
 ![Desenho Data Model do Prometheus](images/desenho-data-model-prometheus-1.jpg)
 
+&nbsp;
+
 
 Se der um zoom no desenho, vai ver que o resultado está subdivido em mais partes, afinal, além do nome da métrica, temos as labels e seus valores e finalizando com o valor atual da métrica.
 
 Se liga nesse outro desenho:
 
 ![Desenho Data Model do Prometheus](images/desenho-data-model-prometheus-2.jpg)
+
+&nbsp;
 
 
 O que sabemos então olhando o resultado dessa query é que o nosso servidor está rodando, ou seja, o Prometheus está funcionando corretamente.
@@ -154,6 +172,8 @@ Agora, se eu quero saber o valor da métrica `up` do servidor onde está rodando
 ```
 up{instance="localhost:9090",job="prometheus"}[1h]
 ```
+&nbsp;
+
 
 Nesse caso estamos especificando que queremos os valores da métrica `up` do servidor `localhost:9090` do job `prometheus` da última hora, estamos sendo bem específicos. :)
 
@@ -162,6 +182,9 @@ Você usar `h` para hora, `d` para dia, `w` para semana, `m` para mês, `y` para
 
 
 ![Desenho Query Simples Prometheus](images/desenho-query-prometheus-1.jpg)
+
+&nbsp;
+
 
 O resultado foi enorme, certo?
 E você não sabe o porquê?
@@ -173,6 +196,8 @@ Vou copiar aqui somente o primeiro resultado para você entender melhor:
 ```
 up{instance="localhost:9090", job="prometheus"} 1 @1661595094.114
 ```
+&nbsp;
+
 
 Perceba que agora ele trouxe o @1661595094.114, que é o timestamp da execução do scrape, ou seja, a hora em que o scrape foi capturado.
 
