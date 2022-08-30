@@ -20,7 +20,7 @@ Vamos conhecer as nossas primeiras funções para que possamos ter ainda mais po
 - [O Data Model do Prometheus](#o-data-model-do-prometheus)
 - [As queries do Prometheus e o PromQL](#as-queries-do-prometheus-e-o-promql)
 - [O nosso primeiro exporter](#o-nosso-primeiro-exporter)
-- [Nosso Primeiro Exporter no Container](#nosso-primeiro-exporter-no-container)
+  - [Nosso Primeiro Exporter no Container](#nosso-primeiro-exporter-no-container)
 - [Os Targets do Prometheus](#os-targets-do-prometheus)
 - [Visualizando as métricas do nosso primeiro exporter](#visualizando-as-métricas-do-nosso-primeiro-exporter)
 - [Conhecendo um pouco mais sobre os tipos de dados do Prometheus](#conhecendo-um-pouco-mais-sobre-os-tipos-de-dados-do-prometheus) 
@@ -447,8 +447,9 @@ curl -s http://localhost:8899/metrics
 
 Está rodando maravilhosamente bem!
 
+&nbsp;
 
-#### Os Targets do Prometheus
+### Os Targets do Prometheus
 
 Agora que já temos o nosso exporter rodando maravilhosamente em nosso container Docker, vamos adicionar um novo host alvo para o Prometheus, ou seja, vamos adicionar o nosso primeiro exporter para o Prometheus.
 
@@ -535,8 +536,9 @@ No nosso caso, como já sabemos, somente temos um host alvo configurado no Prome
 
 O que temos que fazer agora é adicionar o nosso novo target, ou host alvo, ou chame lá como você quiser. hahaha.
 
+&nbsp;
 
-##### Adicionando o nosso primeiro exporter para o Prometheus
+### Adicionando o nosso primeiro exporter para o Prometheus
 
 Primeira coisa que precisamos fazer é editar o arquivo `prometheus.yml` para adicionar o nosso primeiro exporter.
 Como sabemos, o nosso arquivo `prometheus.yml` está no diretório `/etc/prometheus/`.
@@ -1121,7 +1123,7 @@ Onde `metrica` é a métrica que você deseja calcular o máximo.
 &nbsp;
 #### A função *rate*
 
-A função `rate` representa a taxa de aumento de uma métrica durante um intervalo de tempo.
+A função `rate` representa a taxa de aumento de uma métrica durante um intervalo de tempo
 
 ```PROMQL
 rate(metrica)[5m]
