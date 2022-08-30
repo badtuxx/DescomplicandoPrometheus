@@ -6,7 +6,19 @@
 Em construção...
 
 - **[DAY-1](day-1/README.md) - Em revisão...**
+    - [Por que precisamos de ferramentas como o Prometheus?](day-1/README.md#por-que-precisamos-de-ferramentas-como-o-prometheus)
+    - [O que é monitorar?](day-1/README.md#o-que-e-monitorar)
+        - [O monitoramento e a observabilidade](day-1/README.md#o-monitoramento-e-a-observabilidade)
+    - [O que é o Prometheus?](day-1/README.md#o-que-e-o-prometheus)
+        - [A arquitetura do Prometheus](day-1/README.md#a-arquitetura-do-prometheus)
+    - [Instalando o Prometheus](day-1/README.md#instalando-o-prometheus)
+        - [Executando o Prometheus em um node Linux](day-1/README.md#executando-o-prometheus-em-um-node-linux)
+        - [Instalação do Prometheus no Linux](day-1/README.md#instalação-do-prometheus-no-linux)
+    - [A sua lição de casa](day-1/README.md#a-sua-lição-de-casa)
+    - [Desafio do Day-1](day-1/README.md#desafio-do-day-1)
+    - [Final do Day-1](day-1/README.md#final-do-day-1)
 
+&nbsp;
 
 
 - **[DAY-2](day-2/README.md) - Em revisão...**
@@ -15,8 +27,8 @@ Em construção...
     - [O nosso primeiro exporter](day-2/README.md#o-nosso-primeiro-exporter)
         - [Nosso Primeiro Exporter no Container](day-2/README.md#nosso-primeiro-exporter-no-container)
         - [Os Targets do Prometheus](day-2/README.md#os-targets-do-prometheus)
-    - [Visualizando as métricas do nosso primeiro exporter](day-2/README.md#visualizando-as-metricas-do-nosso-primeiro-exporter)
-    - [Conhecendo um pouco mais sobre os tipos de métricas](day-2/README.md#conhecendo-um-pouco-mais-sobre-os-tipos-de-metricas) 
+    - [Visualizando as métricas do nosso primeiro exporter](day-2/README.md#visualizando-as-métricas-do-nosso-primeiro-exporter)
+    - [Conhecendo um pouco mais sobre os tipos de dados do Prometheus](day-2/README.md#conhecendo-um-pouco-mais-sobre-os-tipos-de-dados-do-prometheus)
         - [gauge: Medidor](day-2/README.md#gauge-medidor)
         - [counter: Contador](day-2/README.md#counter-contador)
         - [summary: Resumo](day-2/README.md#summary-resumo)
@@ -30,7 +42,7 @@ Em construção...
         - [A função rate](day-2/README.md#a-função-rate)
     - [Criando as nossas primeiras queries no Prometheus](day-2/README.md#as-nossas-primeiras-queries)
     - [Chega por hoje!](day-2/README.md#chega-por-hoje)
-    - [Lição de casa](day-2/README.md#lição-de-casa)]
+    - [Lição de casa](day-2/README.md#lição-de-casa)
 
 
 &nbsp;

@@ -1,6 +1,7 @@
 # [Descomplicando o Prometheus](https://www.linuxtips.io/products/descomplicando-o-prometheus) - O Treinamento
 
 ## DAY-1
+&nbsp;
 
 ### O que iremos ver hoje?
 
@@ -12,6 +13,23 @@ E por fim, vamos instalar o Prometheus e fazer a nossa primeira configuração p
 Teremos ainda o nosso primeiro contato com a interface web do Prometheus e vamos criar a nossa primeira query.
 
 
+
+&nbsp;
+### Conteúdo do Day-1
+
+- [Por que precisamos de ferramentas como o Prometheus?](#por-que-precisamos-de-ferramentas-como-o-prometheus)
+- [O que é monitorar?](#o-que-e-monitorar)
+  - [O monitoramento e a observabilidade](#o-monitoramento-e-a-observabilidade)
+- [O que é o Prometheus?](#o-que-e-o-prometheus)
+  - [A arquitetura do Prometheus](#a-arquitetura-do-prometheus)
+- [Instalando o Prometheus](#instalando-o-prometheus)
+  - [Executando o Prometheus em um node Linux](#executando-o-prometheus-em-um-node-linux)
+  - [Instalação do Prometheus no Linux](#instalação-do-prometheus-no-linux)
+- [A sua lição de casa](#a-sua-lição-de-casa)
+- [Desafio do Day-1](#desafio-do-day-1)
+- [Final do Day-1](#final-do-day-1)
+
+&nbsp;
 ### Por que precisamos de ferramentas como o Prometheus?
 
 Sei que ainda não falamos sobre o que é monitoramento em si, mas acho importante trazer esse cenário para que você entenda depois o que é e para que serve o Prometheus e essa tal de monitoração.
@@ -40,14 +58,18 @@ Somente através do monitoramento vamos conseguir ter confiabilidade e eficiênc
 
 Através da monitoração iremos entender se o nosso serviço está totalmente operacional ou se está degradado, entregando uma péssima experiência para os nossos usuários.
 
-#### O que é monitorar?
+&nbsp;
+
+### O que é monitorar?
 
 No meu entendimento, monitorar significa ter o status atual sobre o item desejado. No caso de uma máquina física rodando Linux, eu quero monitorar o hardware para ter certeza de que problemas de aquecimento de CPU não irão atrapalhar a disponibilidade do meu sistema. Ainda usando esse exemplo, temos que monitorar o sistema operacional, pois não queremos que um disco cheio ou uma placa de rede sobrecarregada onerando o sistema inteiro.
 Isso que ainda nem falamos do sistema operacional da VM e nem da própria aplicação, o Nginx.
 
 Monitorar é você saber o que está acontecendo em sua infra, em sua app, em seu serviço em tempo real e em caso de falha ou anomalia, que as pessoas envolvidas para a recuperação daquele componente sejam notificadas com o máximo de informação para auxiliar o troubleshooting.
 
-##### O monitoramento e a observabilidade
+&nbsp;
+
+#### O monitoramento e a observabilidade
 
 Agora que você já sabe o que significa monitorar (pelo menos no meu ponto de vista), acho que já podemos trazer um pouco mais de tempero nessa conversa, digo, trazer mais recursos para conseguir monitorar ainda melhor o nosso ambiente.
 
@@ -69,6 +91,8 @@ Observability normalmente é apoiada principalmente em 3 pilares:
 - Metrics
 - Traces
 
+&nbsp;
+
 Eu adiciono mais um item nessa lista, o Eventos. Ter os eventos que ocorrem em seu ambiente e correlaciona-lo com os demais pilares é sensacional demais e ajuda muito a entender o comportamento de um item no momento de um problema ou degradação do serviço. 
 Então eu vou atualizar essa lista e adiciona-lo. :D
 
@@ -76,6 +100,8 @@ Então eu vou atualizar essa lista e adiciona-lo. :D
 - Métricas
 - Traces
 - Eventos
+
+&nbsp;
 
 E para ser sincero, eu ainda adicionaria Dashboards pois acho que é fundamental ver de modo mais visual possível o resultado dos 4 pilares correlacionados através de gráficos que irão ajudar a entender o comportamento de determinado item em seu momento de falha ou degradação.
 
@@ -91,7 +117,7 @@ E o que o Prometheus tem haver com tudo isso?
 
 E eu te explico logo abaixo: :D
 
-
+&nbsp;
 ### O que é o Prometheus?
 
 O Prometheus é um dos mais modernos sistemas de monitoramento, capas de coletar e guardar métricas dos mais variados componentes de suas infra-estrutura. O inicio de seu desenvolvimento se deu em 2012, porém somente foi anunciado oficialmente pela SoundCloud em 2015. Ele foi inspirado no Borgmon, plataforma de monitoramento no Google, responsável por monitor o Borg, plataforma de gerenciamento de containers do Google e conhecido também por ser o pai do Kubernetes.
@@ -113,9 +139,11 @@ E para não falar que eu não falei sobre opções de ferramentas para as outras
 - Eventos -> Zabbix ou Datadog
 - Visualização/Dashboards -> Grafana, Datadog ou Pixie
 
+&nbsp;
 
 Pronto, agora acho que já sabemos o que é monitoração, observabilidade e o Prometheus, acho que já podemos começar a aprofundar o nosso conhecimento nessa sensacional ferramenta, o Prometheus!
 
+&nbsp;
 
 #### A arquitetura do Prometheus
 
@@ -123,11 +151,15 @@ Fiz um desenho da arquitetura do Prometheus para que possamos ter um melhor ente
 
 ![Arquitetura do Prometheus](images/arquitetura-prometheus.jpg)
 
+&nbsp;
+
 Perceba que temos 03 componentes *core* no Prometheus:
 
 - Retrieval
 - Storage
 - PromQL
+
+&nbsp;
 
 O *Retrieval* é o responsável por coletar as métricas e conversar com o *Storage* para armazená-las. É o *Retrieval* também o responsável por conversar com o Service Discovery para encontrar os serviços que estão disponíveis para coletar métricas.
 
@@ -148,6 +180,7 @@ Nesse exemplo, o *PromQL* está buscando a média da taxa de uso de CPU de todos
 
 Perceba que um fator super importante no ecossistema do Prometheus é a quantidade e a facilidade de integra-lo com outras ferramentas, como o Grafana, Alertmanager, Zabbix e por aí vai.
 
+&nbsp;
 
 ### Instalando o Prometheus
 
@@ -160,6 +193,8 @@ Vamos começar a instalar o Prometheus em uma máquina Linux. Está máquina Lin
 
 Essa é a nossa primeira instalação do Prometheus, fique tranquilo que no decorrer do treinamento vamos utilizar outras formas, visando passar todo o conhecimento para que você se sinta seguro em utilizar o Prometheus no seu ambiente. E Lembre-se, o nosso foco é ter um treinamento que se aproxima o máximo possível do que seria em seu ambiente de trabalho.
 
+
+&nbsp;
 
 #### Executando o Prometheus em um node Linux
 
@@ -188,12 +223,16 @@ Fazendo o download:
 ```bash
 curl -LO https://github.com/prometheus/prometheus/releases/download/v2.38.0/prometheus-2.38.0.linux-amd64.tar.gz
 ```
+&nbsp;
+
 Após o download, vamos extrair o arquivo e acessar o diretório extraído.
 
 ```bash
 tar -xvf prometheus-2.38.0.linux-amd64.tar.gz
 cd prometheus-2.38.0.linux-amd64
 ```
+
+&nbsp;
 
 Como mencionado anteriormente, o arquivo **prometheus.yml** é o arquivo de configuração do Prometheus e será ele que iremos utilizar para configurar o Prometheus nesse nosso primeiro exemplo.
 
@@ -230,6 +269,7 @@ scrape_configs:
     static_configs:
       - targets: ["localhost:9090"]
 ```
+&nbsp;
 
 Vamos tirar alguns comentários e remover os campos que não iremos utilizar por agora.
 
@@ -252,6 +292,7 @@ scrape_configs: # Inicio da definição das configurações de coleta, ou seja, 
 
       - targets: ["localhost:9090"] # Endereço do alvo monitorado, ou seja, o endereço do serviço que o Prometheus vai monitorar. Nesse caso é o próprio Prometheus.
 ```
+&nbsp;
 
 Eu tirei a parte referente ao AlertManager, pois não iremos utilizar ele neste momento para deixar as coisas mais simples e darmos o nosso primeiro passo.
 
@@ -283,12 +324,14 @@ ts=2022-08-17T13:08:21.931Z caller=main.go:1218 level=info msg="Completed loadin
 ts=2022-08-17T13:08:21.931Z caller=main.go:961 level=info msg="Server is ready to receive web requests."
 ts=2022-08-17T13:08:21.931Z caller=manager.go:941 level=info component="rule manager" msg="Starting rule manager..."
 ```
+&nbsp;
 
 Através da linha abaixo podemos ver que o prometheus está rodando.
 
 ```bash
 ts=2022-08-17T13:08:21.931Z caller=main.go:961 level=info msg="Server is ready to receive web requests."
 ```
+&nbsp;
 
 Evidentemente, estamos utilizando o Prometheus dessa forma apenas para testes e para que possamos dar os primeiros passos em nosso treinamento.
 
@@ -299,6 +342,7 @@ Caso você queira executar o Prometheus e deixar o seu terminal livre e independ
 ```bash
 nohup ./prometheus &
 ```
+&nbsp;
 
 Assim ele irá rodar em segundo plano e não será interrompido caso você feche o terminal.
 
@@ -310,6 +354,7 @@ Para verificar se o processo está em execução, basta fazer o seguinte:
 ps -ef | grep prometheus
 jeferson   23539    6584  0 16:20 pts/0    00:00:00 ./prometheus
 ```
+&nbsp;
 
 Vamos deixar o terminal de lado por um segundo, e bora acessar a interface web do Prometheus usando o nosso navegador.
 
@@ -318,10 +363,13 @@ O Prometheus roda por padrão na porta TCP 9090, portanto vamos acessar a interf
 ```bash
 http://localhost:9090
 ```
+&nbsp;
 
 A tela que você vê é a seguinte, correto?
 
 ![Interface web do Prometheus](./images/interface_web_prometheus.png)
+
+&nbsp;
 
 Nós vamos brincar bastante nessa interface e iremos conhecer cada pixel dela, porém por agora vamos apenas testar uma query super simples, somente para dar um gostinho de como funciona.
 
@@ -331,7 +379,12 @@ Na barra de criação de queries, vamos escrever a query que queremos testar.
 process_cpu_seconds_total{job="prometheus"}[1m]
 ```
 
+&nbsp;
+
+
 ![Barra de criação de queries](./images/barra_criacao_queries.png)
+
+&nbsp;
 
 Nessa query, estamos pegando os valores da métrica process_cpu_seconds_total, que é a métrica que nos informa o tempo de CPU gasto por cada processo, filtrando apenas pelos jobs que tem o nome prometheus e estamos pegando somente os valores do último minuto.
 
@@ -343,9 +396,13 @@ Então, se tudo está correndo bem você terá como resultado da query acima 4 v
 
 ![Resultado da query](./images/resultado_query.png)
 
+&nbsp;
+
 Muito bem, já demos o primeiro passo para o nosso treinamento, já conhecemos a cara do Prometheus e inclusive fizemos a nossa primeira query.
 
 Agora vamos ver uma instalação da maneira correta em uma máquina Linux. Ainda vamos utilizar a configuração básica do Prometheus, mas iremos cuidar dos binários e do serviço do Prometheus da maneira correta. :D
+
+&nbsp;
 
 #### Instalação do Prometheus no Linux
 
@@ -368,11 +425,15 @@ Fazendo o download:
 ```bash
 curl -LO https://github.com/prometheus/prometheus/releases/download/v2.38.0/prometheus-2.38.0.linux-amd64.tar.gz
 ```
+
+&nbsp;
+
 Após o download, vamos extrair os arquivos.
 
 ```bash
 tar -xvf prometheus-2.38.0.linux-amd64.tar.gz
 ```
+&nbsp;
 
 Agora vamos mover os binários para o diretório /usr/local/bin.
 
@@ -380,6 +441,7 @@ Agora vamos mover os binários para o diretório /usr/local/bin.
 sudo mv prometheus-2.38.0.linux-amd64/prometheus /usr/local/bin/prometheus
 sudo mv prometheus-2.38.0.linux-amd64/promtool /usr/local/bin/promtool
 ```
+&nbsp;
 
 Vamos ver se o binário está funcionando.
 
@@ -392,12 +454,14 @@ prometheus, version 2.38.0 (branch: HEAD, revision: 818d6e60888b2a3ea363aee8a982
   go version:       go1.18.5
   platform:         linux/amd64
 ```
+&nbsp;
 
 Agora vamos criar o diretório de configuração do Prometheus.
 
 ```bash
 sudo mkdir /etc/prometheus
 ```
+&nbsp;
 
 Vamos mover os diretórios *consoles*, *console_libraries* e o arquivo *prometheus.yml* para o diretório de configuração do Prometheus.
 
@@ -406,12 +470,14 @@ sudo mv prometheus-2.38.0.linux-amd64/prometheus.yml /etc/prometheus/prometheus.
 sudo mv prometheus-2.38.0.linux-amd64/consoles /etc/prometheus
 sudo mv prometheus-2.38.0.linux-amd64/console_libraries /etc/prometheus
 ```
+&nbsp;
 
 Vamos editar o arquivo de configuração do Prometheus para deixar como fizemos em nosso primeiro exemplo.
 
 ```bash
 sudo vim /etc/prometheus/prometheus.yml
 ```
+&nbsp;
 
 Agora edite o arquivo e deixe com o seguinte conteúdo: (você pode remover os comentários para deixar mais simples o arquivo)
 
@@ -434,12 +500,14 @@ scrape_configs: # Inicio da definição das configurações de coleta, ou seja, 
 
       - targets: ["localhost:9090"] # Endereço do alvo monitorado, ou seja, o endereço do serviço que o Prometheus vai monitorar. Nesse caso é o próprio Prometheus.
 ```
+&nbsp;
 
 Não podemos esquecer do diretório onde o Prometheus guardará seus dados.
     
 ```bash
 sudo mkdir /var/lib/prometheus
 ```
+&nbsp;
 
 Vamos criar um grupo e um usuário para o Prometheus.
 
@@ -447,12 +515,14 @@ Vamos criar um grupo e um usuário para o Prometheus.
 sudo addgroup --system prometheus
 sudo adduser --shell /sbin/nologin --system --group prometheus
 ```
+&nbsp;
 
 Precisamos fazer com que o Prometheus seja um serviço em nossa máquina, para isso precisamos criar o arquivo de *service unit* do *SystemD*.
 
 ```bash
 sudo vim /etc/systemd/system/prometheus.service
 ```
+&nbsp;
 
 Vou deixar o conteúdo do arquivo aqui embaixo e linha por linha comentada, somente para que você possa entender o que está rolando e aprender alguma coisa extra. :D
 
@@ -482,6 +552,7 @@ Restart=always # Reinicialização do serviço, o padrão é always, ou seja, o 
 [Install] # Inicio da definição do instalador do serviço.
 WantedBy=multi-user.target # Definir em qual grupo o serviço será iniciado, o padrão é multi-user.target.
 ```
+&nbsp;
 
 Agora vamos adicionar o seguinte conteúdo ao arquivo de configuração do service unit do Prometheus: 
 Eu tirei os comentários para evitar algum problema e para deixar o arquivo mais legível.
@@ -512,6 +583,7 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 ```
+&nbsp;
 
 Se você não sabe o que é o *SystemD*, você pode consultar o manual do *SystemD* ou ainda ver o conteúdo sobre SystemD que eu já criei lá no canal da [LINUXtips](https://www.youtube.com/LINUXtips).
 
@@ -524,53 +596,64 @@ sudo chown -R prometheus:prometheus /var/lib/prometheus
 sudo chown -R prometheus:prometheus /usr/local/bin/prometheus
 sudo chown -R prometheus:prometheus /usr/local/bin/promtool
 ```
+&nbsp;
 
 Vamos fazer um reload no systemd para que o serviço do Prometheus seja iniciado.
 
 ```bash
 sudo systemctl daemon-reload
 ```
+&nbsp;
+
 
 Vamos iniciar o serviço do Prometheus.
 
 ```bash
 sudo systemctl start prometheus
 ```
+&nbsp;
 
 Temos que deixar o serviço do Prometheus configurado para que seja iniciado automaticamente ao iniciar o sistema.
 
 ```bash
 sudo systemctl enable prometheus
 ```
+&nbsp;
 
 Para garantir, vamos ver o status do serviço do Prometheus.
 
 ```bash
 sudo systemctl status prometheus
 ```
+&nbsp;
 
 Você pode verificar nos logs se tudo está rodando maravilhosamente.
 
 ```bash
 sudo journalctl -u prometheus
 ```
+&nbsp;
 
 E se você encontrar a seguinte mensagem no log, significa que o serviço do Prometheus está funcionando corretamente.
 
 ```bash
 level=info msg="Server is ready to receive web requests."
 ```
+&nbsp;
 
 E para finalizar a brincadeira, vamos acessar a nossa interface web do Prometheus através do seguinte endereço em seu navegador.
 
 ```bash
 http://localhost:9090
 ```
+&nbsp;
 
 Você verá uma tela maravilhosa como mostra a imagem abaixo.
 
 ![Prometheus instalado no Linux](images/interface-web-prometheus-2.png)
+&nbsp;
 
+&nbsp;
 
 ### A sua lição de casa
 
@@ -578,12 +661,14 @@ A sua lição de casa é estudar cada conceito que você aprendeu até o momento
 Tente brincar criando algumas queries e visualizando os resultados, além de navegar pela interface para conhecer todos os recursos do Prometheus.
 Nós vamos explorar e muito essa interface, afinal o nosso treinamento é criado para que você possa aprender de maneira evolutiva, um pouco a cada dia e sempre criando algo, saindo do treinamento com algo que você aprendeu executado na prática.
 
-
+&nbsp;
 ## Desafio do Day-1
 
 Não esqueça de realizar o desafio do Day-1, para que você possa ir para o próximo Day.
 O desafio consiste de perguntas e um teste prático, para que você possa aprender ainda mais e se familiarizar com o que você aprendeu.
 Veja na plataforma do treinamento o desafio do Day-1.
+
+&nbsp;
 
 ## Final do Day-1
 

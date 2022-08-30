@@ -22,8 +22,8 @@ Vamos conhecer as nossas primeiras funções para que possamos ter ainda mais po
 - [O nosso primeiro exporter](#o-nosso-primeiro-exporter)
 - [Nosso Primeiro Exporter no Container](#nosso-primeiro-exporter-no-container)
 - [Os Targets do Prometheus](#os-targets-do-prometheus)
-- [Visualizando as métricas do nosso primeiro exporter](#visualizando-as-metricas-do-nosso-primeiro-exporter)
-- [Conhecendo um pouco mais sobre os tipos de métricas](#conhecendo-um-pouco-mais-sobre-os-tipos-de-metricas) 
+- [Visualizando as métricas do nosso primeiro exporter](#visualizando-as-métricas-do-nosso-primeiro-exporter)
+- [Conhecendo um pouco mais sobre os tipos de dados do Prometheus](#conhecendo-um-pouco-mais-sobre-os-tipos-de-dados-do-prometheus) 
   - [gauge: Medidor](#gauge-medidor)
   - [counter: Contador](#counter-contador)
   - [summary: Resumo](#summary-resumo)
@@ -951,7 +951,7 @@ latitude_ISS{instance="localhost:8899",job="Primeiro Exporter"}[5m]
 
 &nbsp;
 
-### Conhecendo um pouco mais sobre os tipos de métricas
+### Conhecendo um pouco mais sobre os tipos de dados do Prometheus
 
 Vocês sabem que quando estamos descomplicando algo, nós gostamos de ir a fundo e conhecer no detalhe, tudo o que precisamos para ser um expert no assunto. 
 
