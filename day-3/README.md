@@ -10,27 +10,27 @@
 
 ### Conteúdo do Day-3
 
-- [Criando o nosso segundo exporter](README.md#criando-o-nosso-segundo-exporter)
-   - [Criando o nosso exporter usando Go](README.md#criando-o-nosso-exporter-usando-go)
-   - [Adicionando o nosso exporter no container](README.md#adicionando-o-nosso-exporter-no-container)
-   - [Adicionando o nosso segundo exporter no Prometheus](README.md#adicionando-o-nosso-segundo-exporter-no-prometheus)
-- [Operadores](README.md#operadores)
-   - [Operador de igualdade](README.md#operador-de-igualdade)
-   - [Operador de diferença](README.md#operador-de-diferença)
-   - [Operador de maior que](README.md#operador-de-maior-que)
-   - [Operador de menor que](README.md#operador-de-menor-que)
-   - [Operador de maior ou igual que](README.md#operador-de-maior-ou-igual-que)
-   - [Operador de menor ou igual que](README.md#operador-de-menor-ou-igual-que)
-   - [Operador de multiplicação](README.md#operador-de-multiplicação)
-   - [Operador de divisão](README.md#operador-de-divisão)
-   - [Operador de adição](README.md#operador-de-adição)
-   - [Operador de subtração](README.md#operador-de-subtração)
-   - [Operador de modulo](README.md#operador-de-modulo)
-   - [Operador de potenciação](README.md#operador-de-potenciação)
-   - [Operador de agrupamento](README.md#operador-de-agrupamento)
-   - [Operador de concatenação](README.md#operador-de-concatenação)
-   - [Operador de comparação de strings](README.md#operador-de-comparação-de-strings)
-   - [Chega de operadores por hoje](README.md#-chega-de-operadores-por-hoje)
+- [Criando o nosso segundo exporter](#criando-o-nosso-segundo-exporter)
+	- [Criando o nosso exporter usando Go](#criando-o-nosso-exporter-usando-go)
+	- [Adicionando o nosso exporter no container](#adicionando-o-nosso-exporter-no-container)
+	- [Adicionando o novo Target no Prometheus](#adicionando-o-novo-target-no-prometheus)
+- [Operadores](#operadores)
+	- [Operador de igualdade](#operador-de-igualdade)
+	- [Operador de diferença](#operador-de-diferença)
+	- [Operador de maior que](#operador-de-maior-que)
+	- [Operador de menor que](#operador-de-menor-que)
+	- [Operador de maior ou igual que](#operador-de-maior-ou-igual-que)
+	- [Operador de menor ou igual que](#operador-de-menor-ou-igual-que)
+	- [Operador de multiplicação](#operador-de-multiplicação)
+	- [Operador de divisão](#operador-de-divisão)
+	- [Operador de adição](#operador-de-adição)
+	- [Operador de subtração](#operador-de-subtração)
+	- [Operador de modulo](#operador-de-modulo)
+	- [Operador de potenciação](#operador-de-potenciação)
+	- [Operador de agrupamento](#operador-de-agrupamento)
+	- [Operador de concatenação](#operador-de-concatenação)
+	- [Operador de comparação de strings](#operador-de-comparação-de-strings)
+	- [Chega de operadores por hoje](#chega-de-operadores-por-hoje)
 
 
 
@@ -387,7 +387,7 @@ curl http://localhost:7788/metrics
 
 Tudo funcionando maravilhosamente bem!
 
-#### Adicionando o nosso segundo exporter no Prometheus
+#### Adicionando o novo Target no Prometheus
 
 Agora já podemos configurar o Prometheus para monitorar o nosso segundo exporter. Para isso temos que editar o arquivo `prometheus.yml` e adicionar o seguinte conteúdo:
 

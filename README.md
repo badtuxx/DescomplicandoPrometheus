@@ -50,6 +50,27 @@ Em construção...
 &nbsp;
 
 - [DAY-3](day-3/README.md) - Em construção...
+- [Criando o nosso segundo exporter](day-3/README.md#criando-o-nosso-segundo-exporter)
+	- [Criando o nosso exporter usando Go](day-3/README.md#criando-o-nosso-exporter-usando-go)
+	- [Adicionando o nosso exporter no container](day-3/README.md#adicionando-o-nosso-exporter-no-container)
+	- [Adicionando o novo Target no Prometheus](day-3/README.md#adicionando-o-novo-target-no-prometheus)
+- [Operadores](day-3/README.md#operadores)
+	- [Operador de igualdade](day-3/README.md#operador-de-igualdade)
+	- [Operador de diferença](day-3/README.md#operador-de-diferença)
+	- [Operador de maior que](day-3/README.md#operador-de-maior-que)
+	- [Operador de menor que](day-3/README.md#operador-de-menor-que)
+	- [Operador de maior ou igual que](day-3/README.md#operador-de-maior-ou-igual-que)
+	- [Operador de menor ou igual que](day-3/README.md#operador-de-menor-ou-igual-que)
+	- [Operador de multiplicação](day-3/README.md#operador-de-multiplicação)
+	- [Operador de divisão](day-3/README.md#operador-de-divisão)
+	- [Operador de adição](day-3/README.md#operador-de-adição)
+	- [Operador de subtração](day-3/README.md#operador-de-subtração)
+	- [Operador de modulo](day-3/README.md#operador-de-modulo)
+	- [Operador de potenciação](day-3/README.md#operador-de-potenciação)
+	- [Operador de agrupamento](day-3/README.md#operador-de-agrupamento)
+	- [Operador de concatenação](day-3/README.md#operador-de-concatenação)
+	- [Operador de comparação de strings](day-3/README.md#operador-de-comparação-de-strings)
+	- [Chega de operadores por hoje](day-3/README.md#chega-de-operadores-por-hoje)
 
 - [DAY-4](day-4/README.md) - Em construção...
 
