@@ -1076,6 +1076,37 @@ Vamos conhecer algumas funções para criação de queries mais efetivas. Vou li
 
 &nbsp;
 &nbsp;
+
+#### A função *rate*
+
+A função `rate` representa a taxa de crescimento por segundo de uma determinada métrica como média, durante um intervalo de tempo.
+
+```PROMQL
+rate(metrica)[5m]
+```
+&nbsp;
+
+Onde `metrica` é a métrica que você deseja calcular a taxa de crescimento durante um intervalo de tempo de 5 minutos.
+
+&nbsp;
+&nbsp;
+
+
+#### A função *irate*
+
+A função `irate` representa a taxa de crescimento por segundo de uma determinada métrica, mas diferentemente da função `rate`, a função `irate` não faz a média dos valores, ela pega os dois últimos pontos e calcula a taxa de crescimento. Quando representado em um gráfico, é possível ver a diferença entre a função `rate` e a função `irate`, enquanto o gráfico com o `rate` é mais suave, o gráfico com o `irate` é mais "pontiagudo", você consegue ver quedas e subidas mais nítidas.
+
+
+```PROMQL
+irate(metrica)[5m]
+```
+&nbsp;
+
+Onde `metrica` é a métrica que você deseja calcular a taxa de crescimento, considerando somente os dois últimos pontos, durante um intervalo de tempo de 5 minutos.
+
+&nbsp;
+&nbsp;
+
 #### A função *sum*
 
 A primeira que eu quero falar é a palavra chave, que na versdade é uma função, é `sum`, ela representa a soma de todos os valores de uma métrica.
@@ -1146,17 +1177,54 @@ Onde `metrica` é a métrica que você deseja calcular o máximo.
 
 &nbsp;
 &nbsp;
-#### A função *rate*
 
-A função `rate` representa a taxa de aumento de uma métrica durante um intervalo de tempo
+#### A função *delta*
+
+A função `delta` representa a diferença entre o valor atual e o valor anterior de uma métrica. Quando estamos falando de `delta` estamos falando por exemplo do consumo de um disco. Vamos imaginar que eu queira saber o quando eu usei de disco em um determinado intervalo de tempo, eu posso utilizar a função `delta` para calcular a diferença entre o valor atual e o valor anterior. 
 
 ```PROMQL
-rate(metrica)[5m]
+delta(metrica[5m])
 ```
 &nbsp;
 
-Onde `metrica` é a métrica que você deseja calcular a taxa de aumento durante um intervalo de tempo de 5 minutos.
+Onde `metrica` é a métrica que você deseja calcular a diferença entre o valor atual e o valor anterior, durante um intervalo de tempo de 5 minutos.
 
+&nbsp;
+
+#### A função *by*
+
+A sensacional e super utilizada função `by` é utilizada para agrupar métricas. Com ela é possível agrupar métricas por labels, por exemplo, se eu quiser agrupar todas as métricas que possuem o label `job` eu posso utilizar a função `by` da seguinte forma:
+
+```PROMQL
+sum(metrica) by (job)
+```
+
+&nbsp;
+
+
+Onde `metrica` é a métrica que você deseja agrupar e `job` é o label que você deseja agrupar.
+
+&nbsp;
+&nbsp;
+
+#### A função *without*
+A função `without` é utilizada para remover labels de uma métrica. 
+Você pode utilizar a função `without` nos tipos de dados `counter`, `gauge`, `histogram` e `summary` e frequentemente usado em conjunto com a função `sum`.
+
+```PROMQL
+Por exemplo, se eu quiser remover o label `job` de uma métrica, eu posso utilizar a função `without` da seguinte forma:
+
+
+```PROMQL
+sum(metrica) without (job)
+```
+
+&nbsp;
+
+Onde `metrica` é a métrica que você deseja remover o label `job`.
+
+&nbsp;
+&nbsp;
 
 #### As nossas primeiras queries
 
@@ -1273,7 +1341,6 @@ Vamos ver o gráfico da média do consumo de cpu pelos jobs durante o último 1 
 
 &nbsp;
 
-
 ### Chega por hoje! 
 
 Muito bem! 
@@ -1289,8 +1356,6 @@ Então já sabe, né?
 Curtiu o dia de hoje? Posso contar com o seu feedback nas redes sociais?
 
 Bora ajudar o projeto e o treinamento a ficarem cada dia melhores!
-
-&nbsp;
 
 
 ### Lição de casa
