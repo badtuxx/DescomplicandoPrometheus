@@ -9,6 +9,20 @@
 
 Agora que já vimos como criar um exporter, vamos criar um segundo exporter para monitorar o consumo de memória do nosso servidor.
 
+Hoje vamos criar um exporter em Go, então antes de mais nada temos que instalar o Go em nossa máquina.
+
+Para instalar o Go no Ubuntu, basta executar o seguinte comando:
+
+```bash
+sudo apt install golang
+```
+
+&nbsp;
+
+
+Veja no site oficial do Go como instalar em outras distribuições.
+
+
 Vamos criar um arquivo chamado `segundo-exporter.go` no diretório `segundo-exporter` e vamos adicionar o seguinte código:
 
 ```GO
