@@ -2,7 +2,36 @@
 
 ## DAY-3
 
+
 ### O que iremos ver hoje?
+
+
+&nbsp;
+
+### Conteúdo do Day-3
+
+- [Criando o nosso segundo exporter](README.md#criando-o-nosso-segundo-exporter)
+   - [Criando o nosso exporter usando Go](README.md#criando-o-nosso-exporter-usando-go)
+   - [Adicionando o nosso exporter no container](README.md#adicionando-o-nosso-exporter-no-container)
+   - [Adicionando o nosso segundo exporter no Prometheus](README.md#adicionando-o-nosso-segundo-exporter-no-prometheus)
+- [Operadores](README.md#operadores)
+   - [Operador de igualdade](README.md#operador-de-igualdade)
+   - [Operador de diferença](README.md#operador-de-diferença)
+   - [Operador de maior que](README.md#operador-de-maior-que)
+   - [Operador de menor que](README.md#operador-de-menor-que)
+   - [Operador de maior ou igual que](README.md#operador-de-maior-ou-igual-que)
+   - [Operador de menor ou igual que](README.md#operador-de-menor-ou-igual-que)
+   - [Operador de multiplicação](README.md#operador-de-multiplicação)
+   - [Operador de divisão](README.md#operador-de-divisão)
+   - [Operador de adição](README.md#operador-de-adição)
+   - [Operador de subtração](README.md#operador-de-subtração)
+   - [Operador de modulo](README.md#operador-de-modulo)
+   - [Operador de potenciação](README.md#operador-de-potenciação)
+   - [Operador de agrupamento](README.md#operador-de-agrupamento)
+   - [Operador de concatenação](README.md#operador-de-concatenação)
+   - [Operador de comparação de strings](README.md#operador-de-comparação-de-strings)
+   - [Chega de operadores por hoje](README.md#-chega-de-operadores-por-hoje)
+
 
 
 ### Criando o nosso segundo exporter
@@ -22,6 +51,7 @@ sudo apt install golang
 
 Veja no site oficial do Go como instalar em outras distribuições.
 
+#### Criando o nosso exporter usando Go
 
 Vamos criar um arquivo chamado `segundo-exporter.go` no diretório `segundo-exporter` e vamos adicionar o seguinte código:
 
@@ -285,6 +315,9 @@ Perceba que as nossas métricas estão lá, são elas:
 
 Está funcionando lindamente.
 
+
+#### Adicionando o nosso exporter no container
+
 Agora vamos adicionar o nosso segundo exporter em um outro container, para isso vamos criar um arquivo chamado `Dockerfile` no diretório `segundo-exporter` com o seguinte conteúdo:
 
 ```dockerfile
@@ -354,6 +387,8 @@ curl http://localhost:7788/metrics
 
 Tudo funcionando maravilhosamente bem!
 
+#### Adicionando o nosso segundo exporter no Prometheus
+
 Agora já podemos configurar o Prometheus para monitorar o nosso segundo exporter. Para isso temos que editar o arquivo `prometheus.yml` e adicionar o seguinte conteúdo:
 
 ```yaml
@@ -417,6 +452,9 @@ E as nossa novas métricas também:
 ![Prometheus com 03 targets](images/04-metricas.png)
 
 &nbsp;
+&nbsp;
+
+
 ### Operadores
 
 Precisamos falar sobre os operadores, super importante para que possamos trazer ainda mais poder ao nosso querido PromQL e obter resultados ainda mais interessantes.

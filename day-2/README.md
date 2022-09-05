@@ -28,13 +28,17 @@ Vamos conhecer as nossas primeiras funções para que possamos ter ainda mais po
   - [counter: Contador](#counter-contador)
   - [summary: Resumo](#summary-resumo)
   - [histogram: Histograma](#histogram-histograma)
-- [Conhecendo as primeiras funções para criação de queries](#conhecendo-as-primeiras-funcoes-para-criacao-de-queries)
+- [Conhecendo as primeiras funções para criação de queries](#conhecendo-as-primeiras-funções-para-criação-de-queries)
+  - [A função rate](#a-função-rate)
+  - [A função irate](#a-função-irate)
   - [A função sum](#a-função-sum)
   - [A função count](#a-função-count)
   - [A função avg](#a-função-avg)
   - [A função min](#a-função-min)
   - [A função max](#a-função-max)
-  - [A função rate](#a-função-rate)
+  - [A função delta](#a-função-delta)
+  - [A função by](#a-função-by)
+  - [A função without](#a-função-without)
 - [As nossas primeiras queries](#as-nossas-primeiras-queries)
 - [Chega por hoje!](#chega-por-hoje)
 - [Lição de casa](#lição-de-casa)
@@ -1109,7 +1113,7 @@ Onde `metrica` é a métrica que você deseja calcular a taxa de crescimento, co
 
 #### A função *sum*
 
-A primeira que eu quero falar é a palavra chave, que na versdade é uma função, é `sum`, ela representa a soma de todos os valores de uma métrica.
+A primeira que eu quero falar é a palavra chave, que na verdade é uma função, é `sum`, ela representa a soma de todos os valores de uma métrica.
 
 Você pode utilizar a função `sum` nos tipos de dados `counter`, `gauge`, `histogram` e `summary`.
 
@@ -1226,7 +1230,8 @@ Onde `metrica` é a métrica que você deseja remover o label `job`.
 &nbsp;
 &nbsp;
 
-#### As nossas primeiras queries
+
+### As nossas primeiras queries
 
 Agora que já vimos a descrição de algumas funções, vamos começar a praticar e criar algumas queries utilizando as funções.
 
@@ -1356,6 +1361,9 @@ Então já sabe, né?
 Curtiu o dia de hoje? Posso contar com o seu feedback nas redes sociais?
 
 Bora ajudar o projeto e o treinamento a ficarem cada dia melhores!
+
+&nbsp;
+&nbsp;
 
 
 ### Lição de casa
