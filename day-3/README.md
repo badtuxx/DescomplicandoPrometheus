@@ -37,12 +37,13 @@
 	- [Adicionando o Node Exporter no Prometheus](#adicionando-o-node-exporter-no-prometheus)
 	- [Habilitando novos collectors no Node Exporter](#habilitando-novos-collectors-no-node-exporter)
 - [Algumas queries capturando métricas do Node Exporter](#algumas-queries-capturando-métricas-do-node-exporter)
+- [Chega por hoje!](#chega-por-hoje)
+- [Lição de casa](#lição-de-casa)
+- [Referências](#referências)
 
 
-
-
-
-
+&nbsp;
+&nbsp;
 
 ### Criando o nosso segundo exporter
 

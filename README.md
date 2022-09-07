@@ -71,6 +71,15 @@ Em construção...
 	- [Operador de concatenação](day-3/README.md#operador-de-concatenação)
 	- [Operador de comparação de strings](day-3/README.md#operador-de-comparação-de-strings)
 	- [Chega de operadores por hoje](day-3/README.md#chega-de-operadores-por-hoje)
+- [O Node Exporter](day-3/README.md#o-node-exporter)
+	- [Os Collectors](day-3/README.md#os-collectors)
+	- [Instalação do Node Exporter no Linux](day-3/README.md#instalação-do-node-exporter-no-linux)
+	- [Adicionando o Node Exporter no Prometheus](day-3/README.md#adicionando-o-node-exporter-no-prometheus)
+	- [Habilitando novos collectors no Node Exporter](day-3/README.md#habilitando-novos-collectors-no-node-exporter)
+- [Algumas queries capturando métricas do Node Exporter](day-3/README.md#algumas-queries-capturando-métricas-do-node-exporter)
+- [Chega por hoje!](day-3/README.md#chega-por-hoje)
+- [Lição de casa](day-3/README.md#lição-de-casa)
+- [Referências](day-3/README.md#referências)
 
 - [DAY-4](day-4/README.md) - Em construção...
 
