@@ -1604,20 +1604,17 @@ Primeiro passo, vamos clicar no menu lateral esquerdo em `Dashboard` e na sequê
 
 &nbsp;
 
-![Grafana - New Dashboard](images/grafana-new-dashboard-2.png)
+Agora vamos escolher o tipo de Dashboard que queremos criar, vamos clicar em `Add new panel`:
 
+![Grafana - New Dashboard](images/grafana-new-dashboard-2.png)
 
 &nbsp;
 
-
-Agora vamos escolher o tipo de Dashboard que queremos criar, vamos clicar em `Add new panel`:
+Pronto, agora já podemos começar a criar o nosso primeiro dashboard. :D
 
 ![Grafana - New Dashboard](images/grafana-new-dashboard-3.png)
 
 &nbsp;
-
-
-Pronto, adicionamos um painel. :D
 
 Pra ficar mais fácil, vamos dividir essa tela em 3 zonas:
 
@@ -1626,6 +1623,8 @@ Pra ficar mais fácil, vamos dividir essa tela em 3 zonas:
 2. A segunda zona é a zona de configuração do `Data Source`, onde podemos escolher qual `Data Source` queremos utilizar para alimentar o painel.
 
 3. A terceira zona é a zona de configuração do `Query`, onde podemos escolher qual métrica queremos visualizar no painel.
+
+![Grafana - New Dashboard](images/grafana-new-dashboard-dividido.png)
 
 &nbsp;
 
