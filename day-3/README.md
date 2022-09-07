@@ -31,6 +31,16 @@
 	- [Operador de concatenação](#operador-de-concatenação)
 	- [Operador de comparação de strings](#operador-de-comparação-de-strings)
 	- [Chega de operadores por hoje](#chega-de-operadores-por-hoje)
+- [O Node Exporter](#o-node-exporter)
+	- [Os Collectors](#os-collectors)
+	- [Instalação do Node Exporter no Linux](#instalação-do-node-exporter-no-linux)
+	- [Adicionando o Node Exporter no Prometheus](#adicionando-o-node-exporter-no-prometheus)
+	- [Habilitando novos collectors no Node Exporter](#habilitando-novos-collectors-no-node-exporter)
+- [Algumas queries capturando métricas do Node Exporter](#algumas-queries-capturando-métricas-do-node-exporter)
+
+
+
+
 
 
 
@@ -384,6 +394,7 @@ Vamos acessar as métricas do nosso segundo exporter:
 ```bash
 curl http://localhost:7788/metrics
 ```
+&nbsp;
 
 Tudo funcionando maravilhosamente bem!
 
@@ -434,6 +445,7 @@ Agora vamos acessar o Prometheus e verificar se o novo target e as nossas novas 
 ```bash
 http://localhost:9090
 ```
+&nbsp;
 
 O nosso novo target está lá:
 
@@ -699,3 +711,695 @@ Conforme você for avançando nos estudos, você irá perceber que esses operado
 
 
 &nbsp;
+&nbsp;
+
+### O Node Exporter	
+
+Precisamos falar do exporter mais famoso do universo Prometheus, o sensacional Node Exporter. Com o Node Exporter você consegue coletar métricas de um servidor Linux ou em computadores MacOS, como por exemplo, o uso de CPU, disco, memória, open files, etc.
+
+O Node Exporter é um projeto open source e escrito em Go. Ele é executado no Linux como um serviço e coleta e expõe as métricas do sistema operacional.
+
+&nbsp;
+&nbsp;
+
+#### Os Collectors
+
+O Node Exporter possui os `collectors` que são os responsáveis por capturar as métricas do sistema operacional. Por padrão, o Node Exporter vem com um monte de coletores habilitados, mas você pode habilitar outros, caso queira.
+
+Para que você possa consultar a lista de `collectors` que vem habilitados por padrão, você pode acessar o link abaixo:
+
+[Lista dos Collectors habilitados por padrão](https://github.com/prometheus/node_exporter#enabled-by-default)
+
+
+&nbsp;
+
+Temos ainda a lista com os `collectors` que estão desabilitados por padrão:
+
+[Lista dos Collectors desabilitados por padrão](https://github.com/prometheus/node_exporter#disabled-by-default)
+
+&nbsp;
+
+Vou comentar de alguns `collectors` que são muito úteis:
+
+* `arp`: Coleta métricas de ARP (Address Resolution Protocol) como por exemplo, o número de entradas ARP, o número de resoluções ARP, etc.
+* `bonding`: Coleta métricas de interfaces em modo bonding.
+* `conntrack`: Coleta métricas de conexões via Netfilter como por exemplo, o número de conexões ativas, o número de conexões que estão sendo rastreadas, etc.
+* `cpu`: Coleta métricas de CPU.
+* `diskstats`: Coleta métricas de IO de disco como por exemplo o número de leituras e escritas.
+* `filefd`: Coleta métricas de arquivos abertos.
+* `filesystem`: Coleta métricas de sistema de arquivos, como tamanho, uso, etc.
+* `hwmon`: Coleta métricas de hardware como por exemplo a temperatura.
+* `ipvs`: Coleta métricas de IPVS.
+* `loadavg`: Coleta métricas de carga do sistema operacional.
+* `mdadm`: Coleta métricas de RAID como por exemplo o número de discos ativos.
+* `meminfo`: Coleta métricas de memória como por exemplo o uso de memória, o número de buffers, caches, etc.
+* `netdev`: Coleta métricas de rede como por exemplo o número de pacotes recebidos e enviados.
+* `netstat`: Coleta métricas de rede como por exemplo o número de conexões TCP e UDP.
+* `os`: Coleta métricas de sistema operacional.
+* `selinux`: Coleta métricas de SELinux como estado e políticas.
+* `sockstat`: Coleta métricas de sockets.
+* `stat`: Coleta métricas de sistema como uptime, forks, etc.
+* `time`: Coleta métricas de tempo como sincronização de relógio.
+* `uname`: Coleta métricas de informações.
+* `vmstat`: Coleta métricas de memória virtual.
+
+&nbsp;
+
+Mais para frente vamos ver como habilitar ou desabilitar `collectors` no Node Exporter.
+
+&nbsp;
+&nbsp;
+
+#### Instalação do Node Exporter no Linux
+
+Vamos instalar o Node Exporter para que possamos ter ainda mais métricas para brincar com o nosso Prometheus, e claro, conhecer esse exporter que é praticamente a escolha padrão da maioria dos ambientes quando estamos falando de métricas de um servidor Linux.
+
+O Node Exporter é um arquivo binário e que precisamos baixar do site oficial do projeto.
+
+Abaixo segue a URL para download do Node Exporter:
+
+```bash
+https://prometheus.io/download/#node_exporter
+```
+&nbsp;
+
+Acesse a URL e veja qual a última versão disponível para download. No momento em que escrevo esse mateira, a última versão disponível é a 1.3.1.
+
+Vamos fazer o download do arquivo binário do Node Exporter:
+
+```bash
+wget https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz
+```
+
+&nbsp;
+
+Com o arquivo já em nossa máquina, vamos descompactar-lo:
+
+```bash
+tar -xvzf node_exporter-1.3.1.linux-amd64.tar.gz
+```
+
+&nbsp;
+
+Como falamos antes, o Node Exporter é apenas um binário Go, portanto é bem simples fazer a sua instalação em uma máquina Linux. Básicamente vamos seguir o mesmo processo que fizemos para instalar o Prometheus.
+
+Bora mover o arquivo `node_exporter` para o diretório `/usr/local/bin`:
+
+```bash
+sudo mv node_exporter-1.3.1.linux-amd64/node_exporter /usr/local/bin/
+```
+
+&nbsp;
+
+Vamos ver se está tudo ok com o nosso Node Exporter:
+
+```bash
+node_exporter --version
+```
+
+&nbsp;
+
+
+A saída deve ser parecida com essa:
+
+
+```bash
+node_exporter, version 1.3.1 (branch: HEAD, revision: a2321e7b940ddcff26873612bccdf7cd4c42b6b6)
+  build user:       root@243aafa5525c
+  build date:       20211205-11:09:49
+  go version:       go1.17.3
+  platform:         linux/amd64
+```
+
+&nbsp;
+
+Tudo em paz, vamos seguir com a instalação.
+
+
+Vamos criar o usuário `node_exporter` para ser o responsável pela execução do serviço:
+
+```bash
+sudo addgroup --system node_exporter
+sudo adduser --shell /sbin/nologin --system --group node_exporter
+```
+
+&nbsp;
+
+Agora vamos criar o arquivo de configuração do serviço do Node Exporter para o Systemd:
+
+```bash
+sudo vim /etc/systemd/system/node_exporter.service
+```
+
+&nbsp;
+
+
+Vamos adicionar o seguinte conteúdo:
+
+```bash
+[Unit] # Inicio do arquivo de configuração do serviço
+Description=Node Exporter # Descrição do serviço
+Wants=network-online.target # Define que o serviço depende da rede para iniciar
+After=network-online.target # Define que o serviço deverá ser iniciado após a rede estar disponível
+
+[Service] # Define as configurações do serviço
+User=node_exporter # Define o usuário que irá executar o serviço
+Group=node_exporter # Define o grupo que irá executar o serviço
+Type=simple # Define o tipo de serviço
+ExecStart=/usr/local/bin/node_exporter # Define o caminho do binário do serviço
+
+[Install] # Define as configurações de instalação do serviço
+WantedBy=multi-user.target # Define que o serviço será iniciado utilizando o target multi-user
+```
+
+&nbsp;
+
+**Importante**: Não esqueça de tirar os comentários do arquivo de configuração do serviço, inclusive tem o arquivo sem comentários no repositório do Github do projeto.
+Combinado?
+
+&nbsp;
+
+Como você já sabe, toda vez que adicionamos um novo serviço no Systemd, precisamos dar um reload para que o serviço seja reconhecido:
+
+```bash
+sudo systemctl daemon-reload
+```
+
+&nbsp;
+
+E agora vamos iniciar o serviço:
+
+```bash
+sudo systemctl start node_exporter
+```
+
+&nbsp;
+
+Precisamos ver se está tudo em paz com o nosso serviço:
+
+```bash
+sudo systemctl status node_exporter
+```
+
+&nbsp;
+
+
+Como é bom ver essa saída sempre quando criamos e iniciamos um novo serviço:
+
+```bash
+     Loaded: loaded (/etc/systemd/system/node_exporter.service; disabled; vendor preset: enabled)
+     Active: active (running) since Wed 2022-09-07 15:15:00 CEST; 3s ago
+   Main PID: 50853 (node_exporter)
+      Tasks: 6 (limit: 76911)
+     Memory: 2.9M
+        CPU: 5ms
+     CGroup: /system.slice/node_exporter.service
+             └─50853 /usr/local/bin/node_exporter
+```
+
+&nbsp;
+
+O nosso querido e idolatrado Node Exporter está rodando. Agora vamos habilitar o serviço para que ele seja iniciado sempre que o servidor for reiniciado:
+
+```bash
+sudo systemctl enable node_exporter
+```
+
+&nbsp;
+
+Importante mencionar que o nosso Node Exporter roda na porta 9100. Para acessar as métricas coletadas pelo Node Exporter, basta acessar a URL `http://<IP_DA_MAQUINA>:9100/metrics`.
+
+Antes de ver as métricas, bora ver se o Node Exporter está utilizando a porta 9100.
+Temos o comando `ss` que nos permite ver as conexões TCP e UDP que estão abertas em nossa máquina. Vamos usar esse comando para ver se o Node Exporter está escutando na porta 9100:
+
+```bash
+ss -atunp | grep 9100
+```
+
+&nbsp;
+
+A saída deve ser parecida com essa:
+
+```bash
+tcp   LISTEN    0      4096                      *:9100                *:*                                       
+```
+
+&nbsp;
+
+Muito bom! Está tudo certo com o nosso Node Exporter. Agora vamos ver as métricas coletadas por ele:
+
+```bash
+curl http://localhost:9100/metrics
+```
+
+&nbsp;
+
+Lembre-se de mudar o `localhost` para o IP da sua máquina, caso tenha feito a instalação em outra máquina.
+
+Voltando as métricas coletadas pelo Node Exporter, a saída é gigantesca, são mais de 2 mil métricas, muita coisa. hahaha
+
+
+#### Adicionando o Node Exporter no Prometheus
+
+Lembre-se que essas métricas ainda não estão no Prometheus. Para que elas estejam, precisamos configurar o Prometheus para coletar as métricas do Node Exporter, ou seja, configurar o Prometheus para fazer o `scrape` do Node Exporter, e para isso precisamos criar mais um `job` no arquivo de configuração do Prometheus para definir o nosso novo `target`.
+
+
+Vamos adicionar o seguinte conteúdo no arquivo de configuração do Prometheus:
+
+```bash
+  - job_name: 'node_exporter'
+	static_configs:
+	  - targets: ['localhost:9100']
+```
+
+&nbsp;
+
+**Importante**: Lembrando novamente para que você mude o `localhost` para o IP da sua máquina, caso tenha feito a instalação em outra máquina.
+
+O arquivo deverá ficar assim:
+
+```bash
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+scrape_configs:
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: "Meu Primeiro Exporter"
+    static_configs:
+      - targets: ["localhost:8899"]
+  
+  - job_name: 'segundo-exporter'
+    static_configs:
+      - targets: ['localhost:7788']
+
+  - job_name: 'node_exporter'
+	static_configs:
+	  - targets: ['localhost:9100']
+```
+
+&nbsp;
+
+Eu nem vou deixar o arquivo comentado aqui, pois você já sabe como funciona o arquivo de configuração do Prometheus, né? hahaha
+
+Agora vamos reiniciar o Prometheus para que ele leia as novas configurações:
+
+```bash
+sudo systemctl restart prometheus
+```
+
+&nbsp;
+
+Vamos ver se o nosso novo `job` foi criado com sucesso:
+
+```bash
+curl http://localhost:9090/targets
+```
+
+&nbsp;
+
+
+Caso você queira ver o novo target via interface web do Prometheus, basta acessar a URL `http://localhost:9090/targets`. Se liga no print abaixo:
+
+![Prometheus Targets](images/prometheus-targets-day3.png)
+
+
+Está lá, o nosso novo `job` foi criado com sucesso. Agora vamos ver se o Prometheus está coletando as métricas do Node Exporter. Vamos passar o nome do `job` para o Prometheus, assim a nossa query ficará ainda mais específica:
+
+```bash
+curl -GET http://localhost:9090/api/v1/query --data-urlencode "query=node_cpu_seconds_total{job='node_exporter'}" | jq .
+```
+
+&nbsp;
+
+A saída também é bastante grande, e a máquina que eu estou testando tem 32 CPUs, então vou colocar aqui aqui somente uma pequena parte da saída:
+
+```json
+{
+  "status": "success",
+  "data": {
+    "resultType": "vector",
+    "result": [
+      {
+        "metric": {
+          "__name__": "node_cpu_seconds_total",
+          "cpu": "0",
+          "instance": "localhost:9100",
+          "job": "node_exporter",
+          "mode": "idle"
+        },
+        "value": [
+          1662558580.478,
+          "32077.95"
+        ]
+      },
+      {
+        "metric": {
+          "__name__": "node_cpu_seconds_total",
+          "cpu": "0",
+          "instance": "localhost:9100",
+          "job": "node_exporter",
+          "mode": "iowait"
+        },
+        "value": [
+          1662558580.478,
+          "2.28"
+        ]
+      },
+      {
+```
+
+
+Agora vamos fazer a mesma query, mas lá na interface web do Prometheus:
+
+![Prometheus Query](images/prometheus-query-day3.png)
+
+&nbsp;
+&nbsp;
+
+
+### Habilitando novos collectors no Node Exporter
+
+Uma coisa bem interessante em relação ao Node Exporter é a quantidade de `collectors` que ele possui. Esses `collectors` são responsáveis por coletar as métricas de cada serviço que você quiser monitorar. Por exemplo, se você quiser monitorar os serviços que são gerenciados pelo `systemd`, você pode habilitar o `collector` do `systemd` no Node Exporter, vamos ver como fazer isso.
+
+&nbsp;
+
+Primeira coisa é criar um novo arquivo onde vamos colocar todas os `collectors` que queremos habilitar no Node Exporter, no nossa caso, somente o módulo do `systemd`. 
+
+Vamos criar o arquivo `/etc/node_exporter/node_exporter_options` e o diretório `/etc/node_exporter/` caso ele não exista:
+
+
+```bash
+sudo mkdir /etc/node_exporter
+sudo vim /etc/node_exporter/node_exporter_options
+```
+
+&nbsp;
+
+Agora vamos adicionar a variável de ambiente `OPTIONS` no arquivo `/etc/node_exporter/node_exporter_options`:
+
+```bash
+OPTIONS="--collector.systemd"
+```
+
+&nbsp;
+
+Vamos ajustar as permissões do arquivo `/etc/node_exporter/node_exporter_options`:
+
+```bash
+sudo chown -R node_exporter:node_exporter /etc/node_exporter/
+```
+
+&nbsp;
+
+
+E no arquivo de configuração do serviço do Node Exporter para o SystemD, vamos adicionar a variável de ambiente `OPTIONS` e o arquivo vai ficar assim:
+
+```bash
+[Unit]
+Description=Node Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=node_exporter
+Group=node_exporter
+Type=simple
+EnvironmentFile=/etc/node_exporter/node_exporter_options
+ExecStart=/usr/local/bin/node_exporter $OPTIONS
+
+[Install]
+WantedBy=multi-user.target
+```
+
+&nbsp;
+
+Pronto, adicionamos o nosso novo arquivo que contém a variável de ambiente `OPTIONS` e agora vamos reiniciar o serviço do Node Exporter para que ele leia as novas configurações:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart node_exporter
+```
+
+&nbsp;
+
+Agora vamos ver se o Node Exporter está coletando as métricas do `systemd`:
+
+```bash
+curl -GET http://localhost:9100/metrics | grep systemd
+```
+
+&nbsp;
+
+A saída é bem grande, então vou colocar aqui somente uma pequena parte da saída:
+
+```bash
+node_scrape_collector_success{collector="systemd"} 1
+# HELP node_systemd_socket_accepted_connections_total Total number of accepted socket connections
+# TYPE node_systemd_socket_accepted_connections_total counter
+node_systemd_socket_accepted_connections_total{name="acpid.socket"} 0
+node_systemd_socket_accepted_connections_total{name="apport-forward.socket"} 0
+node_systemd_socket_accepted_connections_total{name="avahi-daemon.socket"} 0
+node_systemd_socket_accepted_connections_total{name="cups.socket"} 0
+node_systemd_socket_accepted_connections_total{name="dbus.socket"} 0
+node_systemd_socket_accepted_connections_total{name="dm-event.socket"} 0
+node_systemd_socket_accepted_connections_total{name="docker.socket"} 0
+node_systemd_socket_accepted_connections_total{name="libvirtd-admin.socket"} 0
+node_systemd_socket_accepted_connections_total{name="libvirtd-ro.socket"} 0
+node_systemd_socket_accepted_connections_total{name="libvirtd.socket"} 0
+node_systemd_socket_accepted_connections_total{name="lvm2-lvmpolld.socket"} 0
+node_systemd_socket_accepted_connections_total{name="nordvpnd.socket"} 0
+node_systemd_socket_accepted_connections_total{name="snapd.socket"} 0
+node_systemd_socket_accepted_connections_total{name="syslog.socket"} 0
+node_systemd_socket_accepted_connections_total{name="systemd-fsckd.socket"} 0
+
+```
+
+&nbsp;
+
+
+Done! Tarefa concluída e super tranquilo de fazer. Agora você já sabe como habilitar novos `collectors` no Node Exporter e coletar novas métricas! \o/
+
+&nbsp;
+&nbsp;
+
+### Algumas queries capturando métricas do Node Exporter
+
+Agora que já sabemos como coletar as métricas do Node Exporter, vamos fazer algumas queries para capturar algumas métricas do Node Exporter.
+
+&nbsp;
+
+**1. Quantas CPU tem a minha máquina?**
+
+```bash
+count(node_cpu_seconds_total{job='node_exporter', mode='idle'})
+```
+
+&nbsp;
+
+![Prometheus Query](images/prometheus-query-day3-2.png)
+
+&nbsp;
+
+Estamos pedindo o Prometheus para contar quantas métricas temos com o nome `node_cpu_seconds_total`, que estão associadas ao `job` `node_exporter` e que o `mode` é `idle`. O resultado é 32, ou seja, a minha máquina tem 32 CPUs.
+
+Utilizei o modo `idle` para contar as CPUs. Cada CPU possui alguns modos, como `idle`, `iowait`, `irq`, `nice`, `softirq`, `steal`, `system` e `user`. Se eu não passasse o `mode` na query, o resultado seria 256, pois teríamos 32 CPUs e cada uma delas possui 8 modos. 
+
+&nbsp;
+
+Entendeu?
+
+Você precisa ter criatividade no momento de criar as suas queries, e lembre-se, cada pessoa tem a sua lógica para criar as queries, mas o importante é você entender o que está fazendo e ter a busca constante da melhor e mais performática query, certo?
+
+&nbsp;
+
+
+**2. Qual a porcentagem de uso de CPU da minha máquina?**
+
+```bash
+100 - avg by (cpu) (irate(node_cpu_seconds_total{job='node_exporter', mode='idle'}[5m])) * 100
+```
+
+&nbsp;
+
+![Prometheus Query](images/prometheus-query-day3-3.png)
+
+&nbsp;
+
+Estamos pedindo o Prometheus para calcular a média `avg` por `by` CPU `node_cpu_seconds_total`, que estão associadas as labels `job` `node_exporter` e que o `mode` é `idle`. O resultado será `100` menos `-` a média por CPU `avg by (cpu)` do uso de CPU `node_cpu_seconds_total`, que é calculado pela taxa de variação `irate` de 5 minutos `5m`.
+
+Parece confuso quando escrito, eu sei. Mas vamos quebrar essa query em partes:
+
+&nbsp;
+
+Primeiro, vamos calcular a média por CPU do uso de CPU, que é calculado pela taxa de variação de 5 minutos:
+
+```bash
+avg by (cpu) (irate(node_cpu_seconds_total{job='node_exporter', mode='idle'}[5m]))
+```
+
+&nbsp;
+
+Agora vamos multiplicar o resultado por 100, para que o resultado seja em porcentagem:
+
+```bash
+avg by (cpu) (irate(node_cpu_seconds_total{job='node_exporter', mode='idle'}[5m])) * 100
+```
+
+&nbsp;
+
+E por fim, vamos subtrair o resultado de 100 para que o resultado seja a porcentagem de uso de CPU, pois o modo `idle` é o tempo que a CPU ficou ociosa e o que precisamos é o tempo que a CPU ficou em uso, por isso a subtração.
+
+Por exemplo, se eu tenho 30% `idle`, então eu tenho 70% de uso de CPU. Entendeu?
+Então se eu pegar o 100 e subtrair o 30, eu tenho 70, que é a porcentagem de uso de CPU. Agora você entendeu, vai!
+
+Pronto, agora a query já está completa e totalmente explicada! 
+
+&nbsp;
+
+```bash
+100 - avg by (cpu) (irate(node_cpu_seconds_total{job='node_exporter', mode='idle'}[5m])) * 100
+```
+
+&nbsp;
+
+**3. Qual a porcentagem de uso de memória da minha máquina?**
+
+```bash
+100 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100
+```
+
+&nbsp;
+
+![Prometheus Query](images/prometheus-query-day3-4.png)
+
+&nbsp;
+
+Estamos pedindo o Prometheus para calcular a porcentagem de uso de memória da minha máquina, que é calculado pela subtração de 100 menos a porcentagem de memória disponível `node_memory_MemAvailable_bytes` dividido pela memória total `node_memory_MemTotal_bytes` multiplicado por 100.
+
+Parece confuso quando escrito, eu sei. Mas vamos quebrar essa query em partes:
+
+&nbsp;
+
+Primeiro é calculado o que está dentro dos parênteses, que é a porcentagem de memória disponível `node_memory_MemAvailable_bytes` dividido pela memória total `node_memory_MemTotal_bytes`:
+
+```bash
+node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes
+```
+
+&nbsp;
+
+Agora vamos multiplicar o resultado por 100, para que o resultado seja em porcentagem:
+
+```bash
+(node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100
+```
+
+&nbsp;
+
+E por fim, vamos subtrair o resultado de 100 para que o resultado seja a porcentagem de uso de memória, pois o que precisamos é o tempo que a memória ficou em uso, por isso a subtração.
+
+Por exemplo, se eu tenho 30% `MemAvailable`, então eu tenho 70% de uso de memória. Mesmo esquema do exemplo anterior.
+
+&nbsp;
+
+```bash
+100 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100
+```
+
+&nbsp;
+
+**4. Qual a porcentagem de uso de disco da minha máquina?**
+
+```bash
+100 - (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100
+```
+
+&nbsp;
+
+![Prometheus Query](images/prometheus-query-day3-5.png)
+
+&nbsp;
+
+Estamos pedindo o Prometheus para calcular a porcentagem de uso de disco da minha máquina, que é calculado pela subtração de 100 menos a porcentagem de disco disponível `node_filesystem_avail_bytes` dividido pelo tamanho total do disco `node_filesystem_size_bytes` multiplicado por 100.
+
+Vamos deixar isso mais simples, vamos quebrar essa query:
+
+&nbsp;
+
+Primeiro é calculado o que está dentro dos parênteses, que é o espaço do disco disponível `node_filesystem_avail_bytes` dividido pelo tamanho total do disco `node_filesystem_size_bytes`:
+
+```bash
+node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}
+```
+
+&nbsp;
+
+Agora vamos multiplicar o resultado por 100, para que o resultado seja em porcentagem:
+
+```bash
+(node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100
+```
+
+&nbsp;
+
+E por fim, vamos subtrair o resultado de 100 para que o resultado seja a porcentagem de utilização do disco, por isso a subtração.
+
+
+```bash
+100 - (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100
+```
+
+&nbsp;
+
+**5. Quanto de espaço está em uso na partição / em gigas?**
+
+```bash
+(node_filesystem_size_bytes{mountpoint="/"} - node_filesystem_avail_bytes{mountpoint="/"}) / 1024 / 1024 / 1024
+```
+
+&nbsp;
+
+![Prometheus Query](images/prometheus-query-day3-6.png)
+
+&nbsp;
+
+Estamos pedindo o Prometheus para calcular o espaço em uso na partição `/` em gigas, que é calculado pela subtração do tamanho total do disco `node_filesystem_size_bytes` menos o espaço do disco disponível `node_filesystem_avail_bytes` dividido por 1024 (para converter para kilobytes), dividido por 1024 (para converter para megabytes) e dividido por 1024 (para converter para gigabytes), simples não?
+
+Essa eu nem vou quebrar em partes, pois tenho certeza que você já entendeu como funciona.
+
+&nbsp;
+&nbsp;
+
+### Chega por hoje!
+Acho que já temos bastante conteúdo para hoje, então vamos parar por aqui. Já temos bastante conteúdo para você começar a brincar com o Prometheus e ter mais liberdade para criar as suas próprias queries e configurações.
+Agora, precisamos muito que você pratique, que você olhe com carinho tudo o que você aprendeu hoje e que você coloque em prática, agora! Não deixe para amanhã o que você pode fazer hoje, não é mesmo? hahhahahah
+
+&nbsp;
+&nbsp;
+
+### Lição de casa
+
+Hoje a sua tarefa é praticar a criação de queries para extrair o máximo de informação do Node Exporter.
+No final, você deve ter uma lista com as queries que você criou e que você entendeu como elas funcionam. A mesma coisa para as novas métricas que você conheceu, bora criar uma lista com as 5 mais legais que você encontrou e que você entendeu como elas funcionam.
+
+
+&nbsp;
+&nbsp;
+
+### Referências
+
+- [Prometheus - Querying](https://prometheus.io/docs/prometheus/latest/querying/basics/)
+- [Prometheus - Querying - Functions](https://prometheus.io/docs/prometheus/latest/querying/functions/)
+- [Prometheus - Querying - Operators](https://prometheus.io/docs/prometheus/latest/querying/operators/)
+
+
+
+
+
+
+

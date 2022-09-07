@@ -679,3 +679,6 @@ Verificamos o status do serviço do Prometheus e verificamos nos logs se tudo es
 Entendemos a arquitetura do Prometheus e tivemos o prazer de ver o desenho feito por mim. hahaha
 
 Agora é hora de descansar e depois rever todo o conteúdo do Day-1.
+
+
+&nbsp;
