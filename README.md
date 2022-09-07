@@ -49,7 +49,7 @@ Em construção...
 
 &nbsp;
 
-- [DAY-3](day-3/README.md) - Em construção...
+- **[DAY-3](day-3/README.md) - Em construção...**
 - [Criando o nosso segundo exporter](day-3/README.md#criando-o-nosso-segundo-exporter)
 	- [Criando o nosso exporter usando Go](day-3/README.md#criando-o-nosso-exporter-usando-go)
 	- [Adicionando o nosso exporter no container](day-3/README.md#adicionando-o-nosso-exporter-no-container)
