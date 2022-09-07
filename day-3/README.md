@@ -45,7 +45,6 @@ Ahhh, já vamos deixar o Grafana instalado e configurado para que possamos utili
 - [Algumas queries capturando métricas do Node Exporter](#algumas-queries-capturando-métricas-do-node-exporter)
 - [O Grafana](#o-grafana)
   - [Instalação do Grafana](#instalação-do-grafana)
-  - [Configurando o Grafana](#Configurando-o-grafana)
   - [Adicionando o Prometheus como Data Source](#adicionando-o-prometheus-como-data-source)
   - [Criando o nosso primeiro Dashboard](#criando-o-nosso-primeiro-dashboard)
 - [Chega por hoje!](#chega-por-hoje)
