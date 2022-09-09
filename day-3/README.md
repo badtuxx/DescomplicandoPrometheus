@@ -20,6 +20,25 @@ Ahhh, já vamos deixar o Grafana instalado e configurado para que possamos utili
 	- [Criando o nosso exporter usando Go](#criando-o-nosso-exporter-usando-go)
 	- [Adicionando o nosso exporter no container](#adicionando-o-nosso-exporter-no-container)
 	- [Adicionando o novo Target no Prometheus](#adicionando-o-novo-target-no-prometheus)
+- [As Funções](#as-funções)
+  - [A função rate](#a-função-rate)
+  - [A função irate](#a-função-irate)
+  - [A função delta](#a-função-delta)
+  - [A função increase](#a-função-increase)
+  - [A função sum](#a-função-sum)
+  - [A função count](#a-função-count)
+  - [A função avg](#a-função-avg)
+  - [A função min](#a-função-min)
+  - [A função max](#a-função-max)
+  - [A função avg_over_time](#a-função-avg_over_time)
+  - [A função sum_over_time](#a-função-sum_over_time)
+  - [A função max_over_time](#a-função-max_over_time)
+  - [A função min_over_time](#a-função-min_over_time)
+  - [A função stddev_over_time](#a-função-stddev_over_time)
+  - [A função by](#a-função-by)
+  - [A função without](#a-função-without)
+  - [A função histogram_quantile e quantile](#a-função-histogram_quantile-e-quantile)
+- [As nossas primeiras queries](#as-nossas-primeiras-queries)
 - [Operadores](#operadores)
 	- [Operador de igualdade](#operador-de-igualdade)
 	- [Operador de diferença](#operador-de-diferença)
@@ -477,6 +496,575 @@ E as nossa novas métricas também:
 &nbsp;
 &nbsp;
 
+### As Funções
+
+Uma coisa muito importante é se sentir confortável com o uso da PromQL, pois é com ela que iremos extrair o máximo de nossas métricas e também do mundo sensacional das `time series`.
+
+Vamos conhecer algumas funções para criação de queries mais efetivas. Vou listar algumas e outras funções vamos conhecendo conforme vamos avançando.
+
+&nbsp;
+&nbsp;
+
+#### A função *rate*
+
+A função `rate` representa a taxa de crescimento por segundo de uma determinada métrica como média, durante um intervalo de tempo.
+
+```PROMQL
+rate(metrica)[5m]
+```
+&nbsp;
+Onde `metrica` é a métrica que você deseja calcular a taxa de crescimento durante um intervalo de tempo de 5 minutos. Você pode utilizar a função `rate` para trabalhar com métricas do tipo `gauge` e `counter`.
+
+Vamos para um exemplo real:
+
+```PROMQL
+rate(prometheus_http_requests_total{job="prometheus",handler="/api/v1/query"}[5m])
+```
+
+&nbsp;
+
+Aqui estou calculando a média da taxa de crescimento por segundo da métrica `prometheus_http_requests_total`, filtrando por `job` e `handler` e durante um intervalo de tempo de 5 minutos. Nesse caso eu quero saber o crescimento nas queries que estão sendo feitas no Prometheus.
+
+&nbsp;
+&nbsp;
+
+
+#### A função *irate*
+
+A função `irate` representa a taxa de crescimento por segundo de uma determinada métrica, mas diferentemente da função `rate`, a função `irate` não faz a média dos valores, ela pega os dois últimos pontos e calcula a taxa de crescimento. Quando representado em um gráfico, é possível ver a diferença entre a função `rate` e a função `irate`, enquanto o gráfico com o `rate` é mais suave, o gráfico com o `irate` é mais "pontiagudo", você consegue ver quedas e subidas mais nítidas.
+
+
+```PROMQL
+irate(metrica)[5m]
+```
+&nbsp;
+
+Onde `metrica` é a métrica que você deseja calcular a taxa de crescimento, considerando somente os dois últimos pontos, durante um intervalo de tempo de 5 minutos.
+
+Vamos para um exemplo real:
+
+```PROMQL
+irate(prometheus_http_requests_total{job="prometheus",handler="/api/v1/query"}[5m])
+```
+
+&nbsp;
+
+Aqui estou calculando a taxa de crescimento por segundo da métrica `prometheus_http_requests_total`, considerando somente os dois últimos pontos, filtrando por `job` e `handler` e durante um intervalo de tempo de 5 minutos. Nesse caso eu quero saber o crescimento nas queries que estão sendo feitas no Prometheus.
+
+&nbsp;
+&nbsp;
+
+#### A função *delta*
+
+A função `delta` representa a diferença entre o valor atual e o valor anterior de uma métrica. Quando estamos falando de `delta` estamos falando por exemplo do consumo de um disco. Vamos imaginar que eu queira saber o quando eu usei de disco em um determinado intervalo de tempo, eu posso utilizar a função `delta` para calcular a diferença entre o valor atual e o valor anterior. 
+
+```PROMQL
+delta(metrica[5m])
+```
+&nbsp;
+
+Onde `metrica` é a métrica que você deseja calcular a diferença entre o valor atual e o valor anterior, durante um intervalo de tempo de 5 minutos.
+
+&nbsp;
+
+Vamos para um exemplo real:
+
+```PROMQL
+delta(prometheus_http_response_size_bytes_count{job="prometheus",handler="/api/v1/query"}[5m])
+```
+
+Agora estou calculando a diferença entre o valor atual e o valor anterior da métrica `prometheus_http_response_size_bytes_count`, filtrando por `job` e `handler` e durante um intervalo de tempo de 5 minutos. Nesse caso eu quero saber o quanto de bytes eu estou consumindo nas queries que estão sendo feitas no Prometheus.
+
+
+&nbsp;
+&nbsp;
+
+#### A função *increase*
+
+Da mesma forma que a função `delta`, a função `increase` representa a diferença entre o primeiro e último valor durante um intervalo de tempo, porém a diferença é que a função `increase` considera que o valor é um contador, ou seja, o valor é incrementado a cada vez que a métrica é atualizada.
+Ela começa com o valor 0 e vai somando o valor da métrica a cada atualização.
+Você já pode imaginar qual o tipo de métrica que ela trabalha, certo? 
+Qual? Counter!
+
+```PROMQL
+increase(metrica[5m])
+```
+
+&nbsp;
+
+Onde `metrica` é a métrica que você deseja calcular a diferença entre o primeiro e último valor durante um intervalo de tempo de 5 minutos.
+
+&nbsp;
+
+Vamos para um exemplo real:
+
+```PROMQL
+increase(prometheus_http_requests_total{job="prometheus",handler="/api/v1/query"}[5m])
+```
+
+&nbsp;
+
+Aqui estou calculando a diferença entre o primeiro e último valor da métrica `prometheus_http_requests_total`, filtrando por `job` e `handler` e durante um intervalo de tempo de 5 minutos.
+
+Você pode acompanhar o resultado dessa query clicando em `Graph` e depois em `Execute`, assim você vai ver o gráfico com o resultado da query fazendo mais sentindo.
+
+&nbsp;
+&nbsp;
+
+#### A função *sum*
+
+A função `sum` representa a soma de todos os valores de uma métrica. 
+Você pode utilizar a função `sum` nos tipos de dados `counter`, `gauge`, `histogram` e `summary`.
+Um exemplo de uso da função `sum` é quando você quer saber o quanto de memória está sendo utilizada por todos os seus containers, ou o quanto de memória está sendo utilizada por todos os seus pods.
+
+```PROMQL
+sum(metrica)
+```
+
+&nbsp;
+
+Onde `metrica` é a métrica que você deseja somar.
+
+&nbsp;
+
+Vamos para um exemplo real:
+
+```PROMQL
+sum(go_memstats_alloc_bytes{job="prometheus"})
+```
+
+&nbsp;
+
+Aqui estou somando todos os valores da métrica `go_memstats_alloc_bytes`, filtrando por `job` e durante um intervalo de tempo de 5 minutos.
+
+&nbsp;
+&nbsp;
+
+#### A função *count*
+
+Outra função bem utilizada é função `count` representa o contador de uma métrica.
+Você pode utilizar a função `count` nos tipos de dados `counter`, `gauge`, `histogram` e `summary`.
+Um exemplo de uso da função `count` é quando você quer saber quantos containers estão rodando em um determinado momento ou quantos de seus pods estão em execução.
+  
+```PROMQL
+count(metrica)
+```
+
+&nbsp;
+
+Onde `metrica` é a métrica que você deseja contar.
+
+&nbsp;
+
+Vamos para um exemplo real:
+
+```PROMQL
+count(prometheus_http_requests_total)
+```
+
+&nbsp;
+
+Teremos como resultado o número de valores que a métrica `prometheus_http_requests_total` possui.
+
+&nbsp;
+&nbsp;
+
+#### A função *avg*
+
+A função `avg` representa o valor médio de uma métrica.
+Você pode utilizar a função `avg` nos tipos de dados `counter`, `gauge`, `histogram` e `summary`.
+Essa é uma das funções mais utilizadas, pois é muito comum você querer saber o valor médio de uma métrica, por exemplo, o valor médio de memória utilizada por um container.
+
+```PROMQL
+avg(metrica)
+```
+
+&nbsp;
+
+Onde `metrica` é a métrica que você deseja calcular a média.
+
+&nbsp;
+&nbsp;
+
+#### A função *min*
+
+A função `min` representa o valor mínimo de uma métrica.
+Você pode utilizar a função `min` nos tipos de dados `counter`, `gauge`, `histogram` e `summary`.
+Um exemplo de uso da função `min` é quando você quer saber qual o menor valor de memória utilizada por um container.
+
+```PROMQL
+min(metrica)
+```
+
+&nbsp;
+
+Onde `metrica` é a métrica que você deseja calcular o mínimo.
+
+&nbsp;
+&nbsp;
+
+#### A função *max*
+
+A função `max` representa o valor máximo de uma métrica.
+Um exemplo de uso da função `max` é quando você quer saber qual o maior valor de memória pelos nodes de um cluster Kubernetes.
+
+```PROMQL
+max(metrica)
+```
+
+&nbsp;
+
+Onde `metrica` é a métrica que você deseja calcular o máximo.
+
+&nbsp;
+&nbsp;
+
+
+#### A função *avg_over_time*
+
+A função `avg_over_time` representa a média de uma métrica durante um intervalo de tempo.
+Normalmente utilizada para calcular a média de uma métrica durante um intervalo de tempo, como por exemplo, a média de requisições por segundo durante um intervalo de tempo ou ainda as pessoas que estão no espaço durante o último ano. :D
+
+```PROMQL
+avg_over_time(metrica[5m])
+```
+
+&nbsp;
+
+Onde `metrica` é a métrica que você deseja calcular a média durante um intervalo de tempo de 5 minutos.
+
+&nbsp;
+
+Vamos para um exemplo real:
+
+```PROMQL
+avg_over_time(prometheus_http_requests_total{handler="/api/v1/query"}[5m])
+```
+
+&nbsp;
+
+Agora estou calculando a média da métrica `prometheus_http_requests_total`, filtrando por `handler` e durante um intervalo de tempo de 5 minutos.
+
+&nbsp;
+&nbsp;
+
+#### A função *sum_over_time*
+
+Também temos a função `sum_over_time`, que representa a soma de uma métrica durante um intervalo de tempo. Vimos a `avg_over_time` que representa a média, a `sum_over_time` representa a soma dos valores durante um intervalo de tempo.
+Imagina calcular a soma de uma métrica durante um intervalo de tempo, como por exemplo, a soma de requisições por segundo durante um intervalo de tempo ou ainda a soma de pessoas que estão no espaço durante o último ano.
+
+```PROMQL
+sum_over_time(metrica[5m])
+```
+
+&nbsp;
+
+Onde `metrica` é a métrica que você deseja calcular a soma durante um intervalo de tempo de 5 minutos.
+
+&nbsp;
+
+Vamos para um exemplo real:
+
+```PROMQL
+sum_over_time(prometheus_http_requests_total{handler="/api/v1/query"}[5m])
+```
+
+&nbsp;
+
+Agora estou calculando a soma da métrica `prometheus_http_requests_total`, filtrando por `handler` e durante um intervalo de tempo de 5 minutos.
+
+&nbsp;
+&nbsp;
+
+#### A função *max_over_time*
+
+A função `max_over_time` representa o valor máximo de uma métrica durante um intervalo de tempo.
+
+```PROMQL
+max_over_time(metrica[5m])
+```
+
+&nbsp;
+
+Onde `metrica` é a métrica que você deseja calcular o valor máximo durante um intervalo de tempo de 5 minutos.
+
+&nbsp;
+
+Vamos para um exemplo real:
+
+```PROMQL
+max_over_time(prometheus_http_requests_total{handler="/api/v1/query"}[5m])
+```
+
+&nbsp;
+
+Agora estamos buscando o valor máximo da métrica `prometheus_http_requests_total`, filtrando por `handler` e durante um intervalo de tempo de 5 minutos.
+
+&nbsp;
+&nbsp;
+
+#### A função *min_over_time*
+
+A função `min_over_time` representa o valor mínimo de uma métrica durante um intervalo de tempo.
+
+```PROMQL
+
+min_over_time(metrica[5m])
+```
+
+&nbsp;
+
+Onde `metrica` é a métrica que você deseja calcular o valor mínimo durante um intervalo de tempo de 5 minutos.
+
+&nbsp;
+
+Vamos para um exemplo real:
+
+```PROMQL
+min_over_time(prometheus_http_requests_total{handler="/api/v1/query"}[5m])
+```
+
+&nbsp;
+
+Agora estamos buscando o valor mínimo da métrica `prometheus_http_requests_total`, filtrando por `handler` e durante um intervalo de tempo de 5 minutos.
+
+&nbsp;
+&nbsp;
+
+#### A função *stddev_over_time*
+
+A função `stddev_over_time` representa o desvio padrão, que são os valores que estão mais distantes da média, de uma métrica durante um intervalo de tempo.
+Um bom exemplo seria para o calculo de desvio padrão para saber se houve alguma anomalia no consumo de disco, por exemplo.
+
+```PROMQL
+stddev_over_time(metrica[5m])
+```
+
+&nbsp;
+
+Onde `metrica` é a métrica que você deseja calcular o desvio padrão durante um intervalo de tempo de 5 minutos.
+
+
+&nbsp;
+
+Vamos para um exemplo real:
+
+```PROMQL
+stddev_over_time(prometheus_http_requests_total{handler="/api/v1/query"}[10m])
+```
+
+&nbsp;
+
+Agora estamos buscando os desvios padrões da métrica `prometheus_http_requests_total`, filtrando por `handler` e durante um intervalo de tempo de 10 minutos. Vale a pena verificar o gráfico, pois facilita a visualização dos valores.
+
+&nbsp;
+&nbsp;
+
+
+#### A função *by*
+
+A sensacional e super utilizada função `by` é utilizada para agrupar métricas. Com ela é possível agrupar métricas por labels, por exemplo, se eu quiser agrupar todas as métricas que possuem o label `job` eu posso utilizar a função `by` da seguinte forma:
+
+```PROMQL
+sum(metrica) by (job)
+```
+
+&nbsp;
+
+
+Onde `metrica` é a métrica que você deseja agrupar e `job` é o label que você deseja agrupar.
+
+&nbsp;
+
+Vamos para um exemplo real:
+
+```PROMQL
+sum(prometheus_http_requests_total) by (code)
+```
+
+&nbsp;
+
+Agora estamos somando a métrica `prometheus_http_requests_total` e agrupando por `code`, assim sabemos quantas requisições foram feitas por código de resposta.
+
+&nbsp;
+&nbsp;
+
+#### A função *without*
+A função `without` é utilizada para remover labels de uma métrica. 
+Você pode utilizar a função `without` nos tipos de dados `counter`, `gauge`, `histogram` e `summary` e frequentemente usado em conjunto com a função `sum`.
+
+```PROMQL
+Por exemplo, se eu quiser remover o label `job` de uma métrica, eu posso utilizar a função `without` da seguinte forma:
+
+
+```PROMQL
+sum(metrica) without (job)
+```
+
+&nbsp;
+
+Onde `metrica` é a métrica que você deseja remover o label `job`.
+
+&nbsp;
+
+Vamos para um exemplo real:
+
+```PROMQL
+sum(prometheus_http_requests_total) without (handler)
+```
+
+&nbsp;
+
+Agora estamos somando a métrica `prometheus_http_requests_total` e removendo o label `handler`, assim sabemos quantas requisições foram feitas por código de resposta, sem saber qual handler foi utilizado para ter uma visão mais geral e focado no código de resposta.
+
+&nbsp;
+&nbsp;
+
+
+#### A função *histogram_quantile e quantile*
+
+As funções `histogram_quantile` e `quantile` são muito parecidas, porém a `histogram_quantile` é utilizada para calcular o percentil de uma métrica do tipo `histogram` e a `quantile` é utilizada para calcular o percentil de uma métrica do tipo `summary`.
+Basicamente utilizamos esses funções para saber qual é o valor de uma métrica em um determinado percentil.
+
+```PROMQL
+quantile(0.95, metrica)
+```
+
+&nbsp;
+
+Onde `metrica` é a métrica do tipo `histogram` que você deseja calcular o percentil e `0.95` é o percentil que você deseja calcular.
+
+&nbsp;
+
+Vamos para um exemplo real:
+
+```PROMQL
+quantile(0.95, prometheus_http_request_duration_seconds_bucket)
+```
+
+&nbsp;
+
+Agora estamos calculando o percentil de 95% da métrica `prometheus_http_request_duration_seconds_bucket`, assim sabemos qual é o tempo de resposta de 95% das requisições.
+
+&nbsp;
+&nbsp;
+
+
+### Praticando e usando as funções
+
+Agora que já vimos a descrição de algumas funções, vamos começar a praticar e criar algumas queries utilizando as funções.
+
+Vamos criar uma query para saber o quanto de cpu está sendo utilizado no nosso primeiro exporter durante cada execução.
+
+
+```PROMQL
+sum(rate(process_cpu_seconds_total{job="Primeiro Exporter"}[1m])) by (instance)
+```
+&nbsp;
+
+Vamos entender melhor a query acima, o que ela faz?
+
+  - Onde `sum(rate(process_cpu_seconds_total{job="Primeiro Exporter"}[1m]))` é a métrica que você deseja extrair.
+  - Onde `by (instance)` é o agrupamento que você deseja fazer.
+
+Ok, conseguimos dividir a query em duas partes, a primeira é a métrica e seus detalhes e a segunda é o agrupamento.
+
+Agora vamos dividir a primeira um pouco mais.
+
+```PROMQL
+process_cpu_seconds_total{job="Primeiro Exporter"}[1m]
+```
+&nbsp;
+
+Nessa primeira query, estamos pedindo o valor da métrica `process_cpu_seconds_total` no último 1 minuto.
+
+O retorno são 04 valores, pois o scraping do Prometheus é feito em intervalos de 15 segundos.
+
+![Examinando a query - 1](images/examinando-a-query-1.png)
+
+&nbsp;
+
+
+Maravilha, está rolando bem! 
+Agora eu quero saber a média do consumo de cpu no nosso primeiro exporter durante o último 1 minuto.
+
+```PROMQL
+avg(rate(process_cpu_seconds_total{job="Primeiro Exporter"}[1m]))
+```
+&nbsp;
+
+![Examinando a query - 2](images/examinando-a-query-2.png)
+
+&nbsp;
+
+Com isso nós temos a média do consumo de cpu no nosso primeiro exporter durante o último 1 minuto, e perceba que estamos utilizando a função `avg` para calcular a média, porém estamos também utilizando a função `rate`.
+Precisamos do `rate` para calcular a taxa de aumento dos valores da métrica durante o último 1 minuto, conforme solicitado na query acima.
+
+Agora vamos adicionar mais um detalhe a nossa query.
+
+```PROMQL
+by (instance)
+```
+&nbsp;
+
+Então ela ficará assim:
+
+```PROMQL
+avg(rate(process_cpu_seconds_total{job="Primeiro Exporter"}[1m])) by (instance)
+```
+&nbsp;
+
+![Examinando a query - 3](images/examinando-a-query-3.png)
+
+&nbsp;
+
+Com a função `by` adicionada, é possível agrupar os valores da métrica por um determinado campo, no nosso caso estamos agrupando por `instance`.
+
+Em nosso exemplo somente temos uma instância no job `Primeiro Exporter`, então o agrupamente não tem efeito.
+
+Mas se retirarmos da query o label `job`, o resultado trará também a instância do job `prometheus`.
+
+```PROMQL
+avg(rate(process_cpu_seconds_total[1m])) by (instance)
+```
+&nbsp;
+
+Agora a saída trará também o valor da métrica para a instância do job `prometheus`.
+
+![Examinando a query - 4](images/examinando-a-query-4.png)
+&nbsp;
+
+
+Caso queira pegar o menor valor da métrica registrada no último 1 minuto, basta utilizar a função `min`.
+
+```PROMQL
+min(rate(process_cpu_seconds_total[1m])) by (instance)
+```
+&nbsp;
+
+![Examinando a query - 5](images/examinando-a-query-5.png)
+&nbsp;
+
+
+Caso queira pegar o maior valor da métrica registrada no último 1 minuto, basta utilizar a função `max`.
+
+```PROMQL
+max(rate(process_cpu_seconds_total[1m])) by (instance)
+```
+&nbsp;
+
+![Examinando a query - 6](images/examinando-a-query-6.png)
+&nbsp;
+
+
+Eu falei bastante sobre as queries e os valores que elas retornam, porém eu nem falei ainda para vocês clicarem na aba `Graph` e ver os gráficos que são gerados automaticamente.
+
+Vamos ver o gráfico da média do consumo de cpu pelos jobs durante o último 1 minuto.
+
+![Examinando a query - 7](images/examinando-a-query-7.png)
+
+&nbsp;
+&nbsp;
 
 ### Operadores
 
@@ -1719,10 +2307,3 @@ No final, você deve ter uma lista com as queries que você criou e que você en
 - [Prometheus - Querying](https://prometheus.io/docs/prometheus/latest/querying/basics/)
 - [Prometheus - Querying - Functions](https://prometheus.io/docs/prometheus/latest/querying/functions/)
 - [Prometheus - Querying - Operators](https://prometheus.io/docs/prometheus/latest/querying/operators/)
-
-
-
-
-
-
-
