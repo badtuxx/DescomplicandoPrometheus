@@ -38,7 +38,7 @@ Ahhh, já vamos deixar o Grafana instalado e configurado para que possamos utili
   - [A função by](#a-função-by)
   - [A função without](#a-função-without)
   - [A função histogram_quantile e quantile](#a-função-histogram_quantile-e-quantile)
-- [As nossas primeiras queries](#as-nossas-primeiras-queries)
+- [Praticando e usando as funções](#praticando-e-usando-as-funções)
 - [Operadores](#operadores)
 	- [Operador de igualdade](#operador-de-igualdade)
 	- [Operador de diferença](#operador-de-diferença)
