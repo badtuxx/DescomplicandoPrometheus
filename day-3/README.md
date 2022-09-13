@@ -181,12 +181,11 @@ Estamos utilizando o pacote `log` para logar os erros que possam acontecer e o p
 &nbsp;
 
 
-Agora vamos compilar o nosso código e executar o nosso exporter, mas antes precisamos instalar as bibliotecas que utilizamos no nosso código.
+Agora vamos compilar o nosso código e executar o nosso exporter, mas antes precisamos instalar as bibliotecas que utilizamos em nosso código.
 
 ```BASH
-go get github.com/pbnjay/memory
-go get github.com/prometheus/client_golang/prometheus
-go get github.com/prometheus/client_golang/prometheus/promhttp
+go mod init segundo-exporter
+go mod tidy
 ```
 
 Agora sim já podemos compilar o nosso código conforme o exemplo abaixo:
