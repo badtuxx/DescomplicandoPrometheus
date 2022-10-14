@@ -590,7 +590,6 @@ Se você não sabe o que é o *SystemD*, você pode consultar o manual do *Syste
 Acredito que já criamos todos os arquivos e diretórios necessários para o funcionamento do Prometheus, agora vamos mudar o dono desses diretórios e arquivos que criamos para que o usuário do prometheus seja o dono dos mesmos.
 
 ```bash
-sudo chown -R prometheus:prometheus /var/log/prometheus
 sudo chown -R prometheus:prometheus /etc/prometheus
 sudo chown -R prometheus:prometheus /var/lib/prometheus
 sudo chown -R prometheus:prometheus /usr/local/bin/prometheus
