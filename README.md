@@ -172,13 +172,11 @@ O conteúdo ainda será ajustado, e no final do treinamento teremos o conteúdo 
 - Rules
 - Alertas
 - Kubernetes e Prometheus
+- Prometheus Operator
+- Kube-Prometheus
 - Prometheus em HA
-- Storage
 - Service Discovery
-- Prometheus e o Zabbix
 - Push Gateway
-- Exemplo de integrações
-- Instalando e configurando o Prometheus (2)
 - Monitorando o Prometheus
 
 ### Como adquirir o treinamento?
@@ -241,7 +239,7 @@ endo a história e características dela.
 
 Agora que você já conhece mais detalhes sobre o treinamento, acredito que já podemos começar, certo?
 
-Lembrando que o treinamento está disponível na plataforma da escola da LINUXtips, que não é o mesmo endereço da [loja](https://www.linuxtips.io/), para acessar a escola [CLIQUE AQUI](https://school.linuxtips.io).
+Lembrando que o treinamento está disponível na plataforma da escola da LINUXtips,para acessa-la [CLIQUE AQUI](https://linuxtips.io).
 
 
 ### O conteúdo
