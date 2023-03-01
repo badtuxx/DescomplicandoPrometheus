@@ -1,7 +1,4 @@
-# [Descomplicando o Prometheus](https://www.linuxtips.io/products/descomplicando-o-prometheus) - O Treinamento
-
-
-Em construção...
+# [Descomplicando o Prometheus](https://www.linuxtips.io/products/descomplicando-o-prometheus) - O LIVRO
 
 - **[DAY-1](day-1/README.md) - Em revisão...**
     - [Por que precisamos de ferramentas como o Prometheus?](day-1/README.md#por-que-precisamos-de-ferramentas-como-o-prometheus)
@@ -92,9 +89,48 @@ Em construção...
 - [Lição de casa](day-3/README.md#lição-de-casa)
 - [Referências](day-3/README.md#referências)
 
-- [DAY-4](day-4/README.md) - Em construção...
+&nbsp;
 
-- [DAY-5](day-5/README.md) - Em construção...
+- **[DAY-4](day-4/README.md) - Em revisão...**
+- [O que iremos ver hoje?](day-4/README.md#o-que-iremos-ver-hoje)
+- [Conteúdo do Day-4](day-4/README.md#conteúdo-do-day-4)
+- [O Grafana](day-4/README.md#o-grafana)
+  - [Instalando o Grafana](day-4/README.md#instalando-o-grafana)
+  - [Adicionando o Prometheus como Data Source](day-4/README.md#adicionando-o-prometheus-como-data-source)
+  - [Criando o nosso primeiro Dashboard](day-4/README.md#criando-o-nosso-primeiro-dashboard)
+- [Alertmanager](day-4/README.md#alertmanager)
+  - [Instalando o Alertmanager](day-4/README.md#instalando-o-alertmanager)
+
+&nbsp;
+
+- **[DAY-5](day-5/README.md) - Em revisão...**
+
+&nbsp;
+
+- **[DAY-6](day-6/README.md) - Em revisão...**
+- [O que iremos ver hoje](day-6/README.md#o-que-iremos-ver-hoje)
+- [Conteúdo do Day-6](day-6/README.md#conteúdo-do-day-6)
+- [O que é o kube-prometheus](day-6/README.md#o-que-é-o-kube-prometheus)
+  - [Instalando o nosso cluster Kubernetes](day-6/README.md#instalando-o-nosso-cluster-kubernetes)
+  - [Instalando o Kube-Prometheus](day-6/README.md#instalando-o-kube-prometheus)
+  - [Acessando o Grafana](day-6/README.md#acessando-o-grafana)
+  - [Acessando o Prometheus](day-6/README.md#acessando-o-prometheus)
+  - [Acessando o AlertManager](day-6/README.md#acessando-o-alertmanager)
+- [Chega por hoje!](day-6/README.md#chega-por-hoje)
+- [Lição de casa](day-6/README.md#lição-de-casa)
+
+&nbsp;
+
+- **[DAY-7](day-7/README.md) - Em revisão...**
+- [O que iremos ver hoje?](day-7/README.md#o-que-iremos-ver-hoje)
+- [Conteúdo do Day-7](day-7/README.md#conteúdo-do-day-7)
+  - [Os ServiceMonitors](day-7/README.md#os-servicemonitors)
+  - [Criando um ServiceMonitor](day-7/README.md#criando-um-servicemonitor)
+  - [Criando nosso primeiro alerta](day-7/README.md#criando-nosso-primeiro-alerta)
+  - [O que é um PrometheusRule?](day-7/README.md#o-que-é-um-prometheusrule)
+    - [Criando um PrometheusRule](day-7/README.md#criando-um-prometheusrule)
+- [Chega por hoje!](day-7/README.md#chega-por-hoje)
+- [Lição de casa](day-7/README.md#lição-de-casa)
 
 &nbsp;
 

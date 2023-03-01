@@ -15,6 +15,22 @@ Nova realidade pois não temos mais os arquivos de configuração como estavamos
 Mas não se preocupe, nós vamos avançando aos poucos e vamos entender como tudo funciona.
 
 
+### Conteúdo do Day-7
+
+- [Descomplicando o Prometheus](#descomplicando-o-prometheus)
+  - [DAY-7](#day-7)
+    - [O que iremos ver hoje?](#o-que-iremos-ver-hoje)
+    - [Conteúdo do Day-7](#conteúdo-do-day-7)
+      - [Os ServiceMonitors](#os-servicemonitors)
+      - [Criando um ServiceMonitor](#criando-um-servicemonitor)
+      - [Criando nosso primeiro alerta](#criando-nosso-primeiro-alerta)
+      - [O que é um PrometheusRule?](#o-que-é-um-prometheusrule)
+        - [Criando um PrometheusRule](#criando-um-prometheusrule)
+    - [Chega por hoje!](#chega-por-hoje)
+    - [Lição de casa](#lição-de-casa)
+
+
+
 #### Os ServiceMonitors
 
 Um dos principais recursos que o Kube-Prometheus utiliza é o ServiceMonitor. O ServiceMonitor é um recurso do Prometheus Operator que permite que você configure o Prometheus para monitorar um serviço. Para isso, você precisa criar um ServiceMonitor para cada serviço que você deseja monitorar. 
@@ -532,6 +548,8 @@ Mas antes, precisamos entender o que é um recurso chamado PrometheusRule.
 #### O que é um PrometheusRule?
 
 O PrometheusRule é um recurso do Kubernetes que permite que você defina alertas para o Prometheus. Ele é muito parecido com o arquivo de alertas que criamos no nosso servidor Linux, porém nesse momento vamos fazer a mesma definição de alerta, mas usando o PrometheusRule.
+
+##### Criando um PrometheusRule
 
 Vamos criar um arquivo chamado `nginx-prometheus-rule.yaml` e vamos colocar o seguinte conteúdo:
 

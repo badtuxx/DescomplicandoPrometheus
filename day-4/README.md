@@ -9,9 +9,16 @@ Evidente, ainda vamos voltar nessas ferramentas muitas vezes no decorrer do trei
 &nbsp;
 
 ### Conteúdo do Day-4
-- [O Grafana](#o-grafana)
-
-
+- [Descomplicando o Prometheus](#descomplicando-o-prometheus)
+  - [DAY-4](#day-4)
+    - [O que iremos ver hoje?](#o-que-iremos-ver-hoje)
+    - [Conteúdo do Day-4](#conteúdo-do-day-4)
+    - [O Grafana](#o-grafana)
+      - [Instalando o Grafana](#instalando-o-grafana)
+      - [Adicionando o Prometheus como Data Source](#adicionando-o-prometheus-como-data-source)
+      - [Criando o nosso primeiro Dashboard](#criando-o-nosso-primeiro-dashboard)
+    - [Alertmanager](#alertmanager)
+      - [Instalando o Alertmanager](#instalando-o-alertmanager)
 
 &nbsp;
 
@@ -327,14 +334,14 @@ Ainda vamos voltar para o Grafana durante o dia de hoje para brincar um pouco ma
 &nbsp;
 &nbsp;
 
-#### Alertmanager
+### Alertmanager
 
 O Alertmanager é o responsável por gerenciar os alertas que são criados pelo Prometheus, ele é um serviço que recebe os alertas do Prometheus, organiza e os encaminha para os serviços de notificação, como o Slack, e-mail, pagerduty, OpsGenie, etc.
 
 O Alertmanager é um aplicação desenvolvida em Go, e é distribuído como um binário estático, ou seja, não é necessário instalar nenhuma dependência para utilizá-lo. O que vamos precisar fazer, evidemente, é criar um serviço no Systemd para gerencia-lo.
 
 
-##### Instalando o Alertmanager
+#### Instalando o Alertmanager
 
 Primeira coisa que precisamos fazer é baixar o binário do Alertmanager, vamos fazer isso através do comando `wget`. 
 
