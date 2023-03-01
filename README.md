@@ -126,6 +126,8 @@
 - [Conteúdo do Day-7](day-7/README.md#conteúdo-do-day-7)
   - [Os ServiceMonitors](day-7/README.md#os-servicemonitors)
   - [Criando um ServiceMonitor](day-7/README.md#criando-um-servicemonitor)
+  - [Os PodMonitors](day-7/README.md#os-podmonitors)
+  - [Criando um PodMonitor](day-7/README.md#criando-um-podmonitor)
   - [Criando nosso primeiro alerta](day-7/README.md#criando-nosso-primeiro-alerta)
   - [O que é um PrometheusRule?](day-7/README.md#o-que-é-um-prometheusrule)
     - [Criando um PrometheusRule](day-7/README.md#criando-um-prometheusrule)
