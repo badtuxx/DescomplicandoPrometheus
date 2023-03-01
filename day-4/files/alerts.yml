@@ -1,0 +1,27 @@
+groups:
+- name: Basic monitoring
+  rules:
+  - alert: InstanceDown
+    # Condition for alerting
+    expr: up == 0
+    for: 1m
+    # Annotation - additional informational labels to store more information
+    annotations:
+      title: 'Instance {{ $labels.instance }} down'
+      description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minute.'
+    # Labels - additional labels to be attached to the alert
+    labels:
+      severity: 'critical'
+  - alert: high_load
+    expr: node_load1 > 0.5
+    annotations:
+      description: '{{ $labels.instance }} of job {{ $labels.job }} is under high load.'
+      summary: Instance {{ $labels.instance }} under high load
+      value: '{{ $value }}'
+  
+  - alert: disk_space
+    expr: (node_filesystem_size_bytes - node_filesystem_free_bytes) * 100 / node_filesystem_size_bytes > 5
+    labels:
+      instance: '{{ $labels.instance }}:{{ $labels.mountpoint }}'
+    annotations:
+      value: '{{ humanize $value }}%'
