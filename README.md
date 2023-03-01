@@ -1,4 +1,4 @@
-# [Descomplicando o Prometheus](https://www.linuxtips.io/products/descomplicando-o-prometheus) - O LIVRO
+# [Descomplicando o Prometheus](https://www.linuxtips.io/course/descomplicando-prometheus) - O LIVRO
 
 - **[DAY-1](day-1/README.md) - Em revisão...**
     - [Por que precisamos de ferramentas como o Prometheus?](day-1/README.md#por-que-precisamos-de-ferramentas-como-o-prometheus)
@@ -126,6 +126,8 @@
 - [Conteúdo do Day-7](day-7/README.md#conteúdo-do-day-7)
   - [Os ServiceMonitors](day-7/README.md#os-servicemonitors)
   - [Criando um ServiceMonitor](day-7/README.md#criando-um-servicemonitor)
+  - [Os PodMonitors](day-7/README.md#os-podmonitors)
+  - [Criando um PodMonitor](day-7/README.md#criando-um-podmonitor)
   - [Criando nosso primeiro alerta](day-7/README.md#criando-nosso-primeiro-alerta)
   - [O que é um PrometheusRule?](day-7/README.md#o-que-é-um-prometheusrule)
     - [Criando um PrometheusRule](day-7/README.md#criando-um-prometheusrule)
@@ -134,7 +136,7 @@
 
 &nbsp;
 
-## O treinamento [Descomplicando o Prometheus](https://www.linuxtips.io/products/descomplicando-o-prometheus)
+## O treinamento [Descomplicando o Prometheus](https://www.linuxtips.io/course/descomplicando-prometheus)
 
 Pensamos em fazer um treinamento realmente prático. Um treinamento onde a pessoa consiga aprender os conceitos e toda a teoria com explicações interessantes e excelente didática, com exemplo e desafios práticos para que você consiga executar todo o conhecimento adquirido. Isso é muito importante para que você consiga fixar e explorar ainda mais o conteúdo do treinamento.
 E por fim, vamos simular algumas conversas, para que pareça um pouco mais com o dia-a-dia no ambiente de trabalho.
@@ -172,13 +174,11 @@ O conteúdo ainda será ajustado, e no final do treinamento teremos o conteúdo 
 - Rules
 - Alertas
 - Kubernetes e Prometheus
+- Prometheus Operator
+- Kube-Prometheus
 - Prometheus em HA
-- Storage
 - Service Discovery
-- Prometheus e o Zabbix
 - Push Gateway
-- Exemplo de integrações
-- Instalando e configurando o Prometheus (2)
 - Monitorando o Prometheus
 
 ### Como adquirir o treinamento?
@@ -241,7 +241,7 @@ endo a história e características dela.
 
 Agora que você já conhece mais detalhes sobre o treinamento, acredito que já podemos começar, certo?
 
-Lembrando que o treinamento está disponível na plataforma da escola da LINUXtips, que não é o mesmo endereço da [loja](https://www.linuxtips.io/), para acessar a escola [CLIQUE AQUI](https://school.linuxtips.io).
+Lembrando que o treinamento está disponível na plataforma da escola da LINUXtips,para acessa-la [CLIQUE AQUI](https://linuxtips.io).
 
 
 ### O conteúdo

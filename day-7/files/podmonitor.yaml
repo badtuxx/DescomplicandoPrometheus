@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1 # versão da API
+kind: PodMonitor # tipo de recurso, no caso, um PodMonitor do Prometheus Operator
+metadata: # metadados do recurso
+  name: nginx-podmonitor # nome do recurso
+  labels: # labels do recurso
+    app: nginx # label que identifica o app
+spec:
+  namespaceSelector: # seletor de namespaces
+    matchNames: # namespaces que serão monitorados
+      - default # namespace que será monitorado
+  selector: # seletor para identificar os pods que serão monitorados
+    matchLabels: # labels que identificam os pods que serão monitorados
+      app: nginx # label que identifica o app que será monitorado
+  podMetricsEndpoints: # endpoints que serão monitorados
+    - interval: 10s # intervalo de tempo entre as requisições
+      path: /metrics # caminho para a requisição
+      targetPort: 9113 # porta do target
