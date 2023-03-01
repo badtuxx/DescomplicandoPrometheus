@@ -691,4 +691,18 @@ Acho que já podemos chamar o dia de hoje de sucesso absoluto, pois entendemos c
 
 Agora você precisa dar asas para a sua imaginação e sair criando tudo que é exemplo de de alerta que você bem entender, e claro, coloque mais serviços no seu cluster Kubernetes para que você possa monitorar tudo que é possível através do ServiceMonitor e PrometheusRule do Prometheus Operator, e claro, não esqueça de compartilhar com a gente o que você criou.
 
-#### 
+
+### Chega por hoje!
+
+Acho que já vimos bastante coisa no dia de hoje, já podemos parar de adicionar conteúdo novo em sua caixola, mas isso não quer dizer que você tenha que parar de estudar! Bora rever todo o dia de hoje e colocar em prática tudo que você aprendeu.
+Hoje podemos ver como adicionar novos targets e criar alertas nesse novo mundo, que é o Prometheus rodando no Kubernetes em alta disponibilidade, com o Prometheus Operator.
+
+Ainda temos muito mais coisa para ver, então chega de falatório e nos vemos no próximo day!
+
+### Lição de casa
+
+Você precisa criar pelo menos um serviço novo, seja criativo e busque na internet algum coisa legal para usar, ou se quiser, crie um serviço e não esqueça de compartilhar conosco!
+
+Além do serviço, você precisa criar um ServiceMonitor e alguns alertas no PrometheusRule para esse novo serviço.
+
+Acho que é o suficiente para você se divertir e aprender bastante. #VAIIII
