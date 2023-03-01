@@ -1,4 +1,4 @@
-# [Descomplicando o Prometheus](https://www.linuxtips.io/products/descomplicando-o-prometheus) - O LIVRO
+# [Descomplicando o Prometheus](https://www.linuxtips.io/course/descomplicando-prometheus) - O LIVRO
 
 - **[DAY-1](day-1/README.md) - Em revisão...**
     - [Por que precisamos de ferramentas como o Prometheus?](day-1/README.md#por-que-precisamos-de-ferramentas-como-o-prometheus)
@@ -134,7 +134,7 @@
 
 &nbsp;
 
-## O treinamento [Descomplicando o Prometheus](https://www.linuxtips.io/products/descomplicando-o-prometheus)
+## O treinamento [Descomplicando o Prometheus](https://www.linuxtips.io/course/descomplicando-prometheus)
 
 Pensamos em fazer um treinamento realmente prático. Um treinamento onde a pessoa consiga aprender os conceitos e toda a teoria com explicações interessantes e excelente didática, com exemplo e desafios práticos para que você consiga executar todo o conhecimento adquirido. Isso é muito importante para que você consiga fixar e explorar ainda mais o conteúdo do treinamento.
 E por fim, vamos simular algumas conversas, para que pareça um pouco mais com o dia-a-dia no ambiente de trabalho.
