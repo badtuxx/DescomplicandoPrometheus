@@ -10,12 +10,26 @@ E ainda de quebra você vai aprender como instalar o Kubernetes, mais do que iss
 
 ### Conteúdo do Day-6
 
+- [Descomplicando o Prometheus](#descomplicando-o-prometheus)
+  - [DAY-6](#day-6)
+    - [O que iremos ver hoje](#o-que-iremos-ver-hoje)
+    - [Conteúdo do Day-6](#conteúdo-do-day-6)
+    - [O que é o kube-prometheus](#o-que-é-o-kube-prometheus)
+      - [Instalando o nosso cluster Kubernetes](#instalando-o-nosso-cluster-kubernetes)
+      - [Instalando o Kube-Prometheus](#instalando-o-kube-prometheus)
+      - [Acessando o Grafana](#acessando-o-grafana)
+      - [Acessando o Prometheus](#acessando-o-prometheus)
+      - [Acessando o AlertManager](#acessando-o-alertmanager)
+    - [Chega por hoje!](#chega-por-hoje)
+    - [Lição de casa](#lição-de-casa)
 
-#### O que é o kube-prometheus
+
+
+### O que é o kube-prometheus
 
 O kube-prometheus é um conjunto de manifestos do Kubernetes que nos permite ter o Prometheus Operator, Grafana, AlertManager, Node Exporter, Kube-State-Metrics, Prometheus-Adapter instalados e configurados de forma tranquila e com alta disponibilidade. Além disso, ele nos permite ter uma visão completa do nosso cluster de Kubernetes. Ele nos permite monitorar todos os componentes do nosso cluster de Kubernetes, como por exemplo: kube-scheduler, kube-controller-manager, kubelet, kube-proxy, etc.
 
-##### Instalando o nosso cluster Kubernetes
+#### Instalando o nosso cluster Kubernetes
 
 Como dissemos, para esse nosso exemplo iremos utilizar o cluster de Kubernetes da AWS, o EKS. Para instalar o nosso cluster EKS, iremos utilizar a ferramenta [eksctl](https://eksctl.io/), portanto precisamos instalá-la em nossa máquina. Para instalar a ferramenta, basta executar o seguinte comando:
 
@@ -308,6 +322,9 @@ prometheus-operator-c766b9756-vndp9   2/2     Running   0          63s
 Pronto, já temos o Prometheus, Alertmanager, Blackbox Exporter, Node Exporter e Grafana instalados. :D
 Nesse meu cluster, eu estou com dois nodes, por isso temos dois pods do Node Exporter e dois pods do Prometheus chamados de `prometheus-k8s-0` e `prometheus-k8s-1`.
 
+
+#### Acessando o Grafana
+
 Agora que já temos o nosso Kube-Prometheus instalado, vamos acessar o nosso Grafana e verificar se está tudo funcionando corretamente. Para isso, vamos utilizar o `kubectl port-forward` para acessar o Grafana localmente. Para isso, basta executar o seguinte comando:
 
 ```bash
@@ -346,6 +363,32 @@ Também temos Dashboards que mostram detalhes do nosso cluster EKS, como por exe
 ![Grafana Dashboards](ADICIONAR URL DA IMAGEM)
 
 Eu não vou ficar aqui dando spoilers, vai lá você e confere a quantidade enorme de Dashboards que o Kube-Prometheus já vem com ele. \o/
+
+#### Acessando o Prometheus
+
+Agora que já temos o nosso Kube-Prometheus instalado, vamos acessar o nosso Prometheus e verificar se está tudo funcionando corretamente. Para isso, vamos utilizar o `kubectl port-forward` para acessar o Prometheus localmente. Para isso, basta executar o seguinte comando:
+
+```bash
+kubectl port-forward -n monitoring svc/prometheus-k8s 39090:9090
+```
+
+Pronto, agora já podemos fazer a mesma coisa que fizemos anteriormente para acessar o Grafana, a diferença aqui é que estamos utilizando uma porta diferente, a porta `39090` ao invés da porta `33000` que usamos para o Grafana.
+
+Lembre-se que essa porta é local somente, a porta onde o serviço do Prometheus está rodando é a porta `9090`, e a do Grafana é a porta `3000`.
+
+
+#### Acessando o AlertManager
+
+Aqui basicamente repetimos o que fizemos para acessar o Prometheus, só que agora para acessar o AlertManager. Para isso, vamos utilizar o `kubectl port-forward` para acessar o AlertManager localmente. Para isso, basta executar o seguinte comando:
+
+```bash
+kubectl port-forward -n monitoring svc/alertmanager-main 39093:9093
+```
+
+Pronto, agora você já pode acessar o seu serviço de forma simples e segura, sem precisar expor o serviço para o mundo externo. :D
+
+E claro, caso você queira, fique a vontado para criar um ingress para o seu serviço, ou até mesmo um LoadBalancer, caso você esteja utilizando o AWS EKS. :D
+
 
 ### Chega por hoje!
 
