@@ -1,0 +1,69 @@
+global: # Inicio da seção global 
+  resolve_timeout: 3m # Tempo de espera que o AlertManager aguarda para receber um update de um alerta do Prometheus, se não receber, ele considera que o alerta foi resolvido
+  slack_api_url: 'https://hooks.slack.com/services/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' # URL do webhook do Slack
+
+time_intervals: # Intervalos de tempo para serem usados nas rotas
+  - name: workdays # Nome do intervalo de tempo
+    time_intervals: # Intervalos de tempo
+      - weekdays: ['monday:friday'] # Dias da semana que o intervalo de tempo estará ativo
+  - name: workhours # Nome do intervalo de tempo
+    time_intervals: # Intervalos de tempo
+      - times: # Horários que o intervalo de tempo estará ativo 
+        - start_time: 09:00 # Horário de início
+          end_time: 18:00 # Horário de fim
+
+route: # Inicio da seção route que é responsável por definir como o AlertManager vai encaminhar os alertas
+  group_by: ['alertname'] # Agrupa os alertas por alertname
+  group_wait: 30s # Tempo de espera para o AlertManager aguardar para enviar um alerta
+  group_interval: 5m # Tempo de espera até adicionar um novo alerta ao grupo
+  repeat_interval: 1h # Tempo de intervalo para reenviar o alerta
+  receiver: 'gmail-notifications' # Recebedor padrão
+
+routes: # Rotas para encaminhar os alertas, filho da rota principal
+  - receiver: 'slack' # Recebedor para essa rota
+    group_wait: 10s # Tempo de espera para o AlertManager aguardar para enviar um alerta
+    matchers: # Regras para encaminhar os alertas
+      - alertname = LoadAverage # Alerta deve ter o label alertname com valor LoadAverage
+    group_by: ['alertname', 'instance'] # Agrupa os alertas por alertname, dev e instance
+    active_time_intervals: # Quando essa rota estará ativa
+      - workdays
+      - workhours
+  - receiver: 'gmail-notifications' # Recebedor para essa rota
+    matchers: # Regras para encaminhar os alertas
+      - alertname = NodeDown # Alerta deve ter o label alertname com valor NodeDown
+    group_by: ['alertname', 'instance'] # Agrupa os alertas por alertname, dev e instance
+
+inhibit_rules: # Regras de inibição, ou seja, se um alerta for disparado, ele vai inibir outros alertas
+  - source_match: # Regra de inibição para o alerta deve fazer match com os labels abaixo
+      severity: 'critical' # Label severity com valor critical
+    target_match: # Regra de inibição para o alerta deve fazer match com os labels abaixo
+      severity: 'warning' # Label severity com valor warning
+    equal: ['alertname', 'dev', 'instance']  # Os alertas devem ter os labels abaixo com os mesmos valores para serem inibidos
+
+receivers: # Recebedores de alertas
+- name: 'slack' # Nome do recebedor
+  slack_configs: # Configurações do Slack
+  - channel: '#testing' # Canal do Slack
+    send_resolved: true # Enviar alertas resolvidos 
+    icon_url: https://avatars.githubusercontent.com/u/4606725?v=4 # URL do ícone do Slack
+    title: |- 
+     [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }} na instancia {{ .CommonLabels.instance }}
+    text: >-
+     {{ range .Alerts -}}
+     *Alert:* {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+
+     *Description:* {{ .Annotations.description }}
+
+     *Details:*
+       {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+       {{ end }}
+     {{ end }}
+- name: 'gmail-notifications' # Nome do recebedor
+  email_configs: # Configurações do email
+  - to: jeferson@linuxtips.io # Email de destino
+    from: jeferson@linuxtips.io # Email de origem
+    smarthost: smtp.gmail.com:587 # Servidor SMTP
+    auth_username: jeferson@linuxtips.io # Usuário do SMTP
+    auth_identity: jeferson@linuxtips.io # Identidade do SMTP
+    auth_password: sxivskhfqvcxesaz # Senha do SMTP
+    send_resolved: true # Enviar alertas resolvidos
