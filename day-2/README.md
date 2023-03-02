@@ -300,6 +300,12 @@ Agora vamos executar o nosso script para ver se está tudo certo.
 chmod +x exporter.py
 python exporter.py
 ```
+
+Caso você receba o erro `ModuleNotFoundError: No module named 'prometheus_client'`, execute os comandos a seguir para instalar o gerenciador de pacotes do Python (pip) e o módulo "prometheus_client" que estamos usando em nosso script:
+```bash
+sudo apt-get update && sudo apt-get install python3-pip -y
+pip3 install prometheus_client
+```
 &nbsp;
 
 Abra um outro terminal e execute o comando `curl http://localhost:8899/metrics/` para ver se está tudo certo.
@@ -408,7 +414,11 @@ CMD python3 exporter.py
 &nbsp;
 
 Muito bom!
-Já temos o nosso `Dockerfile` criado, vamos criar a nossa imagem Docker.
+Já temos o nosso `Dockerfile` criado, vamos criar o nosso arquivo de dependências usado pelo Python e depois nossa imagem Docker.
+
+```bash
+echo prometheus_client >> requirements.txt
+```
 
 ```bash
 docker build -t primeiro-exporter:0.1 .
@@ -824,7 +834,7 @@ def pega_numero_astronautas(): # Função para pegar o número de astronautas
         """
         Pegar o número de astronautas no espaço 
         """
-        response = requests.get(url) # Faz a requisição HTTP
+        response = requests.get(url_numero_pessoas) # Faz a requisição HTTP
         data = response.json() # Converte o resultado em JSON
         return data['number'] # Retorna o número de astronautas
     except Exception as e: # Se der algum erro
