@@ -18,6 +18,36 @@ Hoje ainda iremos conhecer mais dois recursos que o Prometheus Operator nos dá,
 
 ### Conteúdo do Day-8
 
+- [Descomplicando o Prometheus](#descomplicando-o-prometheus)
+  - [DAY-8](#day-8)
+    - [O que iremos ver hoje?](#o-que-iremos-ver-hoje)
+    - [Conteúdo do Day-8](#conteúdo-do-day-8)
+      - [Vamos brincar com as métricas do Kubernetes](#vamos-brincar-com-as-métricas-do-kubernetes)
+        - [O que podemos saber sobre os nodes do nosso cluster?](#o-que-podemos-saber-sobre-os-nodes-do-nosso-cluster)
+          - [Quantos nós temos no nosso cluster?](#quantos-nós-temos-no-nosso-cluster)
+          - [Qual a quantidade de CPU e memória que cada nó tem?](#qual-a-quantidade-de-cpu-e-memória-que-cada-nó-tem)
+          - [O nó está disponível para receber novos pods?](#o-nó-está-disponível-para-receber-novos-pods)
+          - [Qual a quantidade de informação que cada nó está recebendo e enviando?](#qual-a-quantidade-de-informação-que-cada-nó-está-recebendo-e-enviando)
+        - [Quantos pods estão rodando em cada nó?](#quantos-pods-estão-rodando-em-cada-nó)
+      - [Agora vamos saber se o nosso cluster está com problemas](#agora-vamos-saber-se-o-nosso-cluster-está-com-problemas)
+        - [O que podemos saber sobre os pods do nosso cluster?](#o-que-podemos-saber-sobre-os-pods-do-nosso-cluster)
+          - [Quantos pods estão rodando no nosso cluster?](#quantos-pods-estão-rodando-no-nosso-cluster)
+          - [Quantos pods estão com problemas?](#quantos-pods-estão-com-problemas)
+          - [Verificar os pods e os limites de memória e CPU configurados](#verificar-os-pods-e-os-limites-de-memória-e-cpu-configurados)
+          - [Verificar se o cluster está com problemas relacionados ao disco](#verificar-se-o-cluster-está-com-problemas-relacionados-ao-disco)
+          - [Verificar se o cluster está com problemas relacionados a memória](#verificar-se-o-cluster-está-com-problemas-relacionados-a-memória)
+      - [E como saber se meus deployments estão com problemas?](#e-como-saber-se-meus-deployments-estão-com-problemas)
+          - [Quantos deployments estão rodando no meu cluster?](#quantos-deployments-estão-rodando-no-meu-cluster)
+          - [Quantos deployments estão com problemas?](#quantos-deployments-estão-com-problemas)
+          - [Qual o status dos meus deployments?](#qual-o-status-dos-meus-deployments)
+      - [E como saber se meus serviços estão com problemas?](#e-como-saber-se-meus-serviços-estão-com-problemas)
+          - [Quantos serviços estão rodando no meu cluster?](#quantos-serviços-estão-rodando-no-meu-cluster)
+          - [Todos os meus serviços estão com endpoints?](#todos-os-meus-serviços-estão-com-endpoints)
+          - [Todos os meus serviços estão com endpoints ativos?](#todos-os-meus-serviços-estão-com-endpoints-ativos)
+      - [Como eu posso modificar as configurações do meu Prometheus?](#como-eu-posso-modificar-as-configurações-do-meu-prometheus)
+        - [Definindo o nosso Prometheus](#definindo-o-nosso-prometheus)
+        - [Definindo o nosso Alertmanager](#definindo-o-nosso-alertmanager)
+
 
 #### Vamos brincar com as métricas do Kubernetes
 
@@ -500,6 +530,8 @@ $ kubectl apply -f alertmanager-alertmanager.yaml
 ```
 
 Pronto, seu Alertmanager foi atualizado com as novas configurações, caso você tenha feito alguma alteração. hahah :D
+
+
 
 
 
