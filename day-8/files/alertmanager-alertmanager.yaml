@@ -1,0 +1,36 @@
+apiVersion: monitoring.coreos.com/v1 # Versão da API do Alertmanager
+kind: Alertmanager # Tipo do objeto que estamos criando
+metadata: # Metadata do objeto que estamos criando
+  labels: # Labels que serão adicionadas ao objeto que estamos criando
+    app.kubernetes.io/component: alert-router # Label que indica que o objeto é um Alertmanager
+    app.kubernetes.io/instance: main # Label que indica que o objeto é o Alertmanager principal
+    app.kubernetes.io/name: alertmanager # Label que indica que o objeto é um Alertmanager
+    app.kubernetes.io/part-of: kube-prometheus # Label que indica que o objeto é parte do kube-prometheus
+    app.kubernetes.io/version: 0.25.0 # Label que indica a versão do Alertmanager
+  name: main # Nome do objeto que estamos criando
+  namespace: monitoring # Namespace onde o objeto que estamos criando será criado
+spec: # Especificações do objeto que estamos criando
+  image: quay.io/prometheus/alertmanager:v0.25.0 # Imagem que será utilizada pelo Alertmanager
+  nodeSelector: # Selector que será utilizado para selecionar os nós que o Alertmanager vai rodar
+    kubernetes.io/os: linux # Selector que indica que o Alertmanager vai rodar em nós Linux
+  podMetadata: # Metadata que será adicionada aos pods do Alertmanager
+    labels: # Labels que serão adicionadas aos pods do Alertmanager
+      app.kubernetes.io/component: alert-router # Label que indica que o pod é um Alertmanager
+      app.kubernetes.io/instance: main # Label que indica que o pod é o Alertmanager principal
+      app.kubernetes.io/name: alertmanager # Label que indica que o pod é um Alertmanager
+      app.kubernetes.io/part-of: kube-prometheus # Label que indica que o pod é parte do kube-prometheus
+      app.kubernetes.io/version: 0.25.0 # Label que indica a versão do Alertmanager
+  replicas: 3 # Número de réplicas que o Alertmanager vai ter
+  resources: # Recursos que serão utilizados pelo Alertmanager
+    limits: # Recursos máximos que serão utilizados pelo Alertmanager
+      cpu: 100m # CPU máxima que será utilizada pelo Alertmanager
+      memory: 100Mi # Memória máxima que será utilizada pelo Alertmanager
+    requests: # Recursos mínimos que serão utilizados pelo Alertmanager
+      cpu: 4m # CPU mínima que será utilizada pelo Alertmanager
+      memory: 100Mi # Memória mínima que será utilizada pelo Alertmanager
+  securityContext: # Security context que será utilizado pelo Alertmanager
+    fsGroup: 2000 # ID do grupo que será utilizado pelo Alertmanager
+    runAsNonRoot: true # Indica que o Alertmanager vai rodar como um usuário não root
+    runAsUser: 1000 # ID do usuário que será utilizado pelo Alertmanager
+  serviceAccountName: alertmanager-main # Nome da service account que será utilizada pelo Alertmanager
+  version: 0.25.0 # Versão do Alertmanager

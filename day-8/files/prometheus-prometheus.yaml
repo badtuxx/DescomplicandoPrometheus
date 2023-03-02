@@ -1,0 +1,48 @@
+apiVersion: monitoring.coreos.com/v1 # Versão da API
+kind: Prometheus # Tipo do recurso, no caso, Prometheus
+metadata: # Informações sobre o recurso
+  labels: # Labels que serão adicionadas ao nosso Prometheus
+    app.kubernetes.io/component: prometheus # Label que indica que o recurso é um Prometheus
+    app.kubernetes.io/instance: k8s # Label que indica que o recurso é o Prometheus do nosso cluster
+    app.kubernetes.io/name: prometheus # Label que indica que o recurso é um Prometheus
+    app.kubernetes.io/part-of: kube-prometheus # Label que indica que o recurso é parte do kube-prometheus
+    app.kubernetes.io/version: 2.42.0 # Label que indica a versão do Prometheus
+  name: k8s # Nome do nosso Prometheus
+  namespace: monitoring # Namespace onde o Prometheus vai ser criado
+spec: # Especificações do nosso Prometheus
+  alerting: # Configurações de alerta 
+    alertmanagers: # Lista de alertmanagers que o Prometheus vai utilizar
+    - apiVersion: v2 # Versão da API do Alertmanager
+      name: alertmanager-main # Nome do Alertmanager
+      namespace: monitoring # Namespace onde o Alertmanager está rodando
+      port: web # Porta que o Alertmanager está rodando
+  enableFeatures: [] # Lista de features que serão habilitadas no Prometheus, no caso, nenhuma
+  externalLabels: {} # Labels que serão adicionadas a todas as métricas que o Prometheus coletar
+  image: quay.io/prometheus/prometheus:v2.42.0 # Imagem do Prometheus
+  nodeSelector: # Node selector que será utilizado para definir em qual node o Prometheus vai rodar
+    kubernetes.io/os: linux # Node selector que indica que o Prometheus vai rodar em nodes com o sistema operacional Linux
+  podMetadata: # Metadata que será adicionada aos pods do Prometheus
+    labels: # Labels que serão adicionadas aos pods do Prometheus
+      app.kubernetes.io/component: prometheus # Label que indica que o pod é um Prometheus
+      app.kubernetes.io/instance: k8s # Label que indica que o pod é o Prometheus do nosso cluster
+      app.kubernetes.io/name: prometheus # Label que indica que o pod é um Prometheus
+      app.kubernetes.io/part-of: kube-prometheus # Label que indica que o pod é parte do kube-prometheus
+      app.kubernetes.io/version: 2.42.0 # Label que indica a versão do Prometheus
+  podMonitorNamespaceSelector: {} # Namespace selector que será utilizado para selecionar os pods que serão monitorados pelo Prometheus
+  podMonitorSelector: {} # Selector que será utilizado para selecionar os pods que serão monitorados pelo Prometheus
+  probeNamespaceSelector: {} # Namespace selector que será utilizado para selecionar os pods que serão monitorados pelo Prometheus
+  probeSelector: {} # Selector que será utilizado para selecionar os pods que serão monitorados pelo Prometheus
+  replicas: 2 # Número de réplicas que o Prometheus vai ter
+  resources: # Recursos que serão utilizados pelo Prometheus
+    requests: # Recursos mínimos que serão utilizados pelo Prometheus
+      memory: 400Mi # Memória mínima que será utilizada pelo Prometheus
+  ruleNamespaceSelector: {} # Namespace selector que será utilizado para selecionar as regras que serão utilizadas pelo Prometheus
+  ruleSelector: {} # Selector que será utilizado para selecionar as regras que serão utilizadas pelo Prometheus
+  securityContext: # Security context que será utilizado pelo Prometheus
+    fsGroup: 2000 # ID do grupo que será utilizado pelo Prometheus
+    runAsNonRoot: true # Indica que o Prometheus vai rodar como um usuário não root
+    runAsUser: 1000 # ID do usuário que será utilizado pelo Prometheus
+  serviceAccountName: prometheus-k8s # Nome da service account que será utilizada pelo Prometheus
+  serviceMonitorNamespaceSelector: {} # Namespace selector que será utilizado para selecionar os serviços que serão monitorados pelo Prometheus
+  serviceMonitorSelector: {} # Selector que será utilizado para selecionar os serviços que serão monitorados pelo Prometheus
+  version: 2.42.0 # Versão do Prometheus
