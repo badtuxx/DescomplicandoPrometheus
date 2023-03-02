@@ -136,6 +136,38 @@
 
 &nbsp;
 
+- **[DAY-8](day-8/README.md) - Em revisão...**
+- [O que iremos ver hoje?](day-8/README.md#o-que-iremos-ver-hoje)
+- [Conteúdo do Day-8](day-8/README.md#conteúdo-do-day-8)
+  - [Vamos brincar com as métricas do Kubernetes](day-8/README.md#vamos-brincar-com-as-métricas-do-kubernetes)
+    - [O que podemos saber sobre os nodes do nosso cluster?](day-8/README.md#o-que-podemos-saber-sobre-os-nodes-do-nosso-cluster)
+      - [Quantos nós temos no nosso cluster?](day-8/README.md#quantos-nós-temos-no-nosso-cluster)
+      - [Qual a quantidade de CPU e memória que cada nó tem?](day-8/README.md#qual-a-quantidade-de-cpu-e-memória-que-cada-nó-tem)
+      - [O nó está disponível para receber novos pods?](day-8/README.md#o-nó-está-disponível-para-receber-novos-pods)
+      - [Qual a quantidade de informação que cada nó está recebendo e enviando?](day-8/README.md#qual-a-quantidade-de-informação-que-cada-nó-está-recebendo-e-enviando)
+    - [Quantos pods estão rodando em cada nó?](day-8/README.md#quantos-pods-estão-rodando-em-cada-nó)
+  - [Agora vamos saber se o nosso cluster está com problemas](day-8/README.md#agora-vamos-saber-se-o-nosso-cluster-está-com-problemas)
+    - [O que podemos saber sobre os pods do nosso cluster?](day-8/README.md#o-que-podemos-saber-sobre-os-pods-do-nosso-cluster)
+      - [Quantos pods estão rodando no nosso cluster?](day-8/README.md#quantos-pods-estão-rodando-no-nosso-cluster)
+      - [Quantos pods estão com problemas?](day-8/README.md#quantos-pods-estão-com-problemas)
+      - [Verificar os pods e os limites de memória e CPU configurados](day-8/README.md#verificar-os-pods-e-os-limites-de-memória-e-cpu-configurados)
+      - [Verificar se o cluster está com problemas relacionados ao disco](day-8/README.md#verificar-se-o-cluster-está-com-problemas-relacionados-ao-disco)
+      - [Verificar se o cluster está com problemas relacionados a memória](day-8/README.md#verificar-se-o-cluster-está-com-problemas-relacionados-a-memória)
+  - [E como saber se meus deployments estão com problemas?](day-8/README.md#e-como-saber-se-meus-deployments-estão-com-problemas)
+      - [Quantos deployments estão rodando no meu cluster?](day-8/README.md#quantos-deployments-estão-rodando-no-meu-cluster)
+      - [Quantos deployments estão com problemas?](day-8/README.md#quantos-deployments-estão-com-problemas)
+      - [Qual o status dos meus deployments?](day-8/README.md#qual-o-status-dos-meus-deployments)
+  - [E como saber se meus serviços estão com problemas?](day-8/README.md#e-como-saber-se-meus-serviços-estão-com-problemas)
+      - [Quantos serviços estão rodando no meu cluster?](day-8/README.md#quantos-serviços-estão-rodando-no-meu-cluster)
+      - [Todos os meus serviços estão com endpoints?](day-8/README.md#todos-os-meus-serviços-estão-com-endpoints)
+      - [Todos os meus serviços estão com endpoints ativos?](day-8/README.md#todos-os-meus-serviços-estão-com-endpoints-ativos)
+  - [Como eu posso modificar as configurações do meu Prometheus?](day-8/README.md#como-eu-posso-modificar-as-configurações-do-meu-prometheus)
+    - [Definindo o nosso Prometheus](day-8/README.md#definindo-o-nosso-prometheus)
+    - [Definindo o nosso Alertmanager](day-8/README.md#definindo-o-nosso-alertmanager)
+
+
+&nbsp;
+
 ## O treinamento [Descomplicando o Prometheus](https://www.linuxtips.io/course/descomplicando-prometheus)
 
 Pensamos em fazer um treinamento realmente prático. Um treinamento onde a pessoa consiga aprender os conceitos e toda a teoria com explicações interessantes e excelente didática, com exemplo e desafios práticos para que você consiga executar todo o conhecimento adquirido. Isso é muito importante para que você consiga fixar e explorar ainda mais o conteúdo do treinamento.
