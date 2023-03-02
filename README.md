@@ -134,6 +134,8 @@
 - [Chega por hoje!](day-7/README.md#chega-por-hoje)
 - [Lição de casa](day-7/README.md#lição-de-casa)
 
+&nbsp;
+
 - **[DAY-8](day-8/README.md) - Em revisão...**
 - [O que iremos ver hoje?](day-8/README.md#o-que-iremos-ver-hoje)
 - [Conteúdo do Day-8](day-8/README.md#conteúdo-do-day-8)
