@@ -291,34 +291,5 @@ Agora que você já conhece mais detalhes sobre o treinamento, acredito que já 
 Lembrando que o treinamento está disponível na plataforma da escola da LINUXtips,para acessa-la [CLIQUE AQUI](https://linuxtips.io).
 
 
-### O conteúdo
-
-Como o treinamento é dividido em **days**, acesse o diretório correto para acessar o conteúdo completar do treinamento do **day** em que vc está estudando.
-
-- [ACESSE O DAY-1](day-1/README.md)
-
-Durante o dia de hoje, nós iremos focar em o que é o Prometheus e qual problema ele resolve.
-Iremos entender os diferentes tipos de monitoramento e as diferenças entre eles.
-Hoje é dia de conhecer a história do Prometheus e também a motivação para a sua criação lá na SoundCloud.
-Vamos entender a arquitetura do Prometheus e como ele se relaciona com outros aplicativos.
-E por fim, vamos instalar o Prometheus e fazer a nossa primeira configuração para o nosso mais novo serviço de monitoração.
-Teremos ainda o nosso primeiro contato com a interface web do Prometheus e vamos criar a nossa primeira query.
-
-- [ACESSE O DAY-2](day-2/README.md)
-
-Seja muito bem-vinda e muito bem-vindo para o seu segundo dia de treinamento! Sim, eu considero esse livro um treinamento e não somente um guia de como obter o melhor do sensacional Prometheus!
-
-Hoje nós vamos aprender como criar as nossa primeiras *queries* e para isso vamos precisar entender o modelo de dados que o Prometheus utiliza, vamos entender no detalhe o que é uma métrica para o Prometheus e vamos aprender como criar a nossa propria métrica e as nossas primeiras queries.
-
-Vamos criar o nosso primeiro exporter utilizando Python Docker. Vamos entender os tipos de dados que o Prometheus utiliza, como utiliza-los e pra que servem.
-
-Vamos conhecer as nossas primeiras funções para que possamos ter ainda mais poderes para criar as nossa queries PromQL.
-
-
-- [ACESSE O DAY-3](day-3/README.md)
-- [ACESSE O DAY-4](day-4/README.md)
-- [ACESSE O DAY-5](day-5/README.md)
-
-
 **Bons estudos!**
 
