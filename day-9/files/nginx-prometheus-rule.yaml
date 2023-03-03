@@ -1,0 +1,31 @@
+apiVersion: monitoring.coreos.com/v1 # Versão da api do PrometheusRule
+kind: PrometheusRule # Tipo do recurso
+metadata: # Metadados do recurso (nome, namespace, labels)
+  name: nginx-prometheus-rule
+  namespace: monitoring
+  labels: # Labels do recurso
+    prometheus: k8s # Label que indica que o PrometheusRule será utilizado pelo Prometheus do Kubernetes
+    role: alert-rules # Label que indica que o PrometheusRule contém regras de alerta
+    app.kubernetes.io/name: kube-prometheus # Label que indica que o PrometheusRule faz parte do kube-prometheus
+    app.kubernetes.io/part-of: kube-prometheus # Label que indica que o PrometheusRule faz parte do kube-prometheus
+spec: # Especificação do recurso
+  groups: # Lista de grupos de regras
+  - name: nginx-prometheus-rule # Nome do grupo de regras
+    rules: # Lista de regras
+    - alert: NginxDown # Nome do alerta
+      expr: up{job="nginx"} == 0 # Expressão que será utilizada para disparar o alerta
+      for: 1m # Tempo que a expressão deve ser verdadeira para que o alerta seja disparado
+      labels: # Labels do alerta
+        severity: critical # Label que indica a severidade do alerta
+      annotations: # Anotações do alerta
+        summary: "Nginx is down" # Título do alerta
+        description: "Nginx is down for more than 1 minute. Pod name: {{ $labels.pod }}" # Descrição do alerta 
+    
+    - alert: NginxHighRequestRate # Nome do alerta
+      expr: rate(nginx_http_requests_total{job="nginx"}[5m]) > 10 # Expressão que será utilizada para disparar o alerta
+      for: 1m # Tempo que a expressão deve ser verdadeira para que o alerta seja disparado
+      labels: # Labels do alerta
+          severity: warning # Label que indica a severidade do alerta
+      annotations: # Anotações do alerta
+          summary: "Nginx is receiving high request rate" # Título do alerta
+          description: "Nginx is receiving high request rate for more than 1 minute. Pod name: {{ $labels.pod }}" # Descrição do alerta
