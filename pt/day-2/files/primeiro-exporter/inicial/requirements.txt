@@ -1,0 +1,3 @@
+# Vamos precisar das bibliotecas `requests` e `prometheus_client` para o nosso exporter.
+requests
+prometheus_client
