@@ -165,6 +165,21 @@
     - [Definindo o nosso Prometheus](day-8/README.md#definindo-o-nosso-prometheus)
     - [Definindo o nosso Alertmanager](day-8/README.md#definindo-o-nosso-alertmanager)
 
+&nbsp;
+
+- **[DAY-9](day-9/README.md) - Em revisão...**
+- [O que iremos ver hoje?](#o-que-iremos-ver-hoje)
+- [Conteúdo do Day-9](#conteúdo-do-day-9)
+- [O que é Relabeling?](#o-que-é-relabeling)
+  - [Como funciona o Relabeling?](#como-funciona-o-relabeling)
+  - [Exemplos de uso do Relabeling](#exemplos-de-uso-do-relabeling)
+    - [ Removendo uma métrica baseado em uma label](#-removendo-uma-métrica-baseado-em-uma-label)
+    - [Junta duas labels em uma só](#junta-duas-labels-em-uma-só)
+    - [Adicionando uma nova label](#adicionando-uma-nova-label)
+    - [Armazenando somente métricas específicas](#armazenando-somente-métricas-específicas)
+    - [Mapeando todas as labels do Kubernetes](#mapeando-todas-as-labels-do-kubernetes)
+- [As meta labels do Prometheus](as-metas-labels-do-prometheus)
+
 
 &nbsp;
 
