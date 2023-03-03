@@ -1,0 +1,43 @@
+apiVersion: apps/v1 # versão da API
+kind: Deployment # tipo de recurso, no caso, um Deployment
+metadata: # metadados do recurso 
+  name: nginx-server # nome do recurso
+spec: # especificação do recurso
+  selector: # seletor para identificar os pods que serão gerenciados pelo deployment
+    matchLabels: # labels que identificam os pods que serão gerenciados pelo deployment
+      app: nginx # label que identifica o app que será gerenciado pelo deployment
+  replicas: 3 # quantidade de réplicas do deployment
+  template: # template do deployment
+    metadata: # metadados do template
+      labels: # labels do template
+        app: nginx # label que identifica o app
+      annotations: # annotations do template
+        prometheus.io/scrape: 'true' # habilita o scraping do Prometheus
+        prometheus.io/port: '9113' # porta do target
+    spec: # especificação do template
+      containers: # containers do template 
+        - name: nginx # nome do container
+          image: nginx # imagem do container do Nginx
+          ports: # portas do container
+            - containerPort: 80 # porta do container
+              name: http # nome da porta
+          volumeMounts: # volumes que serão montados no container
+            - name: nginx-config # nome do volume
+              mountPath: /etc/nginx/conf.d/default.conf # caminho de montagem do volume
+              subPath: nginx.conf # subpath do volume
+        - name: nginx-exporter # nome do container que será o exporter
+          image: 'nginx/nginx-prometheus-exporter:0.11.0' # imagem do container do exporter
+          args: # argumentos do container
+            - '-nginx.scrape-uri=http://localhost/metrics' # argumento para definir a URI de scraping
+          resources: # recursos do container
+            limits: # limites de recursos
+              memory: 128Mi # limite de memória
+              cpu: 0.3 # limite de CPU
+          ports: # portas do container
+            - containerPort: 9113 # porta do container que será exposta
+              name: metrics # nome da porta
+      volumes: # volumes do template
+        - configMap: # configmap do volume, nós iremos criar esse volume através de um configmap
+            defaultMode: 420 # modo padrão do volume
+            name: nginx-config # nome do configmap
+          name: nginx-config # nome do volume

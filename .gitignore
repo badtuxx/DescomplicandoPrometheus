@@ -1,4 +1,9 @@
 .vscode
 .terraform
 nohup.*
-
+/_book/
+/node_modules/
+/book.pdf
+/book.mobi
+/book.epub
+.vscode

@@ -1,0 +1,32 @@
+apiVersion: monitoring.coreos.com/v1 # versão da API
+kind: ServiceMonitor # tipo de recurso, no caso, um ServiceMonitor do Prometheus Operator
+metadata: # metadados do recurso
+  name: nginx-servicemonitor # nome do recurso
+  labels: # labels do recurso
+    app: nginx # label que identifica o app
+spec: # especificação do recurso
+  selector: # seletor para identificar os pods que serão monitorados
+    matchLabels: # labels que identificam os pods que serão monitorados
+      app: nginx # label que identifica o app que será monitorado
+  endpoints: # endpoints que serão monitorados
+    - interval: 10s # intervalo de tempo entre as requisições
+      path: /metrics # caminho para a requisição
+      targetPort: 9113 # porta do target
+      relabelings:
+        - sourceLabels: [__meta_kubernetes_service_label_team] # label original que será usada como base para a regra
+          regex: '(.*)' # regex que será aplicada na label original
+          targetLabel: team  # label que será criada
+          replacement: '${1}'  # valor que será atribuído a label criada, neste caso, o valor da label original
+        - sourceLabels: [__meta_kubernetes_service_label_app] # meta label que será usada como base para a regra
+          regex: '(.*)' # regex que será aplicada na label original
+          targetLabel: app # label que será criada 
+          replacement: '${1}' # valor que será atribuído a label criada, neste caso, o valor da label original
+        - sourceLabels: [] # Valor vazio, pois não estamos usando nenhuma label original
+          targetLabel: region # label que será criada
+          replacement: us-east-1 # valor que será atribuído a label criada
+        - sourceLabels: [app, team] # labels originais que serão usadas como base para a regra
+          targetLabel: app_team # label que será criada
+          regex: (.*);(.*)
+          replacement: ${1}_${2} # valor que será atribuído a label criada, neste caso, o valor da label original
+        - action: labelmap # ação que será aplicada na label original
+          regex: __meta_kubernetes_service_label_(.+) # regex que será aplicada na label original

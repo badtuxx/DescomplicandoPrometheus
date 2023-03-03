@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  labels:
+    app: nginx
+spec:
+  containers: # containers do template 
+    - name: nginx-container # nome do container
+      image: nginx # imagem do container do Nginx
+      ports: # portas do container
+        - containerPort: 80 # porta do container
+          name: http # nome da porta
+      volumeMounts: # volumes que serão montados no container
+        - name: nginx-config # nome do volume
+          mountPath: /etc/nginx/conf.d/default.conf # caminho de montagem do volume
+          subPath: nginx.conf # subpath do volume
+    - name: nginx-exporter # nome do container que será o exporter
+      image: 'nginx/nginx-prometheus-exporter:0.11.0' # imagem do container do exporter
+      args: # argumentos do container
+        - '-nginx.scrape-uri=http://localhost/metrics' # argumento para definir a URI de scraping
+      resources: # recursos do container
+        limits: # limites de recursos
+          memory: 128Mi # limite de memória
+          cpu: 0.3 # limite de CPU
+      ports: # portas do container
+        - containerPort: 9113 # porta do container que será exposta
+          name: metrics # nome da porta
+  volumes: # volumes do template
+    - configMap: # configmap do volume, nós iremos criar esse volume através de um configmap
+        defaultMode: 420 # modo padrão do volume
+        name: nginx-config # nome do configmap
+      name: nginx-config # nome do volume
