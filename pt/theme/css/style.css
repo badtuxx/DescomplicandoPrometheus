@@ -1,0 +1,19 @@
+#sidebar .sidebar-scrollbox {
+    font-size: 18px;
+}
+#sidebar .sidebar-scrollbox .chapter-item a {
+    margin-bottom: 10px;
+}
+#sidebar .sidebar-scrollbox .chapter-item.affix a {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+#sidebar .sidebar-scrollbox .chapter-item a strong {
+    display: none;
+    margin-bottom: 10px;
+}
+
+#sidebar .sidebar-scrollbox .part-title {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
