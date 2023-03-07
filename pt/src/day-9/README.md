@@ -22,12 +22,12 @@ Bora lá!
     - [O que é Relabeling?](#o-que-é-relabeling)
       - [Como funciona o Relabeling?](#como-funciona-o-relabeling)
       - [Exemplos de uso do Relabeling](#exemplos-de-uso-do-relabeling)
-        - [ Removendo uma métrica baseado em uma label](#-removendo-uma-métrica-baseado-em-uma-label)
+        - [ Removendo uma métrica baseado em uma label](#removendo-uma-métrica-baseado-em-uma-label)
         - [Junta duas labels em uma só](#junta-duas-labels-em-uma-só)
         - [Adicionando uma nova label](#adicionando-uma-nova-label)
         - [Armazenando somente métricas específicas](#armazenando-somente-métricas-específicas)
         - [Mapeando todas as labels do Kubernetes](#mapeando-todas-as-labels-do-kubernetes)
-    - [As meta labels do Prometheus](as-metas-labels-do-prometheus)
+    - [As meta labels do Prometheus](#as-meta-labels-do-prometheus)
 
 
 #### O que é Relabeling?
@@ -83,7 +83,7 @@ Simples demais, né? Evidente que existem outras regras que podem ser usadas, e 
 
 ##### Exemplos de uso do Relabeling
 
-######  Removendo uma métrica baseado em uma label
+###### Removendo uma métrica baseado em uma label
 
 Essa regra de relabeling está definindo que a etiqueta endpoint será removida (drop) das métricas coletadas pelo Prometheus. Isso significa que todas as métricas coletadas que possuem essa etiqueta serão descartadas e não estarão disponíveis para consulta posterior.
 

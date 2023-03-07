@@ -18,9 +18,9 @@ Teremos ainda o nosso primeiro contato com a interface web do Prometheus e vamos
 ### Conteúdo do Day-1
 
 - [Por que precisamos de ferramentas como o Prometheus?](#por-que-precisamos-de-ferramentas-como-o-prometheus)
-- [O que é monitorar?](#o-que-e-monitorar)
+- [O que é monitorar?](#o-que-é-monitorar)
   - [O monitoramento e a observabilidade](#o-monitoramento-e-a-observabilidade)
-- [O que é o Prometheus?](#o-que-e-o-prometheus)
+- [O que é o Prometheus?](#o-que-é-o-prometheus)
   - [A arquitetura do Prometheus](#a-arquitetura-do-prometheus)
 - [Instalando o Prometheus](#instalando-o-prometheus)
   - [Executando o Prometheus em um node Linux](#executando-o-prometheus-em-um-node-linux)
