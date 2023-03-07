@@ -1,6 +1,6 @@
 [book]
 authors = ["LINUXTips"]
-language = "pt"
+language = "en"
 multilingual = true
 src = "src"
-title = "Descomplicando o Prometheus"
+title = "Uncomplicating Prometheus"
