@@ -6,6 +6,7 @@ src = "src"
 title = "Descomplicando o Prometheus"
 
 [output.html]
+cname = "livro.descomplicandoprometheus.com.br" 
 git-repository-url = "https://github.com/badtuxx/DescomplicandoPrometheus"
 edit-url-template = "https://github.com/badtuxx/DescomplicandoPrometheus/edit/master/pt/src{path}"
 additional-css = ["theme/css/style.css"]
