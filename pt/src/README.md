@@ -17,6 +17,12 @@ E claro, sempre trazendo exemplos de integrações e de caso de uso reais para a
 
 Estamos prontos para iniciar a nossa viagem?
 
+&nbsp;
+
+**ACESSE O LIVRO GRATUITAMENTE [CLICANDO AQUI](https://livro.descomplicandoprometheus.com.br)**
+
+&nbsp;
+
 ### Conteúdo do Livro
 
 - **[DAY-1](pt/src/day-1/README.md) - Em revisão...**
