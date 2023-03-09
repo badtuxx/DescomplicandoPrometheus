@@ -10,6 +10,9 @@ E ainda de quebra você vai aprender como instalar o Kubernetes, mais do que iss
 
 ### Conteúdo do Day-6
 
+<details>
+<summary>DAY-6</summary>
+
 - [Descomplicando o Prometheus](#descomplicando-o-prometheus)
   - [DAY-6](#day-6)
     - [O que iremos ver hoje](#o-que-iremos-ver-hoje)
@@ -23,6 +26,7 @@ E ainda de quebra você vai aprender como instalar o Kubernetes, mais do que iss
     - [Chega por hoje!](#chega-por-hoje)
     - [Lição de casa](#lição-de-casa)
 
+</details>
 
 
 ### O que é o kube-prometheus

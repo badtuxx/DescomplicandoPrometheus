@@ -9,6 +9,10 @@ Evidente, ainda vamos voltar nessas ferramentas muitas vezes no decorrer do trei
 &nbsp;
 
 ### Conteúdo do Day-4
+
+<details>
+<summary>DAY-4</summary>
+
 - [Descomplicando o Prometheus](#descomplicando-o-prometheus)
   - [DAY-4](#day-4)
     - [O que iremos ver hoje?](#o-que-iremos-ver-hoje)
@@ -19,6 +23,8 @@ Evidente, ainda vamos voltar nessas ferramentas muitas vezes no decorrer do trei
       - [Criando o nosso primeiro Dashboard](#criando-o-nosso-primeiro-dashboard)
     - [Alertmanager](#alertmanager)
       - [Instalando o Alertmanager](#instalando-o-alertmanager)
+
+</details>
 
 &nbsp;
 

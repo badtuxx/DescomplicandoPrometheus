@@ -18,6 +18,9 @@ Hoje ainda iremos conhecer mais dois recursos que o Prometheus Operator nos dá,
 
 ### Conteúdo do Day-8
 
+<details>
+<summary>DAY-8</summary>
+
 - [Descomplicando o Prometheus](#descomplicando-o-prometheus)
   - [DAY-8](#day-8)
     - [O que iremos ver hoje?](#o-que-iremos-ver-hoje)
@@ -48,6 +51,7 @@ Hoje ainda iremos conhecer mais dois recursos que o Prometheus Operator nos dá,
         - [Definindo o nosso Prometheus](#definindo-o-nosso-prometheus)
         - [Definindo o nosso Alertmanager](#definindo-o-nosso-alertmanager)
 
+</details>
 
 #### Vamos brincar com as métricas do Kubernetes
 
