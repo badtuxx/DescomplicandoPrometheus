@@ -15,6 +15,9 @@ Bora lá!
 
 ### Conteúdo do Day-9
 
+<details>
+<summary>DAY-9</summary>
+
 - [Descomplicando o Prometheus](#descomplicando-o-prometheus)
   - [DAY-9](#day-9)
     - [O que iremos ver hoje?](#o-que-iremos-ver-hoje)
@@ -28,6 +31,8 @@ Bora lá!
         - [Armazenando somente métricas específicas](#armazenando-somente-métricas-específicas)
         - [Mapeando todas as labels do Kubernetes](#mapeando-todas-as-labels-do-kubernetes)
     - [As meta labels do Prometheus](#as-meta-labels-do-prometheus)
+
+</details>
 
 
 #### O que é Relabeling?

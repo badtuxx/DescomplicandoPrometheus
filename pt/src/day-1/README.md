@@ -1,4 +1,4 @@
-# [Descomplicando o Prometheus](https://www.linuxtips.io/products/descomplicando-o-prometheus) - O Treinamento
+# [Descomplicando o Prometheus](https://www.linuxtips.io/course/descomplicando-prometheus) - O Treinamento
 
 ## DAY-1
 &nbsp;
@@ -17,6 +17,9 @@ Teremos ainda o nosso primeiro contato com a interface web do Prometheus e vamos
 &nbsp;
 ### Conteúdo do Day-1
 
+<details>
+<summary>DAY-1</summary>
+
 - [Por que precisamos de ferramentas como o Prometheus?](#por-que-precisamos-de-ferramentas-como-o-prometheus)
 - [O que é monitorar?](#o-que-é-monitorar)
   - [O monitoramento e a observabilidade](#o-monitoramento-e-a-observabilidade)
@@ -29,7 +32,8 @@ Teremos ainda o nosso primeiro contato com a interface web do Prometheus e vamos
 - [Desafio do Day-1](#desafio-do-day-1)
 - [Final do Day-1](#final-do-day-1)
 
-&nbsp;
+</details>
+
 ### Por que precisamos de ferramentas como o Prometheus?
 
 Sei que ainda não falamos sobre o que é monitoramento em si, mas acho importante trazer esse cenário para que você entenda depois o que é e para que serve o Prometheus e essa tal de monitoração.

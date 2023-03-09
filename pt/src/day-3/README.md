@@ -16,6 +16,9 @@ Ahhh, já vamos deixar o Grafana instalado e configurado para que possamos utili
 
 ### Conteúdo do Day-3
 
+<details>
+<summary>DAY-3</summary>
+
 - [Descomplicando o Prometheus](#descomplicando-o-prometheus)
   - [DAY-3](#day-3)
     - [O que iremos ver hoje?](#o-que-iremos-ver-hoje)
@@ -70,6 +73,7 @@ Ahhh, já vamos deixar o Grafana instalado e configurado para que possamos utili
     - [Lição de casa](#lição-de-casa)
     - [Referências](#referências)
 
+</details>
 
 &nbsp;
 &nbsp;

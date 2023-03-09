@@ -25,6 +25,9 @@ Estamos prontos para iniciar a nossa viagem?
 
 ### Conteúdo do Livro
 
+<details>
+<summary>Clique aqui para expandir</summary>
+
 - **[DAY-1](pt/src/day-1/README.md) - Em revisão...**
     - [Por que precisamos de ferramentas como o Prometheus?](pt/src/day-1/README.md#por-que-precisamos-de-ferramentas-como-o-prometheus)
     - [O que é monitorar?](pt/src/day-1/README.md#o-que-e-monitorar)
@@ -187,12 +190,14 @@ Estamos prontos para iniciar a nossa viagem?
         - [Mapeando todas as labels do Kubernetes](#mapeando-todas-as-labels-do-kubernetes)
     - [As meta labels do Prometheus](as-metas-labels-do-prometheus)
 
+</details>
+
 
 ### Como adquirir o treinamento?
 
-Para adquirir o treinamento [Descomplicando o Prometheus](https://www.linuxtips.io/products/descomplicando-o-prometheus) você deverá ir até a loja da [LINUXtips](https://www.linuxtips.io/).
+Para adquirir o treinamento [Descomplicando o Prometheus](https://www.linuxtips.io/course/descomplicando-prometheus) você deverá ir até a loja da [LINUXtips](https://www.linuxtips.io/).
 
-Para ir até o treinamento, [CLIQUE AQUI](https://www.linuxtips.io/products/descomplicando-o-prometheus).
+Para ir até o treinamento, [CLIQUE AQUI](https://www.linuxtips.io/course/descomplicando-prometheus).
 
 
 ## A ideia do formato do treinamento

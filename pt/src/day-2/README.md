@@ -16,6 +16,8 @@ Vamos conhecer as nossas primeiras funções para que possamos ter ainda mais po
 &nbsp;
 ### Conteúdo do Day-2
 
+<details>
+<summary>DAY-2</summary>
 
 - [O Data Model do Prometheus](#o-data-model-do-prometheus)
 - [As queries do Prometheus e o PromQL](#as-queries-do-prometheus-e-o-promql)
@@ -31,7 +33,7 @@ Vamos conhecer as nossas primeiras funções para que possamos ter ainda mais po
 - [Chega por hoje!](#chega-por-hoje)
 - [Lição de casa](#lição-de-casa)
   
-
+</details>
 
 &nbsp;
 &nbsp;
@@ -58,6 +60,7 @@ http://localhost:9090/
 
 
 Se liga no print do navegador:
+
 ![Query buscando o valor atual da métrica up](images/resultado-query-up.png)
 
 &nbsp;
