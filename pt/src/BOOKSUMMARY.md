@@ -1,6 +1,9 @@
 # [Descomplicando o Prometheus](https://www.linuxtips.io/course/descomplicando-prometheus) - O LIVRO
 ### Conteúdo do Livro
 
+<details>
+<summary>DAY-1</summary>
+
 - **[DAY-1](pt/src/day-1/README.md) - Em revisão...**
     - [Por que precisamos de ferramentas como o Prometheus?](pt/src/day-1/README.md#por-que-precisamos-de-ferramentas-como-o-prometheus)
     - [O que é monitorar?](pt/src/day-1/README.md#o-que-e-monitorar)
@@ -13,6 +16,13 @@
     - [A sua lição de casa](pt/src/day-1/README.md#a-sua-lição-de-casa)
     - [Desafio do Day-1](pt/src/day-1/README.md#desafio-do-day-1)
     - [Final do Day-1](pt/src/day-1/README.md#final-do-day-1)
+
+</details>
+
+&nbsp;
+
+<details>
+<summary>DAY-2</summary>
 
 - **[DAY-2](pt/src/day-2/README.md) - Em revisão...**
     - [O Data Model do Prometheus](pt/src/day-2/README.md#o-data-model-do-prometheus)
@@ -28,6 +38,13 @@
     - [histogram: Histograma](pt/src/day-2/README.md#histogram-histograma)
     - [Chega por hoje!](pt/src/day-2/README.md#chega-por-hoje)
     - [Lição de casa](pt/src/day-2/README.md#lição-de-casa)
+
+</details>
+
+&nbsp;
+
+<details>
+<summary>DAY-3</summary>
 
 - **[DAY-3](pt/src/day-3/README.md) - Em revisão...**
     - [Criando o nosso segundo exporter](pt/src/day-3/README.md#criando-o-nosso-segundo-exporter)
@@ -84,6 +101,13 @@
     - [Lição de casa](pt/src/day-3/README.md#lição-de-casa)
     - [Referências](pt/src/day-3/README.md#referências)
 
+</details>
+
+&nbsp;
+
+<details>
+<summary>DAY-4</summary>
+
 - **[DAY-4](pt/src/day-4/README.md) - Em revisão...**
     - [O que iremos ver hoje?](pt/src/day-4/README.md#o-que-iremos-ver-hoje)
     - [Conteúdo do Day-4](pt/src/day-4/README.md#conteúdo-do-day-4)
@@ -94,7 +118,21 @@
     - [Alertmanager](pt/src/day-4/README.md#alertmanager)
     - [Instalando o Alertmanager](pt/src/day-4/README.md#instalando-o-alertmanager)
 
+</details>
+
+&nbsp;
+
+<details>
+<summary>DAY-5</summary>
+
 - **[DAY-5](pt/src/day-5/README.md) - Em revisão...**
+
+</details>
+
+&nbsp;
+
+<details>
+<summary>DAY-6</summary>
 
 - **[DAY-6](pt/src/day-6/README.md) - Em revisão...**
     - [O que iremos ver hoje](pt/src/day-6/README.md#o-que-iremos-ver-hoje)
@@ -108,6 +146,13 @@
     - [Chega por hoje!](pt/src/day-6/README.md#chega-por-hoje)
     - [Lição de casa](pt/src/day-6/README.md#lição-de-casa)
 
+</details>
+
+&nbsp;
+
+<details>
+<summary>DAY-7</summary>
+
 - **[DAY-7](pt/src/day-7/README.md) - Em revisão...**
     - [O que iremos ver hoje?](pt/src/day-7/README.md#o-que-iremos-ver-hoje)
     - [Conteúdo do Day-7](pt/src/day-7/README.md#conteúdo-do-day-7)
@@ -120,6 +165,13 @@
         - [Criando um PrometheusRule](pt/src/day-7/README.md#criando-um-prometheusrule)
     - [Chega por hoje!](pt/src/day-7/README.md#chega-por-hoje)
     - [Lição de casa](pt/src/day-7/README.md#lição-de-casa)
+
+</details>
+
+&nbsp;
+
+<details>
+<summary>DAY-8</summary>
 
 - **[DAY-8](pt/src/day-8/README.md) - Em revisão...**
     - [O que iremos ver hoje?](pt/src/day-8/README.md#o-que-iremos-ver-hoje)
@@ -150,6 +202,13 @@
         - [Definindo o nosso Prometheus](pt/src/day-8/README.md#definindo-o-nosso-prometheus)
         - [Definindo o nosso Alertmanager](pt/src/day-8/README.md#definindo-o-nosso-alertmanager)
 
+</details>
+
+&nbsp;
+
+<details>
+<summary>DAY-9</summary>
+
 - **[DAY-9](pt/src/day-9/README.md) - Em revisão...**
     - [O que iremos ver hoje?](#o-que-iremos-ver-hoje)
     - [Conteúdo do Day-9](#conteúdo-do-day-9)
@@ -162,6 +221,14 @@
         - [Armazenando somente métricas específicas](#armazenando-somente-métricas-específicas)
         - [Mapeando todas as labels do Kubernetes](#mapeando-todas-as-labels-do-kubernetes)
     - [As meta labels do Prometheus](as-metas-labels-do-prometheus)
+
+</details>
+
+&nbsp;
+
+<details>
+<summary>REVISAR</summary><!-- #TODO -->
+
 - **[DAY-3](day-3) - Em revisão...**
 - [Criando o nosso segundo exporter](day-3/#criando-o-nosso-segundo-exporter)
 	- [Criando o nosso exporter usando Go](day-3/#criando-o-nosso-exporter-usando-go)
@@ -307,3 +374,5 @@
     - [Armazenando somente métricas específicas](day-9#armazenando-somente-métricas-específicas)
     - [Mapeando todas as labels do Kubernetes](day-9#mapeando-todas-as-labels-do-kubernetes)
 - [As meta labels do Prometheus](day-9#as-metas-labels-do-prometheus)
+
+</details>
