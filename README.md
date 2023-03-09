@@ -190,9 +190,9 @@ Estamos prontos para iniciar a nossa viagem?
 
 ### Como adquirir o treinamento?
 
-Para adquirir o treinamento [Descomplicando o Prometheus](https://www.linuxtips.io/products/descomplicando-o-prometheus) você deverá ir até a loja da [LINUXtips](https://www.linuxtips.io/).
+Para adquirir o treinamento [Descomplicando o Prometheus](https://www.linuxtips.io/course/descomplicando-prometheus) você deverá ir até a loja da [LINUXtips](https://www.linuxtips.io/).
 
-Para ir até o treinamento, [CLIQUE AQUI](https://www.linuxtips.io/products/descomplicando-o-prometheus).
+Para ir até o treinamento, [CLIQUE AQUI](https://www.linuxtips.io/course/descomplicando-prometheus).
 
 
 ## A ideia do formato do treinamento
