@@ -16,3 +16,4 @@
 - [Uncomplicating the Prometheus Day 6](day-6/README.md)
 - [Uncomplicating the Prometheus Day 7](day-7/README.md)
 - [Uncomplicating the Prometheus Day 8](day-8/README.md)
+- [Uncomplicating the Prometheus Day 9](day-9/README.md)
