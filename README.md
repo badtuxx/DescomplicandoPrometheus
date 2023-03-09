@@ -24,8 +24,8 @@
 </p>
 
 <p align="center">
-  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/badtuxx/descomplicandoPrometheus?label=Descomplicando%20Prometheus&style=social">
-  <img alt="GitHub forks" src="https://img.shields.io/github/forks/badtuxx/descomplicandoprometheus?style=social">
+  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/badtuxx/descomplicandoPrometheus?label=Descomplicando%20Prometheus">
+  <img alt="GitHub forks" src="https://img.shields.io/github/forks/badtuxx/descomplicandoprometheus">
   <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/badtuxx/DescomplicandoPrometheus">
 </p>
 
