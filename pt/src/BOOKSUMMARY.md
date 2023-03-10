@@ -2,7 +2,7 @@
 ### Conteúdo do Livro
 
 <details>
-<summary>DAY-1</summary>
+<summary class="summary">DAY-1</summary>
 
 - **[DAY-1](day-1/index.html) - Em revisão...**
     - [Por que precisamos de ferramentas como o Prometheus?](day-1/index.html#por-que-precisamos-de-ferramentas-como-o-prometheus)
@@ -22,7 +22,7 @@
 &nbsp;
 
 <details>
-<summary>DAY-2</summary>
+<summary class="summary">DAY-2</summary>
 
 - **[DAY-2](day-2/index.html) - Em revisão...**
     - [O Data Model do Prometheus](day-2/index.html#o-data-model-do-prometheus)
@@ -44,7 +44,7 @@
 &nbsp;
 
 <details>
-<summary>DAY-3</summary>
+<summary class="summary">DAY-3</summary>
 
 - **[DAY-3](day-3/index.html) - Em revisão...**
     - [Criando o nosso segundo exporter](day-3/index.html#criando-o-nosso-segundo-exporter)
@@ -106,7 +106,7 @@
 &nbsp;
 
 <details>
-<summary>DAY-4</summary>
+<summary class="summary">DAY-4</summary>
 
 - **[DAY-4](day-4/index.html) - Em revisão...**
     - [O que iremos ver hoje?](day-4/index.html#o-que-iremos-ver-hoje)
@@ -123,7 +123,7 @@
 &nbsp;
 
 <details>
-<summary>DAY-5</summary>
+<summary class="summary">DAY-5</summary>
 
 - **[DAY-5](day-5/index.html) - Em revisão...**
 
@@ -132,7 +132,7 @@
 &nbsp;
 
 <details>
-<summary>DAY-6</summary>
+<summary class="summary">DAY-6</summary>
 
 - **[DAY-6](day-6/index.html) - Em revisão...**
     - [O que iremos ver hoje](day-6/index.html#o-que-iremos-ver-hoje)
@@ -151,7 +151,7 @@
 &nbsp;
 
 <details>
-<summary>DAY-7</summary>
+<summary class="summary">DAY-7</summary>
 
 - **[DAY-7](day-7/index.html) - Em revisão...**
     - [O que iremos ver hoje?](day-7/index.html#o-que-iremos-ver-hoje)
@@ -171,7 +171,7 @@
 &nbsp;
 
 <details>
-<summary>DAY-8</summary>
+<summary class="summary">DAY-8</summary>
 
 - **[DAY-8](day-8/index.html) - Em revisão...**
     - [O que iremos ver hoje?](day-8/index.html#o-que-iremos-ver-hoje)
@@ -207,7 +207,7 @@
 &nbsp;
 
 <details>
-<summary>DAY-9</summary>
+<summary class="summary">DAY-9</summary>
 
 - **[DAY-9](day-9/index.html) - Em revisão...**
     - [O que iremos ver hoje?](day-9/index.html#o-que-iremos-ver-hoje)
@@ -227,7 +227,7 @@
 &nbsp;
 
 <details>
-<summary>REVISAR</summary><!-- #TODO -->
+<summary class="summary">REVISAR</summary><!-- #TODO -->
 
 - **[DAY-3](day-3) - Em revisão...**
 - [Criando o nosso segundo exporter](day-3/#criando-o-nosso-segundo-exporter)

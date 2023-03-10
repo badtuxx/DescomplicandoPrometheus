@@ -19,7 +19,7 @@ Hoje ainda iremos conhecer mais dois recursos que o Prometheus Operator nos dá,
 ### Conteúdo do Day-8
 
 <details>
-<summary>DAY-8</summary>
+<summary class="summary">DAY-8</summary>
 
 - [Descomplicando o Prometheus](#descomplicando-o-prometheus)
   - [DAY-8](#day-8)
