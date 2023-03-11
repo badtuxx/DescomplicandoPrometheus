@@ -24,9 +24,44 @@
 </p>
 
 <p align="center">
-  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/badtuxx/descomplicandoPrometheus?label=Descomplicando%20Prometheus">
-  <img alt="GitHub forks" src="https://img.shields.io/github/forks/badtuxx/descomplicandoprometheus">
-  <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/badtuxx/DescomplicandoPrometheus">
+  <a href="https://hub.docker.com/r/linuxtips/alertmanager_alpine">
+    <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/linuxtips/alertmanager_alpine?label=alertmanager_alpine%20image%20pulls&style=plastic">
+  </a>
+  <a href="https://hub.docker.com/r/linuxtips/prometheus_alpine">
+    <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/linuxtips/prometheus_alpine?label=prometheus_alpine%20image%20pulls&style=plastic">
+  </a>
+  <a href="https://hub.docker.com/r/linuxtips/node-exporter_alpine">
+    <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/linuxtips/node-exporter_alpine?label=node-exporter_alpine%20image%20pulls&style=plastic">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/badtuxx/DescomplicandoKubernetes">
+    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/badtuxx/descomplicandokubernetes?label=Descomplicando%20Kubernetes&style=social">
+  </a>
+  <a href="https://github.com/badtuxx/descomplicandoDocker">
+    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/badtuxx/descomplicandoDocker?label=Descomplicando%20Docker&style=social">
+  </a>
+  <a href="https://github.com/badtuxx/descomplicandoPrometheus">
+    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/badtuxx/descomplicandoPrometheus?label=Descomplicando%20Prometheus&style=social">
+  </a>
+  <a href="https://github.com/badtuxx/CertifiedContainersExpert">
+    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/badtuxx/CertifiedContainersExpert?label=CertifiedContainersExpert&style=social">
+  </a>
+  <a href="https://github.com/badtuxx/DescomplicandoGit">
+    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/badtuxx/DescomplicandoGit?label=Descomplicando%20Git&style=social">
+  </a>
+  <a href="https://github.com/badtuxx/DescomplicandoArgoCD">
+    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/badtuxx/DescomplicandoArgoCD?label=Descomplicando%20ArgoCD&style=social">
+  </a>
+  <a href="https://github.com/badtuxx/Giropops-Monitoring">
+    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/badtuxx/Giropops-Monitoring?label=Giropops%20Monitoring&style=social">
+  </a>
+  <a href="https://github.com/badtuxx/DescomplicandoHelm">
+    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/badtuxx/DescomplicandoHelm?label=Descomplicando%20Helm&style=social">
+  </a>
+                <a href="https://github.com/badtuxx/convencendo-seu-chefe">
+    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/badtuxx/convencendo-seu-chefe?label=convencendo-seu-chefe&style=social">
 </p>
 
 
