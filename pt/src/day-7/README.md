@@ -20,7 +20,7 @@ Enfim, sem mais spoilers, vamos começar a explorar o Prometheus, Kube-Prometheu
 ### Conteúdo do Day-7
 
 <details>
-<summary>DAY-7</summary>
+<summary class="summary">DAY-7</summary>
 
 - [Descomplicando o Prometheus](#descomplicando-o-prometheus)
   - [DAY-7](#day-7)

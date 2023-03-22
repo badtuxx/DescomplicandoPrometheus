@@ -18,7 +18,7 @@ Teremos ainda o nosso primeiro contato com a interface web do Prometheus e vamos
 ### Conteúdo do Day-1
 
 <details>
-<summary>DAY-1</summary>
+<summary class="summary">DAY-1</summary>
 
 - [Por que precisamos de ferramentas como o Prometheus?](#por-que-precisamos-de-ferramentas-como-o-prometheus)
 - [O que é monitorar?](#o-que-é-monitorar)

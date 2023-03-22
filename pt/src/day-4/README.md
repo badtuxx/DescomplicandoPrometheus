@@ -11,7 +11,7 @@ Evidente, ainda vamos voltar nessas ferramentas muitas vezes no decorrer do trei
 ### Conteúdo do Day-4
 
 <details>
-<summary>DAY-4</summary>
+<summary class="summary">DAY-4</summary>
 
 - [Descomplicando o Prometheus](#descomplicando-o-prometheus)
   - [DAY-4](#day-4)

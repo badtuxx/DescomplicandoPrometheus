@@ -26,7 +26,7 @@ Estamos prontos para iniciar a nossa viagem?
 ### Conteúdo do Livro
 
 <details>
-<summary>Clique aqui para expandir</summary>
+<summary class="summary">Clique aqui para expandir</summary>
 
 - **[DAY-1](day-1/index.html) - Em revisão...**
     - [Por que precisamos de ferramentas como o Prometheus?](day-1/index.html#por-que-precisamos-de-ferramentas-como-o-prometheus)

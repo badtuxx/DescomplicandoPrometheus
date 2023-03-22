@@ -16,7 +16,7 @@ Bora lá!
 ### Conteúdo do Day-9
 
 <details>
-<summary>DAY-9</summary>
+<summary class="summary">DAY-9</summary>
 
 - [Descomplicando o Prometheus](#descomplicando-o-prometheus)
   - [DAY-9](#day-9)

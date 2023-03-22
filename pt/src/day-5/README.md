@@ -5,6 +5,6 @@
 ### O que iremos ver hoje?
 
 <details>
-<summary>DAY-5</summary>
+<summary class="summary">DAY-5</summary>
 
 </details>

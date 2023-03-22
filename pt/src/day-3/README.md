@@ -17,7 +17,7 @@ Ahhh, já vamos deixar o Grafana instalado e configurado para que possamos utili
 ### Conteúdo do Day-3
 
 <details>
-<summary>DAY-3</summary>
+<summary class="summary">DAY-3</summary>
 
 - [Descomplicando o Prometheus](#descomplicando-o-prometheus)
   - [DAY-3](#day-3)
