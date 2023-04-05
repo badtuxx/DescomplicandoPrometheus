@@ -11,7 +11,7 @@ E ainda de quebra você vai aprender como instalar o Kubernetes, mais do que iss
 ### Conteúdo do Day-6
 
 <details>
-<summary class="summary">DAY-6</summary>
+<summary>DAY-6</summary>
 
 - [Descomplicando o Prometheus](#descomplicando-o-prometheus)
   - [DAY-6](#day-6)
@@ -402,7 +402,7 @@ E claro, caso você queira, fique a vontado para criar um ingress para o seu ser
 
 ### Chega por hoje!
 
-Hoje foi o dia de ver o que é o kube-prometheus e como podemos instala-lo em nosso cluster Kubernetes. De quebra, vimos como criar um cluster EKS através do eksctl e como instalar o kube-prometheus no nosso cluster.
+Hoje foi o dia de ver o que é o kube-prometheus e como podemos instalar ele no nosso cluster Kubernetes. De quebra, vimos como criar um cluster EKS através do eksctl e como instalar o kube-prometheus no nosso cluster.
 
 Vimos ainda como acessar o nosso Prometheus, AlertManager e Grafana. Vimos as diversas opções de dashboards disponíveis no Grafana.
 
