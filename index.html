@@ -1,0 +1,478 @@
+<!DOCTYPE HTML>
+<html lang="pt" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Descomplicando o Prometheus</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="theme/css/style.css">
+        <link rel="stylesheet" href="theme/css/mdbook-admonish.css">
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html" class="active">Introdução</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="BOOKSUMMARY.html">Sumário</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Capítulos</li><li class="chapter-item expanded "><a href="day-1/index.html"><strong aria-hidden="true">1.</strong> Dia 1</a></li><li class="chapter-item expanded "><a href="day-2/index.html"><strong aria-hidden="true">2.</strong> Dia 2</a></li><li class="chapter-item expanded "><a href="day-3/index.html"><strong aria-hidden="true">3.</strong> Dia 3</a></li><li class="chapter-item expanded "><a href="day-4/index.html"><strong aria-hidden="true">4.</strong> Dia 4</a></li><li class="chapter-item expanded "><a href="day-5/index.html"><strong aria-hidden="true">5.</strong> Dia 5</a></li><li class="chapter-item expanded "><a href="day-6/index.html"><strong aria-hidden="true">6.</strong> Dia 6</a></li><li class="chapter-item expanded "><a href="day-7/index.html"><strong aria-hidden="true">7.</strong> Dia 7</a></li><li class="chapter-item expanded "><a href="day-8/index.html"><strong aria-hidden="true">8.</strong> Dia 8</a></li><li class="chapter-item expanded "><a href="day-9/index.html"><strong aria-hidden="true">9.</strong> Dia 9</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Descomplicando o Prometheus</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/badtuxx/DescomplicandoPrometheus" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/badtuxx/DescomplicandoPrometheus/edit/main/pt/src/README.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <h1 id="descomplicando-o-prometheus---o-livro"><a class="header" href="#descomplicando-o-prometheus---o-livro"><a href="https://www.linuxtips.io/course/descomplicando-prometheus">Descomplicando o Prometheus</a> - O LIVRO</a></h1>
+<p>Pensamos em fazer um treinamento realmente prático. Um treinamento onde a pessoa consiga aprender os conceitos e toda a teoria com explicações interessantes e excelente didática, com exemplo e desafios práticos para que você consiga executar todo o conhecimento adquirido. Isso é muito importante para que você consiga fixar e explorar ainda mais o conteúdo do treinamento.
+E por fim, vamos simular algumas conversas, para que pareça um pouco mais com o dia-a-dia no ambiente de trabalho.</p>
+<p>Durante o treinamento vamos passar por todos os tópicos importantes do Prometheus, para que no final do treinamento você possua todo conhecimento e também toda a segurança para implementar e administrar o Prometheus em ambientes críticos e complexos.</p>
+<p>Vamos entender o que é o Prometheus e como ele pode nos ajudar a monitorar nossas serviços e sistemas. Vamos aprender diversas formas de instalar e configurar o Prometheus, sempre visando a melhor performance e a cobertura de diversos cenários.
+Vamos integra-lo com diversas ferramentas como o Grafana e o AlertManager, trazendo ainda mais poder ao Prometheus. 
+Durante o treinamento iremos entender como criar queries performáticas e que consigam nos trazer as informações que precisamos.
+Vamos aprender muito sobre exporters, rules e alerts.
+Acreditamos que o melhor ambiente para ter o Prometheus sendo executado de maneira segura e em alta disponibilidade é dentro de clusters Kubernetes, portanto durante o treinamento seremos expostos a esse cenário com muita frequência, afinal esse treinamento é para te preparar para a vida real e ambientes reais.
+Vamos aprender sobre a utilização de storage para persistir os dados coletas e também como configurar o Prometheus para se beneficiar de todo o dinamismo do service discovery.
+Iremos aprender sobre como configurar e utilizar o Push Gateway e claro, aprender a monitorar o próprio Prometheus.</p>
+<p>E claro, sempre trazendo exemplos de integrações e de caso de uso reais para ajudar a enriquecer ainda mais o treinamento.</p>
+<p>Estamos prontos para iniciar a nossa viagem?</p>
+<p> </p>
+<p><strong>ACESSE O LIVRO GRATUITAMENTE <a href="https://livro.descomplicandoprometheus.com.br">CLICANDO AQUI</a></strong></p>
+<p> </p>
+<h3 id="conteúdo-do-livro"><a class="header" href="#conteúdo-do-livro">Conteúdo do Livro</a></h3>
+<details>
+<summary class="summary">Clique aqui para expandir</summary>
+<ul>
+<li>
+<p><strong><a href="day-1/index.html">DAY-1</a> - Em revisão...</strong></p>
+<ul>
+<li><a href="day-1/index.html#por-que-precisamos-de-ferramentas-como-o-prometheus">Por que precisamos de ferramentas como o Prometheus?</a></li>
+<li><a href="day-1/index.html#o-que-e-monitorar">O que é monitorar?</a>
+<ul>
+<li><a href="day-1/index.html#o-monitoramento-e-a-observabilidade">O monitoramento e a observabilidade</a></li>
+</ul>
+</li>
+<li><a href="day-1/index.html#o-que-e-o-prometheus">O que é o Prometheus?</a>
+<ul>
+<li><a href="day-1/index.html#a-arquitetura-do-prometheus">A arquitetura do Prometheus</a></li>
+</ul>
+</li>
+<li><a href="day-1/index.html#instalando-o-prometheus">Instalando o Prometheus</a>
+<ul>
+<li><a href="day-1/index.html#executando-o-prometheus-em-um-node-linux">Executando o Prometheus em um node Linux</a></li>
+<li><a href="day-1/index.html#instala%C3%A7%C3%A3o-do-prometheus-no-linux">Instalação do Prometheus no Linux</a></li>
+</ul>
+</li>
+<li><a href="day-1/index.html#a-sua-li%C3%A7%C3%A3o-de-casa">A sua lição de casa</a></li>
+<li><a href="day-1/index.html#desafio-do-day-1">Desafio do Day-1</a></li>
+<li><a href="day-1/index.html#final-do-day-1">Final do Day-1</a></li>
+</ul>
+</li>
+<li>
+<p><strong><a href="day-2/index.html">DAY-2</a> - Em revisão...</strong></p>
+<ul>
+<li><a href="day-2/index.html#o-data-model-do-prometheus">O Data Model do Prometheus</a></li>
+<li><a href="day-2/index.html#as-queries-do-prometheus-e-o-promql">As queries do Prometheus e o PromQL</a></li>
+<li><a href="day-2/index.html#o-nosso-primeiro-exporter">O nosso primeiro exporter</a></li>
+<li><a href="day-2/index.html#nosso-primeiro-exporter-no-container">Nosso Primeiro Exporter no Container</a></li>
+<li><a href="day-2/index.html#os-targets-do-prometheus">Os Targets do Prometheus</a></li>
+<li><a href="day-2/index.html#visualizando-as-m%C3%A9tricas-do-nosso-primeiro-exporter">Visualizando as métricas do nosso primeiro exporter</a></li>
+<li><a href="day-2/index.html#conhecendo-um-pouco-mais-sobre-os-tipos-de-dados-do-prometheus">Conhecendo um pouco mais sobre os tipos de dados do Prometheus</a> </li>
+<li><a href="day-2/index.html#gauge-medidor">gauge: Medidor</a></li>
+<li><a href="day-2/index.html#counter-contador">counter: Contador</a></li>
+<li><a href="day-2/index.html#summary-resumo">summary: Resumo</a></li>
+<li><a href="day-2/index.html#histogram-histograma">histogram: Histograma</a></li>
+<li><a href="day-2/index.html#chega-por-hoje">Chega por hoje!</a></li>
+<li><a href="day-2/index.html#li%C3%A7%C3%A3o-de-casa">Lição de casa</a></li>
+</ul>
+</li>
+<li>
+<p><strong><a href="day-3/index.html">DAY-3</a> - Em revisão...</strong></p>
+<ul>
+<li><a href="day-3/index.html#criando-o-nosso-segundo-exporter">Criando o nosso segundo exporter</a>
+<ul>
+<li><a href="day-3/index.html#criando-o-nosso-exporter-usando-go">Criando o nosso exporter usando Go</a></li>
+<li><a href="day-3/index.html#adicionando-o-nosso-exporter-no-container">Adicionando o nosso exporter no container</a></li>
+<li><a href="day-3/index.html#adicionando-o-novo-target-no-prometheus">Adicionando o novo Target no Prometheus</a></li>
+</ul>
+</li>
+<li><a href="day-3/index.html#as-fun%C3%A7%C3%B5es">As Funções</a></li>
+<li><a href="day-3/index.html#a-fun%C3%A7%C3%A3o-rate">A função rate</a></li>
+<li><a href="day-3/index.html#a-fun%C3%A7%C3%A3o-irate">A função irate</a></li>
+<li><a href="day-3/index.html#a-fun%C3%A7%C3%A3o-delta">A função delta</a></li>
+<li><a href="day-3/index.html#a-fun%C3%A7%C3%A3o-increase">A função increase</a></li>
+<li><a href="day-3/index.html#a-fun%C3%A7%C3%A3o-sum">A função sum</a></li>
+<li><a href="day-3/index.html#a-fun%C3%A7%C3%A3o-count">A função count</a></li>
+<li><a href="day-3/index.html#a-fun%C3%A7%C3%A3o-avg">A função avg</a></li>
+<li><a href="day-3/index.html#a-fun%C3%A7%C3%A3o-min">A função min</a></li>
+<li><a href="day-3/index.html#a-fun%C3%A7%C3%A3o-max">A função max</a></li>
+<li><a href="day-3/index.html#a-fun%C3%A7%C3%A3o-avg_over_time">A função avg_over_time</a></li>
+<li><a href="day-3/index.html#a-fun%C3%A7%C3%A3o-sum_over_time">A função sum_over_time</a></li>
+<li><a href="day-3/index.html#a-fun%C3%A7%C3%A3o-max_over_time">A função max_over_time</a></li>
+<li><a href="day-3/index.html#a-fun%C3%A7%C3%A3o-min_over_time">A função min_over_time</a></li>
+<li><a href="day-3/index.html#a-fun%C3%A7%C3%A3o-stddev_over_time">A função stddev_over_time</a></li>
+<li><a href="day-3/index.html#a-fun%C3%A7%C3%A3o-by">A função by</a></li>
+<li><a href="day-3/index.html#a-fun%C3%A7%C3%A3o-without">A função without</a></li>
+<li><a href="day-3/index.html#a-fun%C3%A7%C3%A3o-histogram_quantile-e-quantile">A função histogram_quantile e quantile</a></li>
+<li><a href="day-3/index.html#praticando-e-usando-as-fun%C3%A7%C3%B5es">Praticando e usando as funções</a></li>
+<li><a href="day-3/index.html#operadores">Operadores</a>
+<ul>
+<li><a href="day-3/index.html#operador-de-igualdade">Operador de igualdade</a></li>
+<li><a href="day-3/index.html#operador-de-diferen%C3%A7a">Operador de diferença</a></li>
+<li><a href="day-3/index.html#operador-de-maior-que">Operador de maior que</a></li>
+<li><a href="day-3/index.html#operador-de-menor-que">Operador de menor que</a></li>
+<li><a href="day-3/index.html#operador-de-maior-ou-igual-que">Operador de maior ou igual que</a></li>
+<li><a href="day-3/index.html#operador-de-menor-ou-igual-que">Operador de menor ou igual que</a></li>
+<li><a href="day-3/index.html#operador-de-multiplica%C3%A7%C3%A3o">Operador de multiplicação</a></li>
+<li><a href="day-3/index.html#operador-de-divis%C3%A3o">Operador de divisão</a></li>
+<li><a href="day-3/index.html#operador-de-adi%C3%A7%C3%A3o">Operador de adição</a></li>
+<li><a href="day-3/index.html#operador-de-subtra%C3%A7%C3%A3o">Operador de subtração</a></li>
+<li><a href="day-3/index.html#operador-de-modulo">Operador de modulo</a></li>
+<li><a href="day-3/index.html#operador-de-potencia%C3%A7%C3%A3o">Operador de potenciação</a></li>
+<li><a href="day-3/index.html#operador-de-agrupamento">Operador de agrupamento</a></li>
+<li><a href="day-3/index.html#operador-de-concatena%C3%A7%C3%A3o">Operador de concatenação</a></li>
+<li><a href="day-3/index.html#operador-de-compara%C3%A7%C3%A3o-de-strings">Operador de comparação de strings</a></li>
+<li><a href="day-3/index.html#chega-de-operadores-por-hoje">Chega de operadores por hoje</a></li>
+</ul>
+</li>
+<li><a href="day-3/index.html#o-node-exporter">O Node Exporter</a>
+<ul>
+<li><a href="day-3/index.html#os-collectors">Os Collectors</a></li>
+<li><a href="day-3/index.html#instala%C3%A7%C3%A3o-do-node-exporter-no-linux">Instalação do Node Exporter no Linux</a></li>
+<li><a href="day-3/index.html#adicionando-o-node-exporter-no-prometheus">Adicionando o Node Exporter no Prometheus</a></li>
+<li><a href="day-3/index.html#habilitando-novos-collectors-no-node-exporter">Habilitando novos collectors no Node Exporter</a></li>
+</ul>
+</li>
+<li><a href="day-3/index.html#algumas-queries-capturando-m%C3%A9tricas-do-node-exporter">Algumas queries capturando métricas do Node Exporter</a></li>
+<li><a href="day-3/index.html#o-grafana">O Grafana</a></li>
+<li><a href="day-3/index.html#instala%C3%A7%C3%A3o-do-grafana">Instalação do Grafana</a></li>
+<li><a href="day-3/index.html#adicionando-o-prometheus-como-data-source">Adicionando o Prometheus como Data Source</a></li>
+<li><a href="day-3/index.html#criando-o-nosso-primeiro-dashboard">Criando o nosso primeiro Dashboard</a></li>
+<li><a href="day-3/index.html#chega-por-hoje">Chega por hoje!</a></li>
+<li><a href="day-3/index.html#li%C3%A7%C3%A3o-de-casa">Lição de casa</a></li>
+<li><a href="day-3/index.html#refer%C3%AAncias">Referências</a></li>
+</ul>
+</li>
+<li>
+<p><strong><a href="day-4/index.html">DAY-4</a> - Em revisão...</strong></p>
+<ul>
+<li><a href="day-4/index.html#o-que-iremos-ver-hoje">O que iremos ver hoje?</a></li>
+<li><a href="day-4/index.html#conte%C3%BAdo-do-day-4">Conteúdo do Day-4</a></li>
+<li><a href="day-4/index.html#o-grafana">O Grafana</a></li>
+<li><a href="day-4/index.html#instalando-o-grafana">Instalando o Grafana</a></li>
+<li><a href="day-4/index.html#adicionando-o-prometheus-como-data-source">Adicionando o Prometheus como Data Source</a></li>
+<li><a href="day-4/index.html#criando-o-nosso-primeiro-dashboard">Criando o nosso primeiro Dashboard</a></li>
+<li><a href="day-4/index.html#alertmanager">Alertmanager</a></li>
+<li><a href="day-4/index.html#instalando-o-alertmanager">Instalando o Alertmanager</a></li>
+</ul>
+</li>
+<li>
+<p><strong><a href="day-5/index.html">DAY-5</a> - Em revisão...</strong></p>
+</li>
+<li>
+<p><strong><a href="day-6/index.html">DAY-6</a> - Em revisão...</strong></p>
+<ul>
+<li><a href="day-6/index.html#o-que-iremos-ver-hoje">O que iremos ver hoje</a></li>
+<li><a href="day-6/index.html#conte%C3%BAdo-do-day-6">Conteúdo do Day-6</a></li>
+<li><a href="day-6/index.html#o-que-%C3%A9-o-kube-prometheus">O que é o kube-prometheus</a></li>
+<li><a href="day-6/index.html#instalando-o-nosso-cluster-kubernetes">Instalando o nosso cluster Kubernetes</a></li>
+<li><a href="day-6/index.html#instalando-o-kube-prometheus">Instalando o Kube-Prometheus</a></li>
+<li><a href="day-6/index.html#acessando-o-grafana">Acessando o Grafana</a></li>
+<li><a href="day-6/index.html#acessando-o-prometheus">Acessando o Prometheus</a></li>
+<li><a href="day-6/index.html#acessando-o-alertmanager">Acessando o AlertManager</a></li>
+<li><a href="day-6/index.html#chega-por-hoje">Chega por hoje!</a></li>
+<li><a href="day-6/index.html#li%C3%A7%C3%A3o-de-casa">Lição de casa</a></li>
+</ul>
+</li>
+<li>
+<p><strong><a href="day-7/index.html">DAY-7</a> - Em revisão...</strong></p>
+<ul>
+<li><a href="day-7/index.html#o-que-iremos-ver-hoje">O que iremos ver hoje?</a></li>
+<li><a href="day-7/index.html#conte%C3%BAdo-do-day-7">Conteúdo do Day-7</a></li>
+<li><a href="day-7/index.html#os-servicemonitors">Os ServiceMonitors</a></li>
+<li><a href="day-7/index.html#criando-um-servicemonitor">Criando um ServiceMonitor</a></li>
+<li><a href="day-7/index.html#os-podmonitors">Os PodMonitors</a></li>
+<li><a href="day-7/index.html#criando-um-podmonitor">Criando um PodMonitor</a></li>
+<li><a href="day-7/index.html#criando-nosso-primeiro-alerta">Criando nosso primeiro alerta</a></li>
+<li><a href="day-7/index.html#o-que-%C3%A9-um-prometheusrule">O que é um PrometheusRule?</a>
+<ul>
+<li><a href="day-7/index.html#criando-um-prometheusrule">Criando um PrometheusRule</a></li>
+</ul>
+</li>
+<li><a href="day-7/index.html#chega-por-hoje">Chega por hoje!</a></li>
+<li><a href="day-7/index.html#li%C3%A7%C3%A3o-de-casa">Lição de casa</a></li>
+</ul>
+</li>
+<li>
+<p><strong><a href="day-8/index.html">DAY-8</a> - Em revisão...</strong></p>
+<ul>
+<li><a href="day-8/index.html#o-que-iremos-ver-hoje">O que iremos ver hoje?</a></li>
+<li><a href="day-8/index.html#conte%C3%BAdo-do-day-8">Conteúdo do Day-8</a></li>
+<li><a href="day-8/index.html#vamos-brincar-com-as-m%C3%A9tricas-do-kubernetes">Vamos brincar com as métricas do Kubernetes</a>
+<ul>
+<li><a href="day-8/index.html#o-que-podemos-saber-sobre-os-nodes-do-nosso-cluster">O que podemos saber sobre os nodes do nosso cluster?</a></li>
+<li><a href="day-8/index.html#quantos-n%C3%B3s-temos-no-nosso-cluster">Quantos nós temos no nosso cluster?</a></li>
+<li><a href="day-8/index.html#qual-a-quantidade-de-cpu-e-mem%C3%B3ria-que-cada-n%C3%B3-tem">Qual a quantidade de CPU e memória que cada nó tem?</a></li>
+<li><a href="day-8/index.html#o-n%C3%B3-est%C3%A1-dispon%C3%ADvel-para-receber-novos-pods">O nó está disponível para receber novos pods?</a></li>
+<li><a href="day-8/index.html#qual-a-quantidade-de-informa%C3%A7%C3%A3o-que-cada-n%C3%B3-est%C3%A1-recebendo-e-enviando">Qual a quantidade de informação que cada nó está recebendo e enviando?</a></li>
+<li><a href="day-8/index.html#quantos-pods-est%C3%A3o-rodando-em-cada-n%C3%B3">Quantos pods estão rodando em cada nó?</a></li>
+</ul>
+</li>
+<li><a href="day-8/index.html#agora-vamos-saber-se-o-nosso-cluster-est%C3%A1-com-problemas">Agora vamos saber se o nosso cluster está com problemas</a>
+<ul>
+<li><a href="day-8/index.html#o-que-podemos-saber-sobre-os-pods-do-nosso-cluster">O que podemos saber sobre os pods do nosso cluster?</a></li>
+<li><a href="day-8/index.html#quantos-pods-est%C3%A3o-rodando-no-nosso-cluster">Quantos pods estão rodando no nosso cluster?</a></li>
+<li><a href="day-8/index.html#quantos-pods-est%C3%A3o-com-problemas">Quantos pods estão com problemas?</a></li>
+<li><a href="day-8/index.html#verificar-os-pods-e-os-limites-de-mem%C3%B3ria-e-cpu-configurados">Verificar os pods e os limites de memória e CPU configurados</a></li>
+<li><a href="day-8/index.html#verificar-se-o-cluster-est%C3%A1-com-problemas-relacionados-ao-disco">Verificar se o cluster está com problemas relacionados ao disco</a></li>
+<li><a href="day-8/index.html#verificar-se-o-cluster-est%C3%A1-com-problemas-relacionados-a-mem%C3%B3ria">Verificar se o cluster está com problemas relacionados a memória</a></li>
+</ul>
+</li>
+<li><a href="day-8/index.html#e-como-saber-se-meus-deployments-est%C3%A3o-com-problemas">E como saber se meus deployments estão com problemas?</a>
+<ul>
+<li><a href="day-8/index.html#quantos-deployments-est%C3%A3o-rodando-no-meu-cluster">Quantos deployments estão rodando no meu cluster?</a></li>
+<li><a href="day-8/index.html#quantos-deployments-est%C3%A3o-com-problemas">Quantos deployments estão com problemas?</a></li>
+<li><a href="day-8/index.html#qual-o-status-dos-meus-deployments">Qual o status dos meus deployments?</a></li>
+</ul>
+</li>
+<li><a href="day-8/index.html#e-como-saber-se-meus-servi%C3%A7os-est%C3%A3o-com-problemas">E como saber se meus serviços estão com problemas?</a>
+<ul>
+<li><a href="day-8/index.html#quantos-servi%C3%A7os-est%C3%A3o-rodando-no-meu-cluster">Quantos serviços estão rodando no meu cluster?</a></li>
+<li><a href="day-8/index.html#todos-os-meus-servi%C3%A7os-est%C3%A3o-com-endpoints">Todos os meus serviços estão com endpoints?</a></li>
+<li><a href="day-8/index.html#todos-os-meus-servi%C3%A7os-est%C3%A3o-com-endpoints-ativos">Todos os meus serviços estão com endpoints ativos?</a></li>
+</ul>
+</li>
+<li><a href="day-8/index.html#como-eu-posso-modificar-as-configura%C3%A7%C3%B5es-do-meu-prometheus">Como eu posso modificar as configurações do meu Prometheus?</a>
+<ul>
+<li><a href="day-8/index.html#definindo-o-nosso-prometheus">Definindo o nosso Prometheus</a></li>
+<li><a href="day-8/index.html#definindo-o-nosso-alertmanager">Definindo o nosso Alertmanager</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><a href="day-9/index.html">DAY-9</a> - Em revisão...</strong></p>
+<ul>
+<li><a href="#o-que-iremos-ver-hoje">O que iremos ver hoje?</a></li>
+<li><a href="#conte%C3%BAdo-do-day-9">Conteúdo do Day-9</a></li>
+<li><a href="#o-que-%C3%A9-relabeling">O que é Relabeling?</a></li>
+<li><a href="#como-funciona-o-relabeling">Como funciona o Relabeling?</a></li>
+<li><a href="#exemplos-de-uso-do-relabeling">Exemplos de uso do Relabeling</a>
+<ul>
+<li><a href="#-removendo-uma-m%C3%A9trica-baseado-em-uma-label"> Removendo uma métrica baseado em uma label</a></li>
+<li><a href="#junta-duas-labels-em-uma-s%C3%B3">Junta duas labels em uma só</a></li>
+<li><a href="#adicionando-uma-nova-label">Adicionando uma nova label</a></li>
+<li><a href="#armazenando-somente-m%C3%A9tricas-espec%C3%ADficas">Armazenando somente métricas específicas</a></li>
+<li><a href="#mapeando-todas-as-labels-do-kubernetes">Mapeando todas as labels do Kubernetes</a></li>
+</ul>
+</li>
+<li><a href="as-metas-labels-do-prometheus">As meta labels do Prometheus</a></li>
+</ul>
+</li>
+</ul>
+</details>
+<h3 id="como-adquirir-o-treinamento"><a class="header" href="#como-adquirir-o-treinamento">Como adquirir o treinamento?</a></h3>
+<p>Para adquirir o treinamento <a href="https://www.linuxtips.io/course/descomplicando-prometheus">Descomplicando o Prometheus</a> você deverá ir até a loja da <a href="https://www.linuxtips.io/">LINUXtips</a>.</p>
+<p>Para ir até o treinamento, <a href="https://www.linuxtips.io/course/descomplicando-prometheus">CLIQUE AQUI</a>.</p>
+<h2 id="a-ideia-do-formato-do-treinamento"><a class="header" href="#a-ideia-do-formato-do-treinamento">A ideia do formato do treinamento</a></h2>
+<p>Ensinar Prometheus de uma forma mais real, passando todo o conteúdo de forma prática e trazendo uma conexão com o ambiente real de trabalho.</p>
+<p>Esse é o primeiro treinamento sobre Prometheus de forma realmente prática, da vida real. Pois entendemos que prática é o conjunto de entendimento sobre um assunto, seguido de exemplos reais que possam ser reproduzidos e conectando tudo isso com a forma como trabalhamos.</p>
+<p>Assim a definição de prática passa a ser um focada em o conhecimento da ferramenta e adicionando a realidade de um profissional no seu dia-a-dia aprendendo uma nova tecnologia, uma nova ferramenta.</p>
+<p>Prepare-se para um novo tipo de treinamento, e o melhor, prepare-se para um novo conceito sobre treinamento prático e de aprendizado de tecnologia.</p>
+<h3 id="as-pessoas-personagens-no-treinamento"><a class="header" href="#as-pessoas-personagens-no-treinamento">As pessoas (personagens) no treinamento</a></h3>
+<p>Temos algumas pessoas que vão nos ajudar durante o treinamento, simulando uma dinâmica um pouco maior e ajudando na imersão que gostaríamos. </p>
+<p>Ainda estamos desenvolvendo e aprimorando os personagens e o enredo, portanto ainda teremos muitas novidades.</p>
+<h4 id="a-pessoa_x"><a class="header" href="#a-pessoa_x">A Pessoa_X</a></h4>
+<p>A Pessoa_X é uma das pessoas responsáveis pela loja de meias Strigus Socket, que está no meio da modernização de seu infra e das ferramentas que são utilizadas.</p>
+<p>Segundo uma pessoa que já trabalhou com a Pessoa_X, ela é a pessoa que está sempre procurando aprender para inovar em seu ambiente. Normalmente é através dela que surgem as novas ferramentas, bem como a resolução de um monte de problemas.</p>
+<p>O nível de conhecimento dela é sempre iniciante quando ela entra em um novo projeto, porém ao final dele, ela se torna uma especialista e com uma boa experiência prática, pois ela foi exposta a diversas situações, que a fizeram conhecer a nova tecnologia muito bem e se sentindo muito confortável em trabalhar no projeto.</p>
+<p>Pessoa_X, foi um prazer fazer essa pequena descrição sobre você! </p>
+<p>Seja bem-vinda nesse novo projeto e espero que você se divirta como sempre! </p>
+<p>Lembre-se sempre que eu, Jeferson, estarei aqui para apoiar você em cada etapa dessa jornada! Eu sou o seu parceiro nesse projeto e tudo o que você precisar nessa jornada! Bora!</p>
+<h4 id="a-pessoa_lider_x"><a class="header" href="#a-pessoa_lider_x">A Pessoa_Lider_X</a></h4>
+<p>Iremos criando a personalidade dessa pessoa durante o treinamento.
+O que já sabemos é que ela é a pessoa líder imediata da Pessoa_X, e que irá demandar a maioria das tarefas. E tem como o esteriótipo um líder meio tosco.</p>
+<h4 id="a-pessoa_diretora_x"><a class="header" href="#a-pessoa_diretora_x">A Pessoa_Diretora_X</a></h4>
+<p>Líder imediato da Pessoa_Lider_X e que tem um sobrinho 'jênio' e que está ali, dando os seus pitacos no setor de tecnologia, por que ele 'mereceu', entendeu?</p>
+<h4 id="a-pessoa_rh_x"><a class="header" href="#a-pessoa_rh_x">A Pessoa_RH_X</a></h4>
+<p>A pessoa responsável pelo RH da empresa, no decorrer do treinamento vamos faz
+endo a história e características dela.</p>
+<h2 id="vamos-começar"><a class="header" href="#vamos-começar">Vamos começar?</a></h2>
+<p>Agora que você já conhece mais detalhes sobre o treinamento, acredito que já podemos começar, certo?</p>
+<p>Lembrando que o treinamento está disponível na plataforma da escola da LINUXtips,para acessa-la <a href="https://linuxtips.io">CLIQUE AQUI</a>.</p>
+<p><strong>Bons estudos!</strong></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+                            <a rel="next" href="BOOKSUMMARY.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+                    <a rel="next" href="BOOKSUMMARY.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

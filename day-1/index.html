@@ -1,0 +1,676 @@
+<!DOCTYPE HTML>
+<html lang="pt" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Descomplicando o Prometheus</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/css/style.css">
+        <link rel="stylesheet" href="../theme/css/mdbook-admonish.css">
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introdução</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../BOOKSUMMARY.html">Sumário</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Capítulos</li><li class="chapter-item expanded "><a href="../day-1/index.html" class="active"><strong aria-hidden="true">1.</strong> Dia 1</a></li><li class="chapter-item expanded "><a href="../day-2/index.html"><strong aria-hidden="true">2.</strong> Dia 2</a></li><li class="chapter-item expanded "><a href="../day-3/index.html"><strong aria-hidden="true">3.</strong> Dia 3</a></li><li class="chapter-item expanded "><a href="../day-4/index.html"><strong aria-hidden="true">4.</strong> Dia 4</a></li><li class="chapter-item expanded "><a href="../day-5/index.html"><strong aria-hidden="true">5.</strong> Dia 5</a></li><li class="chapter-item expanded "><a href="../day-6/index.html"><strong aria-hidden="true">6.</strong> Dia 6</a></li><li class="chapter-item expanded "><a href="../day-7/index.html"><strong aria-hidden="true">7.</strong> Dia 7</a></li><li class="chapter-item expanded "><a href="../day-8/index.html"><strong aria-hidden="true">8.</strong> Dia 8</a></li><li class="chapter-item expanded "><a href="../day-9/index.html"><strong aria-hidden="true">9.</strong> Dia 9</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Descomplicando o Prometheus</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/badtuxx/DescomplicandoPrometheus" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/badtuxx/DescomplicandoPrometheus/edit/main/pt/src/day-1/README.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <h1 id="descomplicando-o-prometheus---o-treinamento"><a class="header" href="#descomplicando-o-prometheus---o-treinamento"><a href="https://www.linuxtips.io/course/descomplicando-prometheus">Descomplicando o Prometheus</a> - O Treinamento</a></h1>
+<h2 id="day-1"><a class="header" href="#day-1">DAY-1</a></h2>
+<p> </p>
+<h3 id="o-que-iremos-ver-hoje"><a class="header" href="#o-que-iremos-ver-hoje">O que iremos ver hoje?</a></h3>
+<p>Durante o dia de hoje, nós iremos focar em o que é o Prometheus e qual problema ele resolve.
+Iremos entender os diferentes tipos de monitoramento e as diferenças entre eles.
+Hoje é dia de conhecer a história do Prometheus e também a motivação para a sua criação lá na SoundCloud.
+Vamos entender a arquitetura do Prometheus e como ele se relaciona com outros aplicativos.
+E por fim, vamos instalar o Prometheus e fazer a nossa primeira configuração para o nosso mais novo serviço de monitoração.
+Teremos ainda o nosso primeiro contato com a interface web do Prometheus e vamos criar a nossa primeira query.</p>
+<p> </p>
+<h3 id="conteúdo-do-day-1"><a class="header" href="#conteúdo-do-day-1">Conteúdo do Day-1</a></h3>
+<details>
+<summary class="summary">DAY-1</summary>
+<ul>
+<li><a href="#por-que-precisamos-de-ferramentas-como-o-prometheus">Por que precisamos de ferramentas como o Prometheus?</a></li>
+<li><a href="#o-que-%C3%A9-monitorar">O que é monitorar?</a>
+<ul>
+<li><a href="#o-monitoramento-e-a-observabilidade">O monitoramento e a observabilidade</a></li>
+</ul>
+</li>
+<li><a href="#o-que-%C3%A9-o-prometheus">O que é o Prometheus?</a>
+<ul>
+<li><a href="#a-arquitetura-do-prometheus">A arquitetura do Prometheus</a></li>
+</ul>
+</li>
+<li><a href="#instalando-o-prometheus">Instalando o Prometheus</a>
+<ul>
+<li><a href="#executando-o-prometheus-em-um-node-linux">Executando o Prometheus em um node Linux</a></li>
+<li><a href="#instala%C3%A7%C3%A3o-do-prometheus-no-linux">Instalação do Prometheus no Linux</a></li>
+</ul>
+</li>
+<li><a href="#a-sua-li%C3%A7%C3%A3o-de-casa">A sua lição de casa</a></li>
+<li><a href="#desafio-do-day-1">Desafio do Day-1</a></li>
+<li><a href="#final-do-day-1">Final do Day-1</a></li>
+</ul>
+</details>
+<h3 id="por-que-precisamos-de-ferramentas-como-o-prometheus"><a class="header" href="#por-que-precisamos-de-ferramentas-como-o-prometheus">Por que precisamos de ferramentas como o Prometheus?</a></h3>
+<p>Sei que ainda não falamos sobre o que é monitoramento em si, mas acho importante trazer esse cenário para que você entenda depois o que é e para que serve o Prometheus e essa tal de monitoração.</p>
+<p>Bem, como você sabe toda empresa possui um ambiente, onde uma ou mais aplicações estão em execução consumindo algum recurso computacional, seja local, em algum datacenter ou ainda em algum cloud provider, o que é mais comum hoje em dia.</p>
+<p>Vamos imaginar que temos um loja online, o famoso e-commerce. Você consegue imaginar a quantidade componentes que temos que monitorar para ter a certeza, ou quase, de que tudo está funcionando como o esperado?</p>
+<p>No caso do e-commerce, vamos imaginar algo bem simples e pequeno. Para ter um loja online você precisa de um servidor web, vamos pegar o Nginx.
+Mas para rodar o Nginx nós vamos precisar de uma VM, container, Pod ou uma instancia no cloud, logo já temos mais coisas para nos preocupar.</p>
+<p>Vamos imaginar que escolhemos rodar o Nginx em uma VM, somente para simplificar as coisas por enquanto. Se temos a VM, temos um hypervisor que está gerenciando a VM, temos o host onde a VM está sendo executada, temos o Linux que está instalado na VM onde o Nginx está rodando. Sem contar todos os elementos de redes envolvidos durante as requisições a essa nossa loja.</p>
+<p>Com isso você já consegue imaginar o tamanho da encrenca, e olha que estamos falando de uma loja simples rodando em uma VM, sem se preocupar com ambientes complexos em alta disponibilidade, resilientes e que devem seguir normas para se adequarem a determinados nichos de mercado ou legislação local.</p>
+<p>Se a gente parar para pensar somente nos itens que temos que monitorar somente no host que está hospedando essa VM já seria uma lista bem grande, e com bastante trabalho para os próximos dias.</p>
+<p>Definitivamente o que não faltam são coisas que precisamos monitorar em nosso ambiente.</p>
+<p>Se começar a pensar bem, vai ver que a monitoração é muito importante para as coisas do nosso dia-a-dia, onde não tem relação com o nosso trabalho. Por exemplo, agora enquanto escrevo esse material estou acompanhando o vôo de volta para o Brasil da minha Mãe e da minha sogra, tudo isso graças a algum sistema de monitoramento, que me traz esse informação em tempo real.</p>
+<p>Perceba que monitoramento não é somente necessário para quando as coisas dão problema, o monitoramento é importante para acompanhar padrão, para entender como os seus sistemas estão operando, para acompanhar determinada atividade, como é o meu caso agora acompanhando o vôo.</p>
+<p>Para nós profissionais de tecnologia, é fundamental ter um bom entendimento sobre a importância e como implementar um bom sistema de monitoramento para nossos serviços e sistemas.
+Somente através do monitoramento vamos conseguir ter confiabilidade e eficiência em nossos serviços, trazendo muito valor ao negócio por conta da eficiência e disponibilidade de nossos sistemas.</p>
+<p>Através da monitoração iremos entender se o nosso serviço está totalmente operacional ou se está degradado, entregando uma péssima experiência para os nossos usuários.</p>
+<p> </p>
+<h3 id="o-que-é-monitorar"><a class="header" href="#o-que-é-monitorar">O que é monitorar?</a></h3>
+<p>No meu entendimento, monitorar significa ter o status atual sobre o item desejado. No caso de uma máquina física rodando Linux, eu quero monitorar o hardware para ter certeza de que problemas de aquecimento de CPU não irão atrapalhar a disponibilidade do meu sistema. Ainda usando esse exemplo, temos que monitorar o sistema operacional, pois não queremos que um disco cheio ou uma placa de rede sobrecarregada onerando o sistema inteiro.
+Isso que ainda nem falamos do sistema operacional da VM e nem da própria aplicação, o Nginx.</p>
+<p>Monitorar é você saber o que está acontecendo em sua infra, em sua app, em seu serviço em tempo real e em caso de falha ou anomalia, que as pessoas envolvidas para a recuperação daquele componente sejam notificadas com o máximo de informação para auxiliar o troubleshooting.</p>
+<p> </p>
+<h4 id="o-monitoramento-e-a-observabilidade"><a class="header" href="#o-monitoramento-e-a-observabilidade">O monitoramento e a observabilidade</a></h4>
+<p>Agora que você já sabe o que significa monitorar (pelo menos no meu ponto de vista), acho que já podemos trazer um pouco mais de tempero nessa conversa, digo, trazer mais recursos para conseguir monitorar ainda melhor o nosso ambiente.</p>
+<p>Usando ainda o exemplo do Nginx rodando em uma VM Linux, nós estávamos falando sobre possíveis <strong>eventos</strong> sobre falhas hardware ou coletando <strong>métricas</strong> sobre a carga de informações trafegando em nossa placa de rede, agora imagina descer um pouco mais o nível e poder <strong>medir o tempo de cada requisição</strong> que nosso servidor web está tratando?</p>
+<p>Imagina ainda receber e armazenar todos <strong>os logs</strong> das requisições que retornaram erro para o nosso usuário ou que contenham informações sobre o desempenho de nossa aplicação?</p>
+<p>Ou ainda, imagina fazer todo o <strong>acompanhamento da requisição</strong> do usuário, desde o momento que ela chegou no primeiro serviço de nossa infra, até o último milésimo de vida daquela requisição após ela passear por diversos serviços de nosso ambiente e ainda podendo entender e visualizar <strong>métricas</strong> internas sobre o comportamento e o consumo de recursos por sua aplicação?</p>
+<p>E agora o melhor, imagine reunir toda essa informação e poder correlaciona-las, e ainda, visualizar essas informações de maneira <strong>gráfica</strong>, através de bonitos e informativos dashboards com gráficos e tabelas dos mais variados tipos?</p>
+<p>Imaginou?</p>
+<p>Pronto, você foi capaz de imaginar um ambiente onde seria possível ter a observabilidade em sua melhor forma! </p>
+<p>Observability normalmente é apoiada principalmente em 3 pilares:</p>
+<ul>
+<li>Logs</li>
+<li>Metrics</li>
+<li>Traces</li>
+</ul>
+<p> </p>
+<p>Eu adiciono mais um item nessa lista, o Eventos. Ter os eventos que ocorrem em seu ambiente e correlaciona-lo com os demais pilares é sensacional demais e ajuda muito a entender o comportamento de um item no momento de um problema ou degradação do serviço. 
+Então eu vou atualizar essa lista e adiciona-lo. :D</p>
+<ul>
+<li>Logs</li>
+<li>Métricas</li>
+<li>Traces</li>
+<li>Eventos</li>
+</ul>
+<p> </p>
+<p>E para ser sincero, eu ainda adicionaria Dashboards pois acho que é fundamental ver de modo mais visual possível o resultado dos 4 pilares correlacionados através de gráficos que irão ajudar a entender o comportamento de determinado item em seu momento de falha ou degradação.</p>
+<p>Se você possui um sistema para observar o seu ambiente que cobre esses 4 pilares, parabéns! \o/</p>
+<p>Nos exemplos que eu listei acima e pedi para você imaginar, você pode verificar que temos exemplos para os quatro pilares da observabilidade. Volta lá e confere! </p>
+<p>Eu estava certo, né? haha</p>
+<p>Ok, eu sei que você já entendeu tudo isso e agora está se perguntado:</p>
+<p>E o que o Prometheus tem haver com tudo isso?</p>
+<p>E eu te explico logo abaixo: :D</p>
+<p> </p>
+<h3 id="o-que-é-o-prometheus"><a class="header" href="#o-que-é-o-prometheus">O que é o Prometheus?</a></h3>
+<p>O Prometheus é um dos mais modernos sistemas de monitoramento, capas de coletar e guardar métricas dos mais variados componentes de suas infra-estrutura. O inicio de seu desenvolvimento se deu em 2012, porém somente foi anunciado oficialmente pela SoundCloud em 2015. Ele foi inspirado no Borgmon, plataforma de monitoramento no Google, responsável por monitor o Borg, plataforma de gerenciamento de containers do Google e conhecido também por ser o pai do Kubernetes.</p>
+<p>O Prometheus além de ser uma ótima ferramenta para coletar métricas, ele também é capaz de armazena-las em seu próprio TSDB. Sim, ele também é um time series database! </p>
+<p>Eu não traduzi o time series database por que acho estranho falar banco de dados temporais, apesar de ser o certo em português. haha</p>
+<p>Quando falamos de time series database, estamos basicamente falando sobre um banco de dados construindo para ter uma excelente performance no armazenamento e leitura de dados que são armazenados com data e hora. Sendo assim é um banco de dados projetado para lidar muito bem com dados, como por exemplo as métricas, onde é importante a data e hora. Seja na leitura e resgate de um minuto especifico durante o dia ou então na facilidade e performance para armazenar e organizar milhares, ou até milhões, de mensagens por hora. </p>
+<p>É possível ainda realizar riquíssimas queries para buscar a melhor correlação de métricas e visualizar através de dashboards, em sua bonita e intuitiva interface. Nós vamos falar muito mais sobre isso no decorrer do treinamento.</p>
+<p>E antes que eu me esqueça, quando falamos em observabilidade, o Prometheus se encaixa no pilar <em>Métricas</em>, pois ele tem como função coletar e armazenar métricas de diferentes componentes em suas infra-estrutura.
+E para não falar que eu não falei sobre opções de ferramentas para as outras pilastras, segue:</p>
+<ul>
+<li>Logs -&gt; Graylog ou Datadog</li>
+<li>Métricas -&gt; Prometheus</li>
+<li>Traces -&gt; Jaeger ou eBPF</li>
+<li>Eventos -&gt; Zabbix ou Datadog</li>
+<li>Visualização/Dashboards -&gt; Grafana, Datadog ou Pixie</li>
+</ul>
+<p> </p>
+<p>Pronto, agora acho que já sabemos o que é monitoração, observabilidade e o Prometheus, acho que já podemos começar a aprofundar o nosso conhecimento nessa sensacional ferramenta, o Prometheus!</p>
+<p> </p>
+<h4 id="a-arquitetura-do-prometheus"><a class="header" href="#a-arquitetura-do-prometheus">A arquitetura do Prometheus</a></h4>
+<p>Fiz um desenho da arquitetura do Prometheus para que possamos ter um melhor entendimento de como ele funciona.</p>
+<p><img src="images/arquitetura-prometheus.jpg" alt="Arquitetura do Prometheus" /></p>
+<p> </p>
+<p>Perceba que temos 03 componentes <em>core</em> no Prometheus:</p>
+<ul>
+<li>Retrieval</li>
+<li>Storage</li>
+<li>PromQL</li>
+</ul>
+<p> </p>
+<p>O <em>Retrieval</em> é o responsável por coletar as métricas e conversar com o <em>Storage</em> para armazená-las. É o <em>Retrieval</em> também o responsável por conversar com o Service Discovery para encontrar os serviços que estão disponíveis para coletar métricas.</p>
+<p>Já o <em>Storage</em> é o responsável por armazenar as métricas no TSDB, lembre-se que o TSDB é um time series database, super importante para otimizar a performance de coleta e leitura das métricas. Importante lembrar que o <em>Storage</em> armazena as métricas no disco local do node que ele está sendo executado. Com isso, caso você esteja com o Prometheus instalado em uma VM, os dados serão armazenados no disco local da VM.</p>
+<p>O <em>PromQL</em> é o responsável por executar as queries do usuário. Ele é o responsável por conversar com o <em>Storage</em> para buscar as métricas que o usuário deseja.
+O <em>PromQL</em> é uma riquíssima linguagem de consulta, ela não é parecida com outras linguagens de consulta como o SQL, por exemplo.</p>
+<p>Durante o treinamento nós teremos diversos exemplos de como construir queries para o <em>PromQL</em> e como o <em>PromQL</em> pode nos ajudar a obter as métricas que precisamos.</p>
+<p>Mas somente para dar um gostinho do que vem pela frente, veja um pequeno exemplo de como o <em>PromQL</em> funciona:</p>
+<pre><code class="language-promql">query = 'avg(rate(container_cpu_usage_seconds_total{container_name!=&quot;meu-nginx&quot;,image!=&quot;nginx&quot;}[5m]))'
+</code></pre>
+<p>Nesse exemplo, o <em>PromQL</em> está buscando a média da taxa de uso de CPU de todos os containers que não tenham o nome &quot;meu-nginx&quot; e que não estejam utilizando a imagem de container &quot;nginx&quot;.</p>
+<p>Perceba que um fator super importante no ecossistema do Prometheus é a quantidade e a facilidade de integra-lo com outras ferramentas, como o Grafana, Alertmanager, Zabbix e por aí vai.</p>
+<p> </p>
+<h3 id="instalando-o-prometheus"><a class="header" href="#instalando-o-prometheus">Instalando o Prometheus</a></h3>
+<p>Agora que já sabemos o que é monitoração, observabilidade e o Prometheus, acho que já é o momento de começar a brincar com a estrela desse treinamento, o Prometheus!</p>
+<p>É possível realizar a instalação do Prometheus de diversas maneiras. Podemos utilizar uma VM, instancia em algum cloud provider, ou mesmo instalar o Prometheus em um servidor físico local. 
+Mas é claro que é possível ter o Prometheus rodando em containers, seja em sua máquina local utilizando Docker ou outro container runtime. Agora se o objetivo é ter o Prometheus rodando em ambiente produtivo é necessário utilizar um orquestrador de containers, como o Kubernetes ou Nomad.</p>
+<p>Vamos começar a instalar o Prometheus em uma máquina Linux. Está máquina Linux poderia ser facilmente uma VM, instancia em algum cloud provider, ou mesmo um servidor físico local.</p>
+<p>Essa é a nossa primeira instalação do Prometheus, fique tranquilo que no decorrer do treinamento vamos utilizar outras formas, visando passar todo o conhecimento para que você se sinta seguro em utilizar o Prometheus no seu ambiente. E Lembre-se, o nosso foco é ter um treinamento que se aproxima o máximo possível do que seria em seu ambiente de trabalho.</p>
+<p> </p>
+<h4 id="executando-o-prometheus-em-um-node-linux"><a class="header" href="#executando-o-prometheus-em-um-node-linux">Executando o Prometheus em um node Linux</a></h4>
+<p>Uma coisa muito importante é estar familiarizado com o site do Prometheus, pois é de lá que vamos aprender todos os detalhes do Prometheus através da documentação, além de acompanhar outros detalhes e novidades do projeto.</p>
+<p>Você pode acessar o site do Prometheus em: https://prometheus.io/</p>
+<p>Você pode acessar a seção de Download do site do Prometheus em: https://prometheus.io/download/</p>
+<p>Para fazer a execução do Prometheus no Linux de uma maneira que irá funcionar na maioria das distribuições, vamos fazer da seguinte forma:</p>
+<p>Primeiro vamos fazer o download do binário do Prometheus, lembrando que existem binários para Linux, Windows e MacOS.</p>
+<p>Na verdade, vamos fazer o download dos binários, pois dentro do pacote .tar.gz, existem dois binários, o binário do <strong>Prometheus</strong> e o binário do <strong>Promtool</strong>.</p>
+<p>O <strong>Promtool</strong> é um utilitário super legal que permite que você execute queries no Prometheus via linha de comando, ou seja, você pode executar queries no Prometheus através do terminal.</p>
+<p>Já o binário do <strong>Prometheus</strong> é o <em>Prometheus Server</em> e que faz toda a mágica acontecer.</p>
+<p>Ainda existe o diretório <strong>consoles</strong>, <strong>console_libraries</strong> e o arquivo <strong>prometheus.yml</strong>, que é o arquivo de configuração do Prometheus.</p>
+<p>Bom, já sabemos de todos os detalhes, bora começar!</p>
+<p>Fazendo o download:</p>
+<pre><code class="language-bash">curl -LO https://github.com/prometheus/prometheus/releases/download/v2.38.0/prometheus-2.38.0.linux-amd64.tar.gz
+</code></pre>
+<p> </p>
+<p>Após o download, vamos extrair o arquivo e acessar o diretório extraído.</p>
+<pre><code class="language-bash">tar -xvf prometheus-2.38.0.linux-amd64.tar.gz
+cd prometheus-2.38.0.linux-amd64
+</code></pre>
+<p> </p>
+<p>Como mencionado anteriormente, o arquivo <strong>prometheus.yml</strong> é o arquivo de configuração do Prometheus e será ele que iremos utilizar para configurar o Prometheus nesse nosso primeiro exemplo.</p>
+<p>Vamos ver o conteúdo do arquivo:</p>
+<pre><code class="language-yaml"># my global config
+global:
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  # - &quot;first_rules.yml&quot;
+  # - &quot;second_rules.yml&quot;
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.
+  - job_name: &quot;prometheus&quot;
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+      - targets: [&quot;localhost:9090&quot;]
+</code></pre>
+<p> </p>
+<p>Vamos tirar alguns comentários e remover os campos que não iremos utilizar por agora.</p>
+<pre><code class="language-yaml">global: # Configurações globais do Prometheus, ou seja, configurações que serão utilizadas em todos os jobs caso não sejam configuradas separadamente dentro de cada job.
+  
+  scrape_interval: 15s # Intervalo de coleta dos dados, ou seja, a cada 15 segundos o Prometheus vai até o alvo monitorado coletar as métricas, o padrão é 1 minuto.
+  
+  evaluation_interval: 15s # Intervalo para o Prometheus avaliar as regras de alerta, o padrão é 1 minuto. Não estamos utilizando regras para os alertas, vamos manter aqui somente para referência.
+
+  scrape_timeout: 10s # Intervalos para o Prometheus aguardar o alvo monitorado responder antes de considerar que o alvo está indisponível, o padrão é 10 segundos.
+
+rule_files: # Inicio da definição das regras de alerta, nesse primeiro exemplo vamos deixar sem regras, pois não iremos utilizar alertas por agora.
+
+scrape_configs: # Inicio da definição das configurações de coleta, ou seja, como o Prometheus vai coletar as métricas e onde ele vai encontrar essas métricas.
+
+  - job_name: &quot;prometheus&quot; # Nome do job, ou seja, o nome do serviço que o Prometheus vai monitorar.
+
+    static_configs: # Inicio da definição das configurações estáticas, ou seja, configurações que não serão alteradas durante o processo de coleta.
+
+      - targets: [&quot;localhost:9090&quot;] # Endereço do alvo monitorado, ou seja, o endereço do serviço que o Prometheus vai monitorar. Nesse caso é o próprio Prometheus.
+</code></pre>
+<p> </p>
+<p>Eu tirei a parte referente ao AlertManager, pois não iremos utilizar ele neste momento para deixar as coisas mais simples e darmos o nosso primeiro passo.</p>
+<p>Para saber o que cada linha significa, eu adicionei um comentário em cada uma delas explicando o que ela faz.</p>
+<p>Agora que já deixamos o arquivo da forma como queremos e já sabemos cada detalhe, vamos executar o binário do Prometheus.</p>
+<pre><code class="language-bash">./prometheus
+
+ts=2022-08-17T13:08:21.924Z caller=main.go:495 level=info msg=&quot;No time or size retention was set so using the default time retention&quot; duration=15d
+ts=2022-08-17T13:08:21.924Z caller=main.go:539 level=info msg=&quot;Starting Prometheus Server&quot; mode=server version=&quot;(version=2.38.0, branch=HEAD, revision=818d6e60888b2a3ea363aee8a9828c7bafd73699)&quot;
+ts=2022-08-17T13:08:21.924Z caller=main.go:544 level=info build_context=&quot;(go=go1.18.5, user=root@e6b781f65453, date=20220816-13:23:14)&quot;
+ts=2022-08-17T13:08:21.924Z caller=main.go:545 level=info host_details=&quot;(Linux 5.18.10-76051810-generic #202207071639~1659403207~22.04~cb5f582 SMP PREEMPT_DYNAMIC Tue A x86_64 nu-derval (none))&quot;
+ts=2022-08-17T13:08:21.924Z caller=main.go:546 level=info fd_limits=&quot;(soft=1024, hard=1048576)&quot;
+ts=2022-08-17T13:08:21.924Z caller=main.go:547 level=info vm_limits=&quot;(soft=unlimited, hard=unlimited)&quot;
+ts=2022-08-17T13:08:21.926Z caller=web.go:553 level=info component=web msg=&quot;Start listening for connections&quot; address=0.0.0.0:9090
+ts=2022-08-17T13:08:21.926Z caller=main.go:976 level=info msg=&quot;Starting TSDB ...&quot;
+ts=2022-08-17T13:08:21.927Z caller=tls_config.go:195 level=info component=web msg=&quot;TLS is disabled.&quot; http2=false
+ts=2022-08-17T13:08:21.928Z caller=head.go:495 level=info component=tsdb msg=&quot;Replaying on-disk memory mappable chunks if any&quot;
+ts=2022-08-17T13:08:21.928Z caller=head.go:538 level=info component=tsdb msg=&quot;On-disk memory mappable chunks replay completed&quot; duration=1.773µs
+ts=2022-08-17T13:08:21.928Z caller=head.go:544 level=info component=tsdb msg=&quot;Replaying WAL, this may take a while&quot;
+ts=2022-08-17T13:08:21.928Z caller=head.go:615 level=info component=tsdb msg=&quot;WAL segment loaded&quot; segment=0 maxSegment=0
+ts=2022-08-17T13:08:21.928Z caller=head.go:621 level=info component=tsdb msg=&quot;WAL replay completed&quot; checkpoint_replay_duration=9.788µs wal_replay_duration=213.05µs total_replay_duration=237.767µs
+ts=2022-08-17T13:08:21.928Z caller=main.go:997 level=info fs_type=XFS_SUPER_MAGIC
+ts=2022-08-17T13:08:21.929Z caller=main.go:1000 level=info msg=&quot;TSDB started&quot;
+ts=2022-08-17T13:08:21.929Z caller=main.go:1181 level=info msg=&quot;Loading configuration file&quot; filename=prometheus.yml
+ts=2022-08-17T13:08:21.931Z caller=main.go:1218 level=info msg=&quot;Completed loading of configuration file&quot; filename=prometheus.yml totalDuration=2.070216ms db_storage=531ns remote_storage=1.002µs web_handler=220ns query_engine=420ns scrape=1.716011ms scrape_sd=201.818µs notify=1.222µs notify_sd=4.198µs rules=1.473µs tracing=8.426µs
+ts=2022-08-17T13:08:21.931Z caller=main.go:961 level=info msg=&quot;Server is ready to receive web requests.&quot;
+ts=2022-08-17T13:08:21.931Z caller=manager.go:941 level=info component=&quot;rule manager&quot; msg=&quot;Starting rule manager...&quot;
+</code></pre>
+<p> </p>
+<p>Através da linha abaixo podemos ver que o prometheus está rodando.</p>
+<pre><code class="language-bash">ts=2022-08-17T13:08:21.931Z caller=main.go:961 level=info msg=&quot;Server is ready to receive web requests.&quot;
+</code></pre>
+<p> </p>
+<p>Evidentemente, estamos utilizando o Prometheus dessa forma apenas para testes e para que possamos dar os primeiros passos em nosso treinamento.</p>
+<p>Se você pressionar CTRL+C, o Prometheus irá ser finalizado.</p>
+<p>Caso você queira executar o Prometheus e deixar o seu terminal livre e independente do processo do Prometheus, você pode fazer isso através do comando abaixo.</p>
+<pre><code class="language-bash">nohup ./prometheus &amp;
+</code></pre>
+<p> </p>
+<p>Assim ele irá rodar em segundo plano e não será interrompido caso você feche o terminal.</p>
+<p>Mas lembre-se novamente, estamos fazendo isso somente para dar os primeiros passos, não vá colocar isso em ambiente de produção, e ainda dizer que aprendeu comigo, seria muita mancada. hahaha</p>
+<p>Para verificar se o processo está em execução, basta fazer o seguinte:</p>
+<pre><code class="language-bash">ps -ef | grep prometheus
+jeferson   23539    6584  0 16:20 pts/0    00:00:00 ./prometheus
+</code></pre>
+<p> </p>
+<p>Vamos deixar o terminal de lado por um segundo, e bora acessar a interface web do Prometheus usando o nosso navegador.</p>
+<p>O Prometheus roda por padrão na porta TCP 9090, portanto vamos acessar a interface web através do seguinte endereço:</p>
+<pre><code class="language-bash">http://localhost:9090
+</code></pre>
+<p> </p>
+<p>A tela que você vê é a seguinte, correto?</p>
+<p><img src="./images/interface_web_prometheus.png" alt="Interface web do Prometheus" /></p>
+<p> </p>
+<p>Nós vamos brincar bastante nessa interface e iremos conhecer cada pixel dela, porém por agora vamos apenas testar uma query super simples, somente para dar um gostinho de como funciona.</p>
+<p>Na barra de criação de queries, vamos escrever a query que queremos testar.</p>
+<pre><code class="language-promql">process_cpu_seconds_total{job=&quot;prometheus&quot;}[1m]
+</code></pre>
+<p> </p>
+<p><img src="./images/barra_criacao_queries.png" alt="Barra de criação de queries" /></p>
+<p> </p>
+<p>Nessa query, estamos pegando os valores da métrica process_cpu_seconds_total, que é a métrica que nos informa o tempo de CPU gasto por cada processo, filtrando apenas pelos jobs que tem o nome prometheus e estamos pegando somente os valores do último minuto.</p>
+<p>Você lembra que definimos no arquivo de configuração do Prometheus o parâmetro <em>scrape_interval</em> para que ele coletasse os dados a cada 15 segundos? </p>
+<p>Eu espero que sim! :D</p>
+<p>Então, se tudo está correndo bem você terá como resultado da query acima 4 valores, afinal estamos pegando os valores do último minuto.</p>
+<p><img src="./images/resultado_query.png" alt="Resultado da query" /></p>
+<p> </p>
+<p>Muito bem, já demos o primeiro passo para o nosso treinamento, já conhecemos a cara do Prometheus e inclusive fizemos a nossa primeira query.</p>
+<p>Agora vamos ver uma instalação da maneira correta em uma máquina Linux. Ainda vamos utilizar a configuração básica do Prometheus, mas iremos cuidar dos binários e do serviço do Prometheus da maneira correta. :D</p>
+<p> </p>
+<h4 id="instalação-do-prometheus-no-linux"><a class="header" href="#instalação-do-prometheus-no-linux">Instalação do Prometheus no Linux</a></h4>
+<p>Vamos fazer a instalação em uma máquina Linux rodando a distribuição Ubuntu, mas lembre-se que é possível fazer isso em qualquer outra distribuição.</p>
+<p>Primeiro vamos fazer o download do binário do Prometheus, lembrando que existem binários para Linux, Windows e MacOS.</p>
+<p>Na verdade, vamos fazer o download dos binários, pois dentro do pacote .tar.gz, existem dois binários, o binário do <strong>Prometheus</strong> e o binário do <strong>Promtool</strong>.</p>
+<p>O <strong>Promtool</strong> é um utilitário super legal que permite que você execute queries no Prometheus via linha de comando, ou seja, você pode executar queries no Prometheus através do terminal.</p>
+<p>Já o binário do <strong>Prometheus</strong> é o <em>Prometheus Server</em> e que faz toda a mágica acontecer.</p>
+<p>Ainda existe o diretório <strong>consoles</strong>, <strong>console_libraries</strong> e o arquivo <strong>prometheus.yml</strong>, que é o arquivo de configuração do Prometheus.</p>
+<p>Bom, já sabemos de todos os detalhes, bora começar!</p>
+<p>Fazendo o download:</p>
+<pre><code class="language-bash">curl -LO https://github.com/prometheus/prometheus/releases/download/v2.38.0/prometheus-2.38.0.linux-amd64.tar.gz
+</code></pre>
+<p> </p>
+<p>Após o download, vamos extrair os arquivos.</p>
+<pre><code class="language-bash">tar -xvf prometheus-2.38.0.linux-amd64.tar.gz
+</code></pre>
+<p> </p>
+<p>Agora vamos mover os binários para o diretório /usr/local/bin.</p>
+<pre><code class="language-bash">sudo mv prometheus-2.38.0.linux-amd64/prometheus /usr/local/bin/prometheus
+sudo mv prometheus-2.38.0.linux-amd64/promtool /usr/local/bin/promtool
+</code></pre>
+<p> </p>
+<p>Vamos ver se o binário está funcionando.</p>
+<pre><code class="language-bash">prometheus --version
+
+prometheus, version 2.38.0 (branch: HEAD, revision: 818d6e60888b2a3ea363aee8a9828c7bafd73699)
+  build user:       root@e6b781f65453
+  build date:       20220816-13:23:14
+  go version:       go1.18.5
+  platform:         linux/amd64
+</code></pre>
+<p> </p>
+<p>Agora vamos criar o diretório de configuração do Prometheus.</p>
+<pre><code class="language-bash">sudo mkdir /etc/prometheus
+</code></pre>
+<p> </p>
+<p>Vamos mover os diretórios <em>consoles</em>, <em>console_libraries</em> e o arquivo <em>prometheus.yml</em> para o diretório de configuração do Prometheus.</p>
+<pre><code class="language-bash">sudo mv prometheus-2.38.0.linux-amd64/prometheus.yml /etc/prometheus/prometheus.yml
+sudo mv prometheus-2.38.0.linux-amd64/consoles /etc/prometheus
+sudo mv prometheus-2.38.0.linux-amd64/console_libraries /etc/prometheus
+</code></pre>
+<p> </p>
+<p>Vamos editar o arquivo de configuração do Prometheus para deixar como fizemos em nosso primeiro exemplo.</p>
+<pre><code class="language-bash">sudo vim /etc/prometheus/prometheus.yml
+</code></pre>
+<p> </p>
+<p>Agora edite o arquivo e deixe com o seguinte conteúdo: (você pode remover os comentários para deixar mais simples o arquivo)</p>
+<pre><code class="language-yaml">global: # Configurações globais do Prometheus, ou seja, configurações que serão utilizadas em todos os jobs caso não sejam configuradas separadamente dentro de cada job.
+  
+  scrape_interval: 15s # Intervalo de coleta dos dados, ou seja, a cada 15 segundos o Prometheus vai até o alvo monitorado coletar as métricas, o padrão é 1 minuto.
+  
+  evaluation_interval: 15s # Intervalo para o Prometheus avaliar as regras de alerta, o padrão é 1 minuto. Não estamos utilizando regras para os alertas, vamos manter aqui somente para referência.
+
+  scrape_timeout: 10s # Intervalos para o Prometheus aguardar o alvo monitorado responder antes de considerar que o alvo está indisponível, o padrão é 10 segundos.
+
+rule_files: # Inicio da definição das regras de alerta, nesse primeiro exemplo vamos deixar sem regras, pois não iremos utilizar alertas por agora.
+
+scrape_configs: # Inicio da definição das configurações de coleta, ou seja, como o Prometheus vai coletar as métricas e onde ele vai encontrar essas métricas.
+
+  - job_name: &quot;prometheus&quot; # Nome do job, ou seja, o nome do serviço que o Prometheus vai monitorar.
+
+    static_configs: # Inicio da definição das configurações estáticas, ou seja, configurações que não serão alteradas durante o processo de coleta.
+
+      - targets: [&quot;localhost:9090&quot;] # Endereço do alvo monitorado, ou seja, o endereço do serviço que o Prometheus vai monitorar. Nesse caso é o próprio Prometheus.
+</code></pre>
+<p> </p>
+<p>Não podemos esquecer do diretório onde o Prometheus guardará seus dados.</p>
+<pre><code class="language-bash">sudo mkdir /var/lib/prometheus
+</code></pre>
+<p> </p>
+<p>Vamos criar um grupo e um usuário para o Prometheus.</p>
+<pre><code class="language-bash">sudo addgroup --system prometheus
+sudo adduser --shell /sbin/nologin --system --group prometheus
+</code></pre>
+<p> </p>
+<p>Precisamos fazer com que o Prometheus seja um serviço em nossa máquina, para isso precisamos criar o arquivo de <em>service unit</em> do <em>SystemD</em>.</p>
+<pre><code class="language-bash">sudo vim /etc/systemd/system/prometheus.service
+</code></pre>
+<p> </p>
+<p>Vou deixar o conteúdo do arquivo aqui embaixo e linha por linha comentada, somente para que você possa entender o que está rolando e aprender alguma coisa extra. :D</p>
+<pre><code class="language-yaml">[Unit] # Inicio da definição do serviço.
+Description=Prometheus # Descrição do serviço.
+Documentation=https://prometheus.io/docs/introduction/overview/ # Documentação do serviço.
+Wants=network-online.target # Para que o serviço do Prometheus seja iniciado, precisamos antes que o serviço de rede esteja ativo.
+After=network-online.target # Depois que o serviço de rede esteja ativo, o serviço do Prometheus será iniciado.
+
+[Service] # Inicio da definição do serviço.
+Type=simple # Tipo do serviço, o padrão é simple, ou seja, o serviço é simples, não tem subserviços.
+User=prometheus # Usuário do serviço, o padrão é prometheus, o mesmo que criamos no passo anterior.
+Group=prometheus # Grupo do serviço, o padrão é prometheus, o mesmo que criamos no passo anterior.
+ExecReload=/bin/kill -HUP \$MAINPID # Comando para o serviço do Prometheus ser reiniciado, o padrão é /bin/kill -HUP \$MAINPID, ou seja, o serviço do Prometheus será reiniciado ao receber um sinal de reinicialização.
+ExecStart=/usr/local/bin/prometheus \ # Comando para o serviço do Prometheus ser iniciado, o padrão é /usr/local/bin/prometheus, o mesmo lugar para onde mandamos o binário do Prometheus no passo anterior.
+  --config.file=/etc/prometheus/prometheus.yml \ # Arquivo de configuração do serviço do Prometheus, o padrão é /etc/prometheus/prometheus.yml, o mesmo lugar onde mandamos o arquivo de configuração do Prometheus no passo anterior.
+  --storage.tsdb.path=/var/lib/prometheus \ # Diretório onde o serviço do Prometheus vai armazenar seus dados, o padrão é /var/lib/prometheus, o mesmo lugar onde criamos o diretório para armazenar os dados do Prometheus.
+  --web.console.templates=/etc/prometheus/consoles \ # Diretório onde o serviço do Prometheus vai encontrar os templates para os consoles, o padrão é /etc/prometheus/consoles, o mesmo lugar para onde movemos o diretório para armazenar os templates dos consoles.
+  --web.console.libraries=/etc/prometheus/console_libraries \ # Diretório onde o serviço do Prometheus vai encontrar as bibliotecas para os consoles, o padrão é /etc/prometheus/console_libraries, o mesmo lugar para onde movemos o diretório para armazenar as bibliotecas dos consoles.
+  --web.listen-address=0.0.0.0:9090 \ # Endereço do serviço do Prometheus, o padrão é o serviço escutar na porta 9090.
+  --web.external-url= # Endereço externo do serviço do Prometheus, por exemplo o endereço DNS do serviço.
+
+SyslogIdentifier=prometheus # Identificador do serviço no syslog, o padrão é prometheus.
+Restart=always # Reinicialização do serviço, o padrão é always, ou seja, o serviço será reiniciado sempre que ocorrer alguma alteração.
+
+[Install] # Inicio da definição do instalador do serviço.
+WantedBy=multi-user.target # Definir em qual grupo o serviço será iniciado, o padrão é multi-user.target.
+</code></pre>
+<p> </p>
+<p>Agora vamos adicionar o seguinte conteúdo ao arquivo de configuração do service unit do Prometheus: 
+Eu tirei os comentários para evitar algum problema e para deixar o arquivo mais legível.</p>
+<pre><code class="language-bash">[Unit]
+Description=Prometheus
+Documentation=https://prometheus.io/docs/introduction/overview/
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=prometheus
+Group=prometheus
+ExecReload=/bin/kill -HUP \$MAINPID
+ExecStart=/usr/local/bin/prometheus \
+  --config.file=/etc/prometheus/prometheus.yml \
+  --storage.tsdb.path=/var/lib/prometheus \
+  --web.console.templates=/etc/prometheus/consoles \
+  --web.console.libraries=/etc/prometheus/console_libraries \
+  --web.listen-address=0.0.0.0:9090 \
+  --web.external-url=
+
+SyslogIdentifier=prometheus
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+<p> </p>
+<p>Se você não sabe o que é o <em>SystemD</em>, você pode consultar o manual do <em>SystemD</em> ou ainda ver o conteúdo sobre SystemD que eu já criei lá no canal da <a href="https://www.youtube.com/LINUXtips">LINUXtips</a>.</p>
+<p>Acredito que já criamos todos os arquivos e diretórios necessários para o funcionamento do Prometheus, agora vamos mudar o dono desses diretórios e arquivos que criamos para que o usuário do prometheus seja o dono dos mesmos.</p>
+<pre><code class="language-bash">sudo chown -R prometheus:prometheus /var/log/prometheus
+sudo chown -R prometheus:prometheus /etc/prometheus
+sudo chown -R prometheus:prometheus /var/lib/prometheus
+sudo chown -R prometheus:prometheus /usr/local/bin/prometheus
+sudo chown -R prometheus:prometheus /usr/local/bin/promtool
+</code></pre>
+<p> </p>
+<p>Vamos fazer um reload no systemd para que o serviço do Prometheus seja iniciado.</p>
+<pre><code class="language-bash">sudo systemctl daemon-reload
+</code></pre>
+<p> </p>
+<p>Vamos iniciar o serviço do Prometheus.</p>
+<pre><code class="language-bash">sudo systemctl start prometheus
+</code></pre>
+<p> </p>
+<p>Temos que deixar o serviço do Prometheus configurado para que seja iniciado automaticamente ao iniciar o sistema.</p>
+<pre><code class="language-bash">sudo systemctl enable prometheus
+</code></pre>
+<p> </p>
+<p>Para garantir, vamos ver o status do serviço do Prometheus.</p>
+<pre><code class="language-bash">sudo systemctl status prometheus
+</code></pre>
+<p> </p>
+<p>Você pode verificar nos logs se tudo está rodando maravilhosamente.</p>
+<pre><code class="language-bash">sudo journalctl -u prometheus
+</code></pre>
+<p> </p>
+<p>E se você encontrar a seguinte mensagem no log, significa que o serviço do Prometheus está funcionando corretamente.</p>
+<pre><code class="language-bash">level=info msg=&quot;Server is ready to receive web requests.&quot;
+</code></pre>
+<p> </p>
+<p>E para finalizar a brincadeira, vamos acessar a nossa interface web do Prometheus através do seguinte endereço em seu navegador.</p>
+<pre><code class="language-bash">http://localhost:9090
+</code></pre>
+<p> </p>
+<p>Você verá uma tela maravilhosa como mostra a imagem abaixo.</p>
+<p><img src="images/interface-web-prometheus-2.png" alt="Prometheus instalado no Linux" />
+ </p>
+<p> </p>
+<h3 id="a-sua-lição-de-casa"><a class="header" href="#a-sua-lição-de-casa">A sua lição de casa</a></h3>
+<p>A sua lição de casa é estudar cada conceito que você aprendeu até o momento, e claro, vamos explorar ao máximo a interface do Prometheus.
+Tente brincar criando algumas queries e visualizando os resultados, além de navegar pela interface para conhecer todos os recursos do Prometheus.
+Nós vamos explorar e muito essa interface, afinal o nosso treinamento é criado para que você possa aprender de maneira evolutiva, um pouco a cada dia e sempre criando algo, saindo do treinamento com algo que você aprendeu executado na prática.</p>
+<p> </p>
+<h2 id="desafio-do-day-1"><a class="header" href="#desafio-do-day-1">Desafio do Day-1</a></h2>
+<p>Não esqueça de realizar o desafio do Day-1, para que você possa ir para o próximo Day.
+O desafio consiste de perguntas e um teste prático, para que você possa aprender ainda mais e se familiarizar com o que você aprendeu.
+Veja na plataforma do treinamento o desafio do Day-1.</p>
+<p> </p>
+<h2 id="final-do-day-1"><a class="header" href="#final-do-day-1">Final do Day-1</a></h2>
+<p>Durante o Day-1 você aprendeu o que é monitoração, qual a relação dela com observabilidade, quais os pilares da observabilidade, o que é o Prometheus e como ele funciona.
+Fizemos a instalação do Prometheus, entendemos sua configuração inicial, como configurar o service unit, como configurar o Prometheus através do arquivo de configuração, criamos a estrutura de arquivos e diretórios, como configurar o grupo de usuários e como configurar o usuário do serviço.
+Acessamos a interface do Prometheus e fizemos a nossa primeira query.
+Verificamos o status do serviço do Prometheus e verificamos nos logs se tudo está rodando corretamente.
+Entendemos a arquitetura do Prometheus e tivemos o prazer de ver o desenho feito por mim. hahaha</p>
+<p>Agora é hora de descansar e depois rever todo o conteúdo do Day-1.</p>
+<p> </p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../BOOKSUMMARY.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../day-2/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../BOOKSUMMARY.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../day-2/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

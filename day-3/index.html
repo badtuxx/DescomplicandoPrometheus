@@ -1,0 +1,1468 @@
+<!DOCTYPE HTML>
+<html lang="pt" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Descomplicando o Prometheus</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/css/style.css">
+        <link rel="stylesheet" href="../theme/css/mdbook-admonish.css">
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introdução</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../BOOKSUMMARY.html">Sumário</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Capítulos</li><li class="chapter-item expanded "><a href="../day-1/index.html"><strong aria-hidden="true">1.</strong> Dia 1</a></li><li class="chapter-item expanded "><a href="../day-2/index.html"><strong aria-hidden="true">2.</strong> Dia 2</a></li><li class="chapter-item expanded "><a href="../day-3/index.html" class="active"><strong aria-hidden="true">3.</strong> Dia 3</a></li><li class="chapter-item expanded "><a href="../day-4/index.html"><strong aria-hidden="true">4.</strong> Dia 4</a></li><li class="chapter-item expanded "><a href="../day-5/index.html"><strong aria-hidden="true">5.</strong> Dia 5</a></li><li class="chapter-item expanded "><a href="../day-6/index.html"><strong aria-hidden="true">6.</strong> Dia 6</a></li><li class="chapter-item expanded "><a href="../day-7/index.html"><strong aria-hidden="true">7.</strong> Dia 7</a></li><li class="chapter-item expanded "><a href="../day-8/index.html"><strong aria-hidden="true">8.</strong> Dia 8</a></li><li class="chapter-item expanded "><a href="../day-9/index.html"><strong aria-hidden="true">9.</strong> Dia 9</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Descomplicando o Prometheus</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/badtuxx/DescomplicandoPrometheus" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/badtuxx/DescomplicandoPrometheus/edit/main/pt/src/day-3/README.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <h1 id="descomplicando-o-prometheus"><a class="header" href="#descomplicando-o-prometheus">Descomplicando o Prometheus</a></h1>
+<h2 id="day-3"><a class="header" href="#day-3">DAY-3</a></h2>
+<h3 id="o-que-iremos-ver-hoje"><a class="header" href="#o-que-iremos-ver-hoje">O que iremos ver hoje?</a></h3>
+<p>Durante o nosso terceiro dia nessa jornada do conhecimento em relação ao Prometheus, vamos entender e aprender como construir um exporter, o nosso segundo exporter, e dessa vez em Go.
+Vamos aprender muito sobre operadores, como o <code>and</code> e o <code>or</code>, e como podemos utilizar esses operadores para criar queries mais complexas e que nos ajudem a entender melhor o que está acontecendo com nossos serviços.
+Vamos ainda aprender muito sobre o sensacional Node Exporter, como configura-lo e consultar as métricas que ele nos disponibiliza.
+E claro, realizar algumas queries durante o dia de hoje, somente para não perder o costume.
+Ahhh, já vamos deixar o Grafana instalado e configurado para que possamos utiliza-lo durante o Day-4. Vamos instalar hoje, no Day-3, somente para deixa-lo um pouco mais ansioso para o nosso próximo dia de aprendizado. :D</p>
+<p> </p>
+<h3 id="conteúdo-do-day-3"><a class="header" href="#conteúdo-do-day-3">Conteúdo do Day-3</a></h3>
+<details>
+<summary class="summary">DAY-3</summary>
+<ul>
+<li><a href="#descomplicando-o-prometheus">Descomplicando o Prometheus</a>
+<ul>
+<li><a href="#day-3">DAY-3</a>
+<ul>
+<li><a href="#o-que-iremos-ver-hoje">O que iremos ver hoje?</a></li>
+<li><a href="#conte%C3%BAdo-do-day-3">Conteúdo do Day-3</a></li>
+<li><a href="#criando-o-nosso-segundo-exporter">Criando o nosso segundo exporter</a>
+<ul>
+<li><a href="#criando-o-nosso-exporter-usando-go">Criando o nosso exporter usando Go</a></li>
+<li><a href="#adicionando-o-nosso-exporter-no-container">Adicionando o nosso exporter no container</a></li>
+<li><a href="#adicionando-o-novo-target-no-prometheus">Adicionando o novo Target no Prometheus</a></li>
+</ul>
+</li>
+<li><a href="#as-fun%C3%A7%C3%B5es">As Funções</a>
+<ul>
+<li><a href="#a-fun%C3%A7%C3%A3o-rate">A função <em>rate</em></a></li>
+<li><a href="#a-fun%C3%A7%C3%A3o-irate">A função <em>irate</em></a></li>
+<li><a href="#a-fun%C3%A7%C3%A3o-delta">A função <em>delta</em></a></li>
+<li><a href="#a-fun%C3%A7%C3%A3o-increase">A função <em>increase</em></a></li>
+<li><a href="#a-fun%C3%A7%C3%A3o-sum">A função <em>sum</em></a></li>
+<li><a href="#a-fun%C3%A7%C3%A3o-count">A função <em>count</em></a></li>
+<li><a href="#a-fun%C3%A7%C3%A3o-avg">A função <em>avg</em></a></li>
+<li><a href="#a-fun%C3%A7%C3%A3o-min">A função <em>min</em></a></li>
+<li><a href="#a-fun%C3%A7%C3%A3o-max">A função <em>max</em></a></li>
+<li><a href="#a-fun%C3%A7%C3%A3o-avg_over_time">A função <em>avg_over_time</em></a></li>
+<li><a href="#a-fun%C3%A7%C3%A3o-sum_over_time">A função <em>sum_over_time</em></a></li>
+<li><a href="#a-fun%C3%A7%C3%A3o-max_over_time">A função <em>max_over_time</em></a></li>
+<li><a href="#a-fun%C3%A7%C3%A3o-min_over_time">A função <em>min_over_time</em></a></li>
+<li><a href="#a-fun%C3%A7%C3%A3o-stddev_over_time">A função <em>stddev_over_time</em></a></li>
+<li><a href="#a-fun%C3%A7%C3%A3o-by">A função <em>by</em></a></li>
+<li><a href="#a-fun%C3%A7%C3%A3o-without">A função <em>without</em></a></li>
+<li><a href="#a-fun%C3%A7%C3%A3o-histogram_quantile-e-quantile">A função <em>histogram_quantile e quantile</em></a></li>
+</ul>
+</li>
+<li><a href="#praticando-e-usando-as-fun%C3%A7%C3%B5es">Praticando e usando as funções</a></li>
+<li><a href="#operadores">Operadores</a>
+<ul>
+<li><a href="#operador-de-igualdade">Operador de igualdade</a></li>
+<li><a href="#operador-de-diferen%C3%A7a">Operador de diferença</a></li>
+<li><a href="#operador-de-maior-que">Operador de maior que</a></li>
+<li><a href="#operador-de-menor-que">Operador de menor que</a></li>
+<li><a href="#operador-de-maior-ou-igual-que">Operador de maior ou igual que</a></li>
+<li><a href="#operador-de-menor-ou-igual-que">Operador de menor ou igual que</a></li>
+<li><a href="#operador-de-multiplica%C3%A7%C3%A3o">Operador de multiplicação</a></li>
+<li><a href="#operador-de-divis%C3%A3o">Operador de divisão</a></li>
+<li><a href="#operador-de-adi%C3%A7%C3%A3o">Operador de adição</a></li>
+<li><a href="#operador-de-subtra%C3%A7%C3%A3o">Operador de subtração</a></li>
+<li><a href="#operador-de-modulo">Operador de modulo</a></li>
+<li><a href="#operador-de-potencia%C3%A7%C3%A3o">Operador de potenciação</a></li>
+<li><a href="#operador-de-agrupamento">Operador de agrupamento</a></li>
+<li><a href="#operador-de-concatena%C3%A7%C3%A3o">Operador de concatenação</a></li>
+<li><a href="#operador-de-compara%C3%A7%C3%A3o-de-strings">Operador de comparação de strings</a></li>
+<li><a href="#chega-de-operadores-por-hoje">Chega de operadores por hoje</a></li>
+</ul>
+</li>
+<li><a href="#o-node-exporter">O Node Exporter</a>
+<ul>
+<li><a href="#os-collectors">Os Collectors</a></li>
+<li><a href="#instala%C3%A7%C3%A3o-do-node-exporter-no-linux">Instalação do Node Exporter no Linux</a></li>
+<li><a href="#adicionando-o-node-exporter-no-prometheus">Adicionando o Node Exporter no Prometheus</a></li>
+</ul>
+</li>
+<li><a href="#habilitando-novos-collectors-no-node-exporter">Habilitando novos collectors no Node Exporter</a></li>
+<li><a href="#algumas-queries-capturando-m%C3%A9tricas-do-node-exporter">Algumas queries capturando métricas do Node Exporter</a></li>
+<li><a href="#chega-por-hoje">Chega por hoje!</a></li>
+<li><a href="#li%C3%A7%C3%A3o-de-casa">Lição de casa</a></li>
+<li><a href="#refer%C3%AAncias">Referências</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</details>
+<p> 
+ </p>
+<h3 id="criando-o-nosso-segundo-exporter"><a class="header" href="#criando-o-nosso-segundo-exporter">Criando o nosso segundo exporter</a></h3>
+<p>Agora que já vimos como criar um exporter, vamos criar um segundo exporter para monitorar o consumo de memória do nosso servidor.</p>
+<p>Hoje vamos criar um exporter em Go, então antes de mais nada temos que instalar o Go em nossa máquina.</p>
+<p>Para instalar o Go no Ubuntu, basta executar o seguinte comando:</p>
+<pre><code class="language-bash">sudo apt install golang
+</code></pre>
+<p> </p>
+<p>Veja no site oficial do Go como instalar em outras distribuições.</p>
+<h4 id="criando-o-nosso-exporter-usando-go"><a class="header" href="#criando-o-nosso-exporter-usando-go">Criando o nosso exporter usando Go</a></h4>
+<p>Vamos criar um arquivo chamado <code>segundo-exporter.go</code> no diretório <code>segundo-exporter</code> e vamos adicionar o seguinte código:</p>
+<pre><code class="language-GO">package main
+
+import ( // importando as bibliotecas necessárias
+	&quot;log&quot;      // log
+	&quot;net/http&quot; // http
+
+	&quot;github.com/pbnjay/memory&quot;                                // biblioteca para pegar informações de memória
+	&quot;github.com/prometheus/client_golang/prometheus&quot;          // biblioteca para criar o nosso exporter
+	&quot;github.com/prometheus/client_golang/prometheus/promhttp&quot; // biblioteca criar o servidor web
+)
+
+func memoriaLivre() float64 { // função para pegar a memória livre
+	memoria_livre := memory.FreeMemory() // pegando a memória livre através da função FreeMemory() da biblioteca memory
+	return float64(memoria_livre)        // retornando o valor da memória livre
+}
+
+func totalMemory() float64 { // função para pegar a memória total
+	memoria_total := memory.TotalMemory() // pegando a memória total através da função TotalMemory() da biblioteca memory
+	return float64(memoria_total)         // retornando o valor da memória total
+}
+
+var ( // variáveis para definir as nossas métricas do tipo Gauge
+	memoriaLivreBytesGauge = prometheus.NewGauge(prometheus.GaugeOpts{ // métrica para pegar a memória livre em bytes
+		Name: &quot;memoria_livre_bytes&quot;,                  // nome da métrica
+		Help: &quot;Quantidade de memória livre em bytes&quot;, // descrição da métrica
+	})
+
+	memoriaLivreMegabytesGauge = prometheus.NewGauge(prometheus.GaugeOpts{ // métrica para pegar a memória livre em megabytes
+		Name: &quot;memoria_livre_megabytes&quot;,                  // nome da métrica
+		Help: &quot;Quantidade de memória livre em megabytes&quot;, // descrição da métrica
+	})
+
+	totalMemoryBytesGauge = prometheus.NewGauge(prometheus.GaugeOpts{ // métrica para pegar a memória total em bytes
+		Name: &quot;total_memoria_bytes&quot;,                  // nome da métrica
+		Help: &quot;Quantidade total de memória em bytes&quot;, // descrição da métrica
+	})
+
+	totalMemoryGigaBytesGauge = prometheus.NewGauge(prometheus.GaugeOpts{ // métrica para pegar a memória total em gigabytes
+		Name: &quot;total_memoria_gigabytes&quot;,                  // nome da métrica
+		Help: &quot;Quantidade total de memória em gigabytes&quot;, // descrição da métrica
+	})
+)
+
+func init() { // função para registrar as métricas
+
+	prometheus.MustRegister(memoriaLivreBytesGauge)     // registrando a métrica de memória livre em bytes
+	prometheus.MustRegister(memoriaLivreMegabytesGauge) // registrando a métrica de memória livre em megabytes
+	prometheus.MustRegister(totalMemoryBytesGauge)      // registrando a métrica de memória total em bytes
+	prometheus.MustRegister(totalMemoryGigaBytesGauge)  // registrando a métrica de memória total em gigabytes
+}
+
+func main() { // função principal
+	memoriaLivreBytesGauge.Set(memoriaLivre())                        // setando o valor da métrica de memória livre em bytes
+	memoriaLivreMegabytesGauge.Set(memoriaLivre() / 1024 / 1024)      // setando o valor da métrica de memória livre em megabytes
+	totalMemoryBytesGauge.Set(totalMemory())                          // setando o valor da métrica de memória total em bytes
+	totalMemoryGigaBytesGauge.Set(totalMemory() / 1024 / 1024 / 1024) // setando o valor da métrica de memória total em gigabytes
+
+	http.Handle(&quot;/metrics&quot;, promhttp.Handler()) // criando o servidor web para expor as métricas
+
+	log.Fatal(http.ListenAndServe(&quot;:7788&quot;, nil)) // iniciando o servidor web na porta 7788
+}
+</code></pre>
+<p> </p>
+<p>O código acima está todo comentado explicando o que cada linha faz, então não vou me estender muito explicando o código.</p>
+<p>Mas básicamente estamos criando um exporter que vai expor 4 métricas:</p>
+<ul>
+<li><code>memoria_livre_bytes</code> - métrica que vai retornar a quantidade de memória livre em bytes</li>
+<li><code>memoria_livre_megabytes</code> - métrica que vai retornar a quantidade de memória livre em megabytes</li>
+<li><code>total_memoria_bytes</code> - métrica que vai retornar a quantidade total de memória em bytes</li>
+<li><code>total_memoria_gigabytes</code> - métrica que vai retornar a quantidade total de memória em gigabytes</li>
+</ul>
+<p> </p>
+<p>Lembrando que estamos utilizando os pacotes <code>prometheus</code> para criar o nosso exporter e <code>promhttp</code> para expor as métricas através de um servidor web.
+Também estamos utilizando o pacote <code>memory</code> para pegar as informações de memória do nosso servidor, valeu usuário do GitHub <em>pbnjay</em> por criar essa biblioteca.</p>
+<p>Estamos utilizando o pacote <code>log</code> para logar os erros que possam acontecer e o pacote <code>net/http</code> para criar o webserver.</p>
+<p> </p>
+<p>Agora vamos compilar o nosso código e executar o nosso exporter, mas antes precisamos instalar as bibliotecas que utilizamos em nosso código.</p>
+<pre><code class="language-BASH">go mod init segundo-exporter
+go mod tidy
+</code></pre>
+<p>Agora sim já podemos compilar o nosso código conforme o exemplo abaixo:</p>
+<pre><code class="language-BASH">go build segundo-exporter.go
+</code></pre>
+<p>Perceba que foi gerado um binário Go chamado <code>segundo-exporter</code>, vamos executa-lo:</p>
+<pre><code class="language-BASH">./segundo-exporter
+</code></pre>
+<p> </p>
+<p>Nós configuramos o web server do nosso exporter para rodar na porta 7788, vamos acessar a URL <code>http://localhost:7788/metrics</code> para ver as métricas que o nosso exporter está exportando.</p>
+<p>Você pode verificar as métricas atráves do navegador ou utilizando o comando <code>curl</code>:</p>
+<pre><code class="language-BASH">curl http://localhost:7788/metrics
+</code></pre>
+<p> </p>
+<p>A saída deve ser algo parecido com o exemplo abaixo:</p>
+<pre><code class="language-BASH"># HELP go_gc_duration_seconds A summary of the pause duration of garbage collection cycles.
+# TYPE go_gc_duration_seconds summary
+go_gc_duration_seconds{quantile=&quot;0&quot;} 4.4072e-05
+go_gc_duration_seconds{quantile=&quot;0.25&quot;} 4.4072e-05
+go_gc_duration_seconds{quantile=&quot;0.5&quot;} 8.7174e-05
+go_gc_duration_seconds{quantile=&quot;0.75&quot;} 8.7174e-05
+go_gc_duration_seconds{quantile=&quot;1&quot;} 8.7174e-05
+go_gc_duration_seconds_sum 0.000131246
+go_gc_duration_seconds_count 2
+# HELP go_goroutines Number of goroutines that currently exist.
+# TYPE go_goroutines gauge
+go_goroutines 8
+# HELP go_info Information about the Go environment.
+# TYPE go_info gauge
+go_info{version=&quot;go1.18.1&quot;} 1
+# HELP go_memstats_alloc_bytes Number of bytes allocated and still in use.
+# TYPE go_memstats_alloc_bytes gauge
+go_memstats_alloc_bytes 4.69292e+06
+# HELP go_memstats_alloc_bytes_total Total number of bytes allocated, even if freed.
+# TYPE go_memstats_alloc_bytes_total counter
+go_memstats_alloc_bytes_total 6.622168e+06
+# HELP go_memstats_buck_hash_sys_bytes Number of bytes used by the profiling bucket hash table.
+# TYPE go_memstats_buck_hash_sys_bytes gauge
+go_memstats_buck_hash_sys_bytes 4248
+# HELP go_memstats_frees_total Total number of frees.
+# TYPE go_memstats_frees_total counter
+go_memstats_frees_total 6221
+# HELP go_memstats_gc_sys_bytes Number of bytes used for garbage collection system metadata.
+# TYPE go_memstats_gc_sys_bytes gauge
+go_memstats_gc_sys_bytes 4.709704e+06
+# HELP go_memstats_heap_alloc_bytes Number of heap bytes allocated and still in use.
+# TYPE go_memstats_heap_alloc_bytes gauge
+go_memstats_heap_alloc_bytes 4.69292e+06
+# HELP go_memstats_heap_idle_bytes Number of heap bytes waiting to be used.
+# TYPE go_memstats_heap_idle_bytes gauge
+go_memstats_heap_idle_bytes 2.392064e+06
+# HELP go_memstats_heap_inuse_bytes Number of heap bytes that are in use.
+# TYPE go_memstats_heap_inuse_bytes gauge
+go_memstats_heap_inuse_bytes 5.24288e+06
+# HELP go_memstats_heap_objects Number of allocated objects.
+# TYPE go_memstats_heap_objects gauge
+go_memstats_heap_objects 22935
+# HELP go_memstats_heap_released_bytes Number of heap bytes released to OS.
+# TYPE go_memstats_heap_released_bytes gauge
+go_memstats_heap_released_bytes 1.662976e+06
+# HELP go_memstats_heap_sys_bytes Number of heap bytes obtained from system.
+# TYPE go_memstats_heap_sys_bytes gauge
+go_memstats_heap_sys_bytes 7.634944e+06
+# HELP go_memstats_last_gc_time_seconds Number of seconds since 1970 of last garbage collection.
+# TYPE go_memstats_last_gc_time_seconds gauge
+go_memstats_last_gc_time_seconds 1.6623888726616032e+09
+# HELP go_memstats_lookups_total Total number of pointer lookups.
+# TYPE go_memstats_lookups_total counter
+go_memstats_lookups_total 0
+# HELP go_memstats_mallocs_total Total number of mallocs.
+# TYPE go_memstats_mallocs_total counter
+go_memstats_mallocs_total 29156
+# HELP go_memstats_mcache_inuse_bytes Number of bytes in use by mcache structures.
+# TYPE go_memstats_mcache_inuse_bytes gauge
+go_memstats_mcache_inuse_bytes 38400
+# HELP go_memstats_mcache_sys_bytes Number of bytes used for mcache structures obtained from system.
+# TYPE go_memstats_mcache_sys_bytes gauge
+go_memstats_mcache_sys_bytes 46800
+# HELP go_memstats_mspan_inuse_bytes Number of bytes in use by mspan structures.
+# TYPE go_memstats_mspan_inuse_bytes gauge
+go_memstats_mspan_inuse_bytes 107712
+# HELP go_memstats_mspan_sys_bytes Number of bytes used for mspan structures obtained from system.
+# TYPE go_memstats_mspan_sys_bytes gauge
+go_memstats_mspan_sys_bytes 114240
+# HELP go_memstats_next_gc_bytes Number of heap bytes when next garbage collection will take place.
+# TYPE go_memstats_next_gc_bytes gauge
+go_memstats_next_gc_bytes 5.281792e+06
+# HELP go_memstats_other_sys_bytes Number of bytes used for other system allocations.
+# TYPE go_memstats_other_sys_bytes gauge
+go_memstats_other_sys_bytes 1.43568e+06
+# HELP go_memstats_stack_inuse_bytes Number of bytes in use by the stack allocator.
+# TYPE go_memstats_stack_inuse_bytes gauge
+go_memstats_stack_inuse_bytes 688128
+# HELP go_memstats_stack_sys_bytes Number of bytes obtained from system for stack allocator.
+# TYPE go_memstats_stack_sys_bytes gauge
+go_memstats_stack_sys_bytes 688128
+# HELP go_memstats_sys_bytes Number of bytes obtained from system.
+# TYPE go_memstats_sys_bytes gauge
+go_memstats_sys_bytes 1.4633744e+07
+# HELP go_threads Number of OS threads created.
+# TYPE go_threads gauge
+go_threads 13
+# HELP memoria_livre_bytes Quantidade de memória livre em bytes
+# TYPE memoria_livre_bytes gauge
+memoria_livre_bytes 5.0984931328e+10
+# HELP memoria_livre_megabytes Quantidade de memória livre em megabytes
+# TYPE memoria_livre_megabytes gauge
+memoria_livre_megabytes 48623.01953125
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# TYPE process_cpu_seconds_total counter
+process_cpu_seconds_total 0.02
+# HELP process_max_fds Maximum number of open file descriptors.
+# TYPE process_max_fds gauge
+process_max_fds 1.048576e+06
+# HELP process_open_fds Number of open file descriptors.
+# TYPE process_open_fds gauge
+process_open_fds 35
+# HELP process_resident_memory_bytes Resident memory size in bytes.
+# TYPE process_resident_memory_bytes gauge
+process_resident_memory_bytes 1.4884864e+07
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds 1.66238886841e+09
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# TYPE process_virtual_memory_bytes gauge
+process_virtual_memory_bytes 1.494904832e+09
+# HELP process_virtual_memory_max_bytes Maximum amount of virtual memory available in bytes.
+# TYPE process_virtual_memory_max_bytes gauge
+process_virtual_memory_max_bytes 1.8446744073709552e+19
+# HELP promhttp_metric_handler_requests_in_flight Current number of scrapes being served.
+# TYPE promhttp_metric_handler_requests_in_flight gauge
+promhttp_metric_handler_requests_in_flight 1
+# HELP promhttp_metric_handler_requests_total Total number of scrapes by HTTP status code.
+# TYPE promhttp_metric_handler_requests_total counter
+promhttp_metric_handler_requests_total{code=&quot;200&quot;} 6
+promhttp_metric_handler_requests_total{code=&quot;500&quot;} 0
+promhttp_metric_handler_requests_total{code=&quot;503&quot;} 0
+# HELP total_memoria_bytes Quantidade total de memória em bytes
+# TYPE total_memoria_bytes gauge
+total_memoria_bytes 6.7332653056e+10
+# HELP total_memoria_gigabytes Quantidade total de memória em gigabytes
+# TYPE total_memoria_gigabytes gauge
+total_memoria_gigabytes 62.70841979980469
+</code></pre>
+<p>Perceba que as nossas métricas estão lá, são elas:</p>
+<ul>
+<li><code>memoria_livre_bytes</code></li>
+<li><code>memoria_livre_megabytes</code></li>
+<li><code>total_memoria_bytes</code></li>
+<li><code>total_memoria_gigabytes</code></li>
+</ul>
+<p>Está funcionando lindamente.</p>
+<h4 id="adicionando-o-nosso-exporter-no-container"><a class="header" href="#adicionando-o-nosso-exporter-no-container">Adicionando o nosso exporter no container</a></h4>
+<p>Agora vamos adicionar o nosso segundo exporter em um outro container, para isso vamos criar um arquivo chamado <code>Dockerfile</code> no diretório <code>segundo-exporter</code> com o seguinte conteúdo:</p>
+<pre><code class="language-dockerfile">FROM golang:1.19.0-alpine3.16 AS buildando
+
+WORKDIR /app
+COPY . /app
+RUN go build segundo-exporter.go
+
+FROM alpine:3.16
+LABEL maintainer Jeferson Fernando &lt;jeferson@linuxtips.com.br&gt;
+LABEL description &quot;Executando o nosso segundo exporter&quot;
+COPY --from=buildando /app/segundo-exporter /app/segundo-exporter
+EXPOSE 7788
+WORKDIR /app
+CMD [&quot;./segundo-exporter&quot;]
+</code></pre>
+<p> </p>
+<p>Agora vamos buildar a imagem do nosso segundo exporter, para isso vamos executar o seguinte comando:</p>
+<pre><code class="language-bash">docker build -t segundo-exporter:1.0 .
+</code></pre>
+<p> </p>
+<p>Vamos listar a nossa nova imagem de container com o nosso segundo exporter:</p>
+<pre><code class="language-bash">docker images | grep segundo-exporter
+</code></pre>
+<p> </p>
+<p>Muito bom, está lá, agora vamos executar o nosso segundo exporter:</p>
+<pre><code class="language-bash">docker run -d --name segundo-exporter -p 7788:7788 segundo-exporter:1.0
+</code></pre>
+<p> </p>
+<p>Agora vamos listar os nossos containers em execução:</p>
+<pre><code class="language-bash">docker ps
+</code></pre>
+<p> </p>
+<p>Ele está lá:</p>
+<pre><code class="language-bash">CONTAINER ID   IMAGE                  COMMAND                CREATED         STATUS         PORTS                                       NAMES
+e51e819c6069   segundo-exporter:1.0   &quot;./segundo-exporter&quot;   6 seconds ago   Up 5 seconds   0.0.0.0:7788-&gt;7788/tcp, :::7788-&gt;7788/tcp   segundo-exporter
+</code></pre>
+<p> </p>
+<p>Vamos acessar as métricas do nosso segundo exporter:</p>
+<pre><code class="language-bash">curl http://localhost:7788/metrics
+</code></pre>
+<p> </p>
+<p>Tudo funcionando maravilhosamente bem!</p>
+<h4 id="adicionando-o-novo-target-no-prometheus"><a class="header" href="#adicionando-o-novo-target-no-prometheus">Adicionando o novo Target no Prometheus</a></h4>
+<p>Agora já podemos configurar o Prometheus para monitorar o nosso segundo exporter. Para isso temos que editar o arquivo <code>prometheus.yml</code> e adicionar o seguinte conteúdo:</p>
+<pre><code class="language-yaml">global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+scrape_configs:
+  - job_name: &quot;prometheus&quot;
+    static_configs:
+      - targets: [&quot;localhost:9090&quot;]
+
+  - job_name: &quot;Meu Primeiro Exporter&quot;
+    static_configs:
+      - targets: [&quot;localhost:8899&quot;]
+  
+  - job_name: 'segundo-exporter'
+    static_configs:
+      - targets: ['localhost:7788']
+</code></pre>
+<p> </p>
+<p>Pronto, agora vamos fazer o restart do Prometheus para que ele carregue as novas configurações:</p>
+<pre><code class="language-bash">systemctl restart prometheus
+</code></pre>
+<p> </p>
+<p>Vocês também pode fazer isso via comando kill, mas o restart é mais gostosinho de ai meu dels.</p>
+<pre><code class="language-bash">kill -HUP $(pidof prometheus)
+</code></pre>
+<p> </p>
+<p>Agora vamos acessar o Prometheus e verificar se o novo target e as nossas novas métricas estão por lá:</p>
+<pre><code class="language-bash">http://localhost:9090
+</code></pre>
+<p> </p>
+<p>O nosso novo target está lá:</p>
+<p><img src="images/03-targets.png" alt="Prometheus com 03 targets" /></p>
+<p> </p>
+<p>E as nossa novas métricas também:</p>
+<p><img src="images/03-metricas.png" alt="Prometheus com 03 targets" /></p>
+<p> </p>
+<p><img src="images/04-metricas.png" alt="Prometheus com 03 targets" /></p>
+<p> 
+ </p>
+<h3 id="as-funções"><a class="header" href="#as-funções">As Funções</a></h3>
+<p>Uma coisa muito importante é se sentir confortável com o uso da PromQL, pois é com ela que iremos extrair o máximo de nossas métricas e também do mundo sensacional das <code>time series</code>.</p>
+<p>Vamos conhecer algumas funções para criação de queries mais efetivas. Vou listar algumas e outras funções vamos conhecendo conforme vamos avançando.</p>
+<p> 
+ </p>
+<h4 id="a-função-rate"><a class="header" href="#a-função-rate">A função <em>rate</em></a></h4>
+<p>A função <code>rate</code> representa a taxa de crescimento por segundo de uma determinada métrica como média, durante um intervalo de tempo.</p>
+<pre><code class="language-PROMQL">rate(metrica)[5m]
+</code></pre>
+<p> 
+Onde <code>metrica</code> é a métrica que você deseja calcular a taxa de crescimento durante um intervalo de tempo de 5 minutos. Você pode utilizar a função <code>rate</code> para trabalhar com métricas do tipo <code>gauge</code> e <code>counter</code>.</p>
+<p>Vamos para um exemplo real:</p>
+<pre><code class="language-PROMQL">rate(prometheus_http_requests_total{job=&quot;prometheus&quot;,handler=&quot;/api/v1/query&quot;}[5m])
+</code></pre>
+<p> </p>
+<p>Aqui estou calculando a média da taxa de crescimento por segundo da métrica <code>prometheus_http_requests_total</code>, filtrando por <code>job</code> e <code>handler</code> e durante um intervalo de tempo de 5 minutos. Nesse caso eu quero saber o crescimento nas queries que estão sendo feitas no Prometheus.</p>
+<p> 
+ </p>
+<h4 id="a-função-irate"><a class="header" href="#a-função-irate">A função <em>irate</em></a></h4>
+<p>A função <code>irate</code> representa a taxa de crescimento por segundo de uma determinada métrica, mas diferentemente da função <code>rate</code>, a função <code>irate</code> não faz a média dos valores, ela pega os dois últimos pontos e calcula a taxa de crescimento. Quando representado em um gráfico, é possível ver a diferença entre a função <code>rate</code> e a função <code>irate</code>, enquanto o gráfico com o <code>rate</code> é mais suave, o gráfico com o <code>irate</code> é mais &quot;pontiagudo&quot;, você consegue ver quedas e subidas mais nítidas.</p>
+<pre><code class="language-PROMQL">irate(metrica[5m])
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja calcular a taxa de crescimento, considerando somente os dois últimos pontos, durante um intervalo de tempo de 5 minutos.</p>
+<p>Vamos para um exemplo real:</p>
+<pre><code class="language-PROMQL">irate(prometheus_http_requests_total{job=&quot;prometheus&quot;,handler=&quot;/api/v1/query&quot;}[5m])
+</code></pre>
+<p> </p>
+<p>Aqui estou calculando a taxa de crescimento por segundo da métrica <code>prometheus_http_requests_total</code>, considerando somente os dois últimos pontos, filtrando por <code>job</code> e <code>handler</code> e durante um intervalo de tempo de 5 minutos. Nesse caso eu quero saber o crescimento nas queries que estão sendo feitas no Prometheus.</p>
+<p> 
+ </p>
+<h4 id="a-função-delta"><a class="header" href="#a-função-delta">A função <em>delta</em></a></h4>
+<p>A função <code>delta</code> representa a diferença entre o valor atual e o valor anterior de uma métrica. Quando estamos falando de <code>delta</code> estamos falando por exemplo do consumo de um disco. Vamos imaginar que eu queira saber o quando eu usei de disco em um determinado intervalo de tempo, eu posso utilizar a função <code>delta</code> para calcular a diferença entre o valor atual e o valor anterior. </p>
+<pre><code class="language-PROMQL">delta(metrica[5m])
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja calcular a diferença entre o valor atual e o valor anterior, durante um intervalo de tempo de 5 minutos.</p>
+<p> </p>
+<p>Vamos para um exemplo real:</p>
+<pre><code class="language-PROMQL">delta(prometheus_http_response_size_bytes_count{job=&quot;prometheus&quot;,handler=&quot;/api/v1/query&quot;}[5m])
+</code></pre>
+<p>Agora estou calculando a diferença entre o valor atual e o valor anterior da métrica <code>prometheus_http_response_size_bytes_count</code>, filtrando por <code>job</code> e <code>handler</code> e durante um intervalo de tempo de 5 minutos. Nesse caso eu quero saber o quanto de bytes eu estou consumindo nas queries que estão sendo feitas no Prometheus.</p>
+<p> 
+ </p>
+<h4 id="a-função-increase"><a class="header" href="#a-função-increase">A função <em>increase</em></a></h4>
+<p>Da mesma forma que a função <code>delta</code>, a função <code>increase</code> representa a diferença entre o primeiro e último valor durante um intervalo de tempo, porém a diferença é que a função <code>increase</code> considera que o valor é um contador, ou seja, o valor é incrementado a cada vez que a métrica é atualizada.
+Ela começa com o valor 0 e vai somando o valor da métrica a cada atualização.
+Você já pode imaginar qual o tipo de métrica que ela trabalha, certo? 
+Qual? Counter!</p>
+<pre><code class="language-PROMQL">increase(metrica[5m])
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja calcular a diferença entre o primeiro e último valor durante um intervalo de tempo de 5 minutos.</p>
+<p> </p>
+<p>Vamos para um exemplo real:</p>
+<pre><code class="language-PROMQL">increase(prometheus_http_requests_total{job=&quot;prometheus&quot;,handler=&quot;/api/v1/query&quot;}[5m])
+</code></pre>
+<p> </p>
+<p>Aqui estou calculando a diferença entre o primeiro e último valor da métrica <code>prometheus_http_requests_total</code>, filtrando por <code>job</code> e <code>handler</code> e durante um intervalo de tempo de 5 minutos.</p>
+<p>Você pode acompanhar o resultado dessa query clicando em <code>Graph</code> e depois em <code>Execute</code>, assim você vai ver o gráfico com o resultado da query fazendo mais sentindo.</p>
+<p> 
+ </p>
+<h4 id="a-função-sum"><a class="header" href="#a-função-sum">A função <em>sum</em></a></h4>
+<p>A função <code>sum</code> representa a soma de todos os valores de uma métrica. 
+Você pode utilizar a função <code>sum</code> nos tipos de dados <code>counter</code>, <code>gauge</code>, <code>histogram</code> e <code>summary</code>.
+Um exemplo de uso da função <code>sum</code> é quando você quer saber o quanto de memória está sendo utilizada por todos os seus containers, ou o quanto de memória está sendo utilizada por todos os seus pods.</p>
+<pre><code class="language-PROMQL">sum(metrica)
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja somar.</p>
+<p> </p>
+<p>Vamos para um exemplo real:</p>
+<pre><code class="language-PROMQL">sum(go_memstats_alloc_bytes{job=&quot;prometheus&quot;})
+</code></pre>
+<p> </p>
+<p>Aqui estou somando todos os valores da métrica <code>go_memstats_alloc_bytes</code>, filtrando por <code>job</code> e durante um intervalo de tempo de 5 minutos.</p>
+<p> 
+ </p>
+<h4 id="a-função-count"><a class="header" href="#a-função-count">A função <em>count</em></a></h4>
+<p>Outra função bem utilizada é função <code>count</code> representa o contador de uma métrica.
+Você pode utilizar a função <code>count</code> nos tipos de dados <code>counter</code>, <code>gauge</code>, <code>histogram</code> e <code>summary</code>.
+Um exemplo de uso da função <code>count</code> é quando você quer saber quantos containers estão rodando em um determinado momento ou quantos de seus pods estão em execução.</p>
+<pre><code class="language-PROMQL">count(metrica)
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja contar.</p>
+<p> </p>
+<p>Vamos para um exemplo real:</p>
+<pre><code class="language-PROMQL">count(prometheus_http_requests_total)
+</code></pre>
+<p> </p>
+<p>Teremos como resultado o número de valores que a métrica <code>prometheus_http_requests_total</code> possui.</p>
+<p> 
+ </p>
+<h4 id="a-função-avg"><a class="header" href="#a-função-avg">A função <em>avg</em></a></h4>
+<p>A função <code>avg</code> representa o valor médio de uma métrica.
+Você pode utilizar a função <code>avg</code> nos tipos de dados <code>counter</code>, <code>gauge</code>, <code>histogram</code> e <code>summary</code>.
+Essa é uma das funções mais utilizadas, pois é muito comum você querer saber o valor médio de uma métrica, por exemplo, o valor médio de memória utilizada por um container.</p>
+<pre><code class="language-PROMQL">avg(metrica)
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja calcular a média.</p>
+<p> 
+ </p>
+<h4 id="a-função-min"><a class="header" href="#a-função-min">A função <em>min</em></a></h4>
+<p>A função <code>min</code> representa o valor mínimo de uma métrica.
+Você pode utilizar a função <code>min</code> nos tipos de dados <code>counter</code>, <code>gauge</code>, <code>histogram</code> e <code>summary</code>.
+Um exemplo de uso da função <code>min</code> é quando você quer saber qual o menor valor de memória utilizada por um container.</p>
+<pre><code class="language-PROMQL">min(metrica)
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja calcular o mínimo.</p>
+<p> 
+ </p>
+<h4 id="a-função-max"><a class="header" href="#a-função-max">A função <em>max</em></a></h4>
+<p>A função <code>max</code> representa o valor máximo de uma métrica.
+Um exemplo de uso da função <code>max</code> é quando você quer saber qual o maior valor de memória pelos nodes de um cluster Kubernetes.</p>
+<pre><code class="language-PROMQL">max(metrica)
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja calcular o máximo.</p>
+<p> 
+ </p>
+<h4 id="a-função-avg_over_time"><a class="header" href="#a-função-avg_over_time">A função <em>avg_over_time</em></a></h4>
+<p>A função <code>avg_over_time</code> representa a média de uma métrica durante um intervalo de tempo.
+Normalmente utilizada para calcular a média de uma métrica durante um intervalo de tempo, como por exemplo, a média de requisições por segundo durante um intervalo de tempo ou ainda as pessoas que estão no espaço durante o último ano. :D</p>
+<pre><code class="language-PROMQL">avg_over_time(metrica[5m])
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja calcular a média durante um intervalo de tempo de 5 minutos.</p>
+<p> </p>
+<p>Vamos para um exemplo real:</p>
+<pre><code class="language-PROMQL">avg_over_time(prometheus_http_requests_total{handler=&quot;/api/v1/query&quot;}[5m])
+</code></pre>
+<p> </p>
+<p>Agora estou calculando a média da métrica <code>prometheus_http_requests_total</code>, filtrando por <code>handler</code> e durante um intervalo de tempo de 5 minutos.</p>
+<p> 
+ </p>
+<h4 id="a-função-sum_over_time"><a class="header" href="#a-função-sum_over_time">A função <em>sum_over_time</em></a></h4>
+<p>Também temos a função <code>sum_over_time</code>, que representa a soma de uma métrica durante um intervalo de tempo. Vimos a <code>avg_over_time</code> que representa a média, a <code>sum_over_time</code> representa a soma dos valores durante um intervalo de tempo.
+Imagina calcular a soma de uma métrica durante um intervalo de tempo, como por exemplo, a soma de requisições por segundo durante um intervalo de tempo ou ainda a soma de pessoas que estão no espaço durante o último ano.</p>
+<pre><code class="language-PROMQL">sum_over_time(metrica[5m])
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja calcular a soma durante um intervalo de tempo de 5 minutos.</p>
+<p> </p>
+<p>Vamos para um exemplo real:</p>
+<pre><code class="language-PROMQL">sum_over_time(prometheus_http_requests_total{handler=&quot;/api/v1/query&quot;}[5m])
+</code></pre>
+<p> </p>
+<p>Agora estou calculando a soma da métrica <code>prometheus_http_requests_total</code>, filtrando por <code>handler</code> e durante um intervalo de tempo de 5 minutos.</p>
+<p> 
+ </p>
+<h4 id="a-função-max_over_time"><a class="header" href="#a-função-max_over_time">A função <em>max_over_time</em></a></h4>
+<p>A função <code>max_over_time</code> representa o valor máximo de uma métrica durante um intervalo de tempo.</p>
+<pre><code class="language-PROMQL">max_over_time(metrica[5m])
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja calcular o valor máximo durante um intervalo de tempo de 5 minutos.</p>
+<p> </p>
+<p>Vamos para um exemplo real:</p>
+<pre><code class="language-PROMQL">max_over_time(prometheus_http_requests_total{handler=&quot;/api/v1/query&quot;}[5m])
+</code></pre>
+<p> </p>
+<p>Agora estamos buscando o valor máximo da métrica <code>prometheus_http_requests_total</code>, filtrando por <code>handler</code> e durante um intervalo de tempo de 5 minutos.</p>
+<p> 
+ </p>
+<h4 id="a-função-min_over_time"><a class="header" href="#a-função-min_over_time">A função <em>min_over_time</em></a></h4>
+<p>A função <code>min_over_time</code> representa o valor mínimo de uma métrica durante um intervalo de tempo.</p>
+<pre><code class="language-PROMQL">
+min_over_time(metrica[5m])
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja calcular o valor mínimo durante um intervalo de tempo de 5 minutos.</p>
+<p> </p>
+<p>Vamos para um exemplo real:</p>
+<pre><code class="language-PROMQL">min_over_time(prometheus_http_requests_total{handler=&quot;/api/v1/query&quot;}[5m])
+</code></pre>
+<p> </p>
+<p>Agora estamos buscando o valor mínimo da métrica <code>prometheus_http_requests_total</code>, filtrando por <code>handler</code> e durante um intervalo de tempo de 5 minutos.</p>
+<p> 
+ </p>
+<h4 id="a-função-stddev_over_time"><a class="header" href="#a-função-stddev_over_time">A função <em>stddev_over_time</em></a></h4>
+<p>A função <code>stddev_over_time</code> representa o desvio padrão, que são os valores que estão mais distantes da média, de uma métrica durante um intervalo de tempo.
+Um bom exemplo seria para o calculo de desvio padrão para saber se houve alguma anomalia no consumo de disco, por exemplo.</p>
+<pre><code class="language-PROMQL">stddev_over_time(metrica[5m])
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja calcular o desvio padrão durante um intervalo de tempo de 5 minutos.</p>
+<p> </p>
+<p>Vamos para um exemplo real:</p>
+<pre><code class="language-PROMQL">stddev_over_time(prometheus_http_requests_total{handler=&quot;/api/v1/query&quot;}[10m])
+</code></pre>
+<p> </p>
+<p>Agora estamos buscando os desvios padrões da métrica <code>prometheus_http_requests_total</code>, filtrando por <code>handler</code> e durante um intervalo de tempo de 10 minutos. Vale a pena verificar o gráfico, pois facilita a visualização dos valores.</p>
+<p> 
+ </p>
+<h4 id="a-função-by"><a class="header" href="#a-função-by">A função <em>by</em></a></h4>
+<p>A sensacional e super utilizada função <code>by</code> é utilizada para agrupar métricas. Com ela é possível agrupar métricas por labels, por exemplo, se eu quiser agrupar todas as métricas que possuem o label <code>job</code> eu posso utilizar a função <code>by</code> da seguinte forma:</p>
+<pre><code class="language-PROMQL">sum(metrica) by (job)
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja agrupar e <code>job</code> é o label que você deseja agrupar.</p>
+<p> </p>
+<p>Vamos para um exemplo real:</p>
+<pre><code class="language-PROMQL">sum(prometheus_http_requests_total) by (code)
+</code></pre>
+<p> </p>
+<p>Agora estamos somando a métrica <code>prometheus_http_requests_total</code> e agrupando por <code>code</code>, assim sabemos quantas requisições foram feitas por código de resposta.</p>
+<p> 
+ </p>
+<h4 id="a-função-without"><a class="header" href="#a-função-without">A função <em>without</em></a></h4>
+<p>A função <code>without</code> é utilizada para remover labels de uma métrica. 
+Você pode utilizar a função <code>without</code> nos tipos de dados <code>counter</code>, <code>gauge</code>, <code>histogram</code> e <code>summary</code> e frequentemente usado em conjunto com a função <code>sum</code>.</p>
+<pre><code class="language-PROMQL">Por exemplo, se eu quiser remover o label `job` de uma métrica, eu posso utilizar a função `without` da seguinte forma:
+
+
+```PROMQL
+sum(metrica) without (job)
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja remover o label <code>job</code>.</p>
+<p> </p>
+<p>Vamos para um exemplo real:</p>
+<pre><code class="language-PROMQL">sum(prometheus_http_requests_total) without (handler)
+</code></pre>
+<p> </p>
+<p>Agora estamos somando a métrica <code>prometheus_http_requests_total</code> e removendo o label <code>handler</code>, assim sabemos quantas requisições foram feitas por código de resposta, sem saber qual handler foi utilizado para ter uma visão mais geral e focado no código de resposta.</p>
+<p> 
+ </p>
+<h4 id="a-função-histogram_quantile-e-quantile"><a class="header" href="#a-função-histogram_quantile-e-quantile">A função <em>histogram_quantile e quantile</em></a></h4>
+<p>As funções <code>histogram_quantile</code> e <code>quantile</code> são muito parecidas, porém a <code>histogram_quantile</code> é utilizada para calcular o percentil de uma métrica do tipo <code>histogram</code> e a <code>quantile</code> é utilizada para calcular o percentil de uma métrica do tipo <code>summary</code>.
+Basicamente utilizamos esses funções para saber qual é o valor de uma métrica em um determinado percentil.</p>
+<pre><code class="language-PROMQL">quantile(0.95, metrica)
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica do tipo <code>histogram</code> que você deseja calcular o percentil e <code>0.95</code> é o percentil que você deseja calcular.</p>
+<p> </p>
+<p>Vamos para um exemplo real:</p>
+<pre><code class="language-PROMQL">quantile(0.95, prometheus_http_request_duration_seconds_bucket)
+</code></pre>
+<p> </p>
+<p>Agora estamos calculando o percentil de 95% da métrica <code>prometheus_http_request_duration_seconds_bucket</code>, assim sabemos qual é o tempo de resposta de 95% das requisições.</p>
+<p> 
+ </p>
+<h3 id="praticando-e-usando-as-funções"><a class="header" href="#praticando-e-usando-as-funções">Praticando e usando as funções</a></h3>
+<p>Agora que já vimos a descrição de algumas funções, vamos começar a praticar e criar algumas queries utilizando as funções.</p>
+<p>Vamos criar uma query para saber o quanto de cpu está sendo utilizado no nosso primeiro exporter durante cada execução.</p>
+<pre><code class="language-PROMQL">sum(rate(process_cpu_seconds_total{job=&quot;Primeiro Exporter&quot;}[1m])) by (instance)
+</code></pre>
+<p> </p>
+<p>Vamos entender melhor a query acima, o que ela faz?</p>
+<ul>
+<li>Onde <code>sum(rate(process_cpu_seconds_total{job=&quot;Primeiro Exporter&quot;}[1m]))</code> é a métrica que você deseja extrair.</li>
+<li>Onde <code>by (instance)</code> é o agrupamento que você deseja fazer.</li>
+</ul>
+<p>Ok, conseguimos dividir a query em duas partes, a primeira é a métrica e seus detalhes e a segunda é o agrupamento.</p>
+<p>Agora vamos dividir a primeira um pouco mais.</p>
+<pre><code class="language-PROMQL">process_cpu_seconds_total{job=&quot;Primeiro Exporter&quot;}[1m]
+</code></pre>
+<p> </p>
+<p>Nessa primeira query, estamos pedindo o valor da métrica <code>process_cpu_seconds_total</code> no último 1 minuto.</p>
+<p>O retorno são 04 valores, pois o scraping do Prometheus é feito em intervalos de 15 segundos.</p>
+<p><img src="images/examinando-a-query-1.png" alt="Examinando a query - 1" /></p>
+<p> </p>
+<p>Maravilha, está rolando bem! 
+Agora eu quero saber a média do consumo de cpu no nosso primeiro exporter durante o último 1 minuto.</p>
+<pre><code class="language-PROMQL">avg(rate(process_cpu_seconds_total{job=&quot;Primeiro Exporter&quot;}[1m]))
+</code></pre>
+<p> </p>
+<p><img src="images/examinando-a-query-2.png" alt="Examinando a query - 2" /></p>
+<p> </p>
+<p>Com isso nós temos a média do consumo de cpu no nosso primeiro exporter durante o último 1 minuto, e perceba que estamos utilizando a função <code>avg</code> para calcular a média, porém estamos também utilizando a função <code>rate</code>.
+Precisamos do <code>rate</code> para calcular a taxa de aumento dos valores da métrica durante o último 1 minuto, conforme solicitado na query acima.</p>
+<p>Agora vamos adicionar mais um detalhe a nossa query.</p>
+<pre><code class="language-PROMQL">by (instance)
+</code></pre>
+<p> </p>
+<p>Então ela ficará assim:</p>
+<pre><code class="language-PROMQL">avg(rate(process_cpu_seconds_total{job=&quot;Primeiro Exporter&quot;}[1m])) by (instance)
+</code></pre>
+<p> </p>
+<p><img src="images/examinando-a-query-3.png" alt="Examinando a query - 3" /></p>
+<p> </p>
+<p>Com a função <code>by</code> adicionada, é possível agrupar os valores da métrica por um determinado campo, no nosso caso estamos agrupando por <code>instance</code>.</p>
+<p>Em nosso exemplo somente temos uma instância no job <code>Primeiro Exporter</code>, então o agrupamente não tem efeito.</p>
+<p>Mas se retirarmos da query o label <code>job</code>, o resultado trará também a instância do job <code>prometheus</code>.</p>
+<pre><code class="language-PROMQL">avg(rate(process_cpu_seconds_total[1m])) by (instance)
+</code></pre>
+<p> </p>
+<p>Agora a saída trará também o valor da métrica para a instância do job <code>prometheus</code>.</p>
+<p><img src="images/examinando-a-query-4.png" alt="Examinando a query - 4" />
+ </p>
+<p>Caso queira pegar o menor valor da métrica registrada no último 1 minuto, basta utilizar a função <code>min</code>.</p>
+<pre><code class="language-PROMQL">min(rate(process_cpu_seconds_total[1m])) by (instance)
+</code></pre>
+<p> </p>
+<p><img src="images/examinando-a-query-5.png" alt="Examinando a query - 5" />
+ </p>
+<p>Caso queira pegar o maior valor da métrica registrada no último 1 minuto, basta utilizar a função <code>max</code>.</p>
+<pre><code class="language-PROMQL">max(rate(process_cpu_seconds_total[1m])) by (instance)
+</code></pre>
+<p> </p>
+<p><img src="images/examinando-a-query-6.png" alt="Examinando a query - 6" />
+ </p>
+<p>Eu falei bastante sobre as queries e os valores que elas retornam, porém eu nem falei ainda para vocês clicarem na aba <code>Graph</code> e ver os gráficos que são gerados automaticamente.</p>
+<p>Vamos ver o gráfico da média do consumo de cpu pelos jobs durante o último 1 minuto.</p>
+<p><img src="images/examinando-a-query-7.png" alt="Examinando a query - 7" /></p>
+<p> 
+ </p>
+<h3 id="operadores"><a class="header" href="#operadores">Operadores</a></h3>
+<p>Precisamos falar sobre os operadores, super importante para que possamos trazer ainda mais poder ao nosso querido PromQL e obter resultados ainda mais interessantes.</p>
+<p>Vamos conhecer alguns! </p>
+<p> 
+ </p>
+<h4 id="operador-de-igualdade"><a class="header" href="#operador-de-igualdade">Operador de igualdade</a></h4>
+<p>O operador de igualdade é utilizado para comparar se dois valores são iguais. </p>
+<pre><code class="language-PROMQL">metrica == 1
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja comparar e <code>1</code> é o valor que você deseja comparar, logo se o valor da métrica for igual a 1, o resultado será verdadeiro.</p>
+<p> 
+ </p>
+<h4 id="operador-de-diferença"><a class="header" href="#operador-de-diferença">Operador de diferença</a></h4>
+<p>O operador de diferença é utilizado para comparar se dois valores são diferentes. </p>
+<pre><code class="language-PROMQL">metrica != 1
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja comparar e <code>1</code> é o valor que você deseja comparar, logo se o valor da métrica for diferente de 1, o resultado será verdadeiro.</p>
+<p> 
+ </p>
+<h4 id="operador-de-maior-que"><a class="header" href="#operador-de-maior-que">Operador de maior que</a></h4>
+<p>O operador de maior que é utilizado para comparar se um valor é maior que outro. </p>
+<pre><code class="language-PROMQL">metrica &gt; 1
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja comparar e <code>1</code> é o valor que você deseja comparar, logo se o valor da métrica for maior que 1, o resultado será verdadeiro.</p>
+<p> 
+ </p>
+<h4 id="operador-de-menor-que"><a class="header" href="#operador-de-menor-que">Operador de menor que</a></h4>
+<p>O operador de menor que é utilizado para comparar se um valor é menor que outro. </p>
+<pre><code class="language-PROMQL">metrica &lt; 1
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja comparar e <code>1</code> é o valor que você deseja comparar, logo se o valor da métrica for menor que 1, o resultado será verdadeiro.</p>
+<p> 
+ </p>
+<h4 id="operador-de-maior-ou-igual-que"><a class="header" href="#operador-de-maior-ou-igual-que">Operador de maior ou igual que</a></h4>
+<p>O operador de maior ou igual que é utilizado para comparar se um valor é maior ou igual que outro. </p>
+<pre><code class="language-PROMQL">metrica &gt;= 1
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja comparar e <code>1</code> é o valor que você deseja comparar, logo se o valor da métrica for maior ou igual a 1, o resultado será verdadeiro.</p>
+<p> 
+ </p>
+<h4 id="operador-de-menor-ou-igual-que"><a class="header" href="#operador-de-menor-ou-igual-que">Operador de menor ou igual que</a></h4>
+<p>O operador de menor ou igual que é utilizado para comparar se um valor é menor ou igual que outro. </p>
+<pre><code class="language-PROMQL">metrica &lt;= 1
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja comparar e <code>1</code> é o valor que você deseja comparar, logo se o valor da métrica for menor ou igual a 1, o resultado será verdadeiro.</p>
+<p> 
+ </p>
+<h4 id="operador-de-multiplicação"><a class="header" href="#operador-de-multiplicação">Operador de multiplicação</a></h4>
+<p>O operador de multiplicação é utilizado para multiplicar dois valores. </p>
+<pre><code class="language-PROMQL">metrica * 1
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja multiplicar e <code>1</code> é o valor que você deseja multiplicar, logo se o valor da métrica for multiplicado por 1, o resultado será o valor da métrica.</p>
+<p> 
+ </p>
+<h4 id="operador-de-divisão"><a class="header" href="#operador-de-divisão">Operador de divisão</a></h4>
+<p>O operador de divisão é utilizado para dividir dois valores. </p>
+<pre><code class="language-PROMQL">metrica / 1
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja dividir e <code>1</code> é o valor pelo qual você deseja dividir a <code>metrica</code>. O resultado será o valor da métrica dividido pelo valor que você passou.</p>
+<p> 
+ </p>
+<h4 id="operador-de-adição"><a class="header" href="#operador-de-adição">Operador de adição</a></h4>
+<p>O operador de adição é utilizado para somar dois valores. </p>
+<pre><code class="language-PROMQL">metrica + 1
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja somar e <code>1</code> é o valor que você deseja somar a <code>metrica</code>. O resultado será o valor da métrica somado ao valor que você passou.</p>
+<p> 
+ </p>
+<h4 id="operador-de-subtração"><a class="header" href="#operador-de-subtração">Operador de subtração</a></h4>
+<p>O operador de subtração é utilizado para subtrair dois valores. </p>
+<pre><code class="language-PROMQL">metrica - 1
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja subtrair e <code>1</code> é o valor que você deseja subtrair da <code>metrica</code>. O resultado será o valor da métrica subtraído pelo valor que você passou.</p>
+<p> 
+ </p>
+<h4 id="operador-de-modulo"><a class="header" href="#operador-de-modulo">Operador de modulo</a></h4>
+<p>O operador de modulo é utilizado para obter o resto da divisão de dois valores. </p>
+<pre><code class="language-PROMQL">metrica % 1
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja obter o resto da divisão e <code>1</code> é o valor pelo qual você deseja obter o resto da divisão da <code>metrica</code>. O resultado será o resto da divisão da métrica pelo valor que você passou.</p>
+<p> 
+ </p>
+<h4 id="operador-de-potenciação"><a class="header" href="#operador-de-potenciação">Operador de potenciação</a></h4>
+<p>O operador de potenciação é utilizado para elevar um valor a uma potência. </p>
+<pre><code class="language-PROMQL">metrica ^ 1
+</code></pre>
+<p> </p>
+<p>Onde <code>metrica</code> é a métrica que você deseja elevar a uma potência e <code>1</code> é o valor que você deseja elevar a <code>metrica</code>. O resultado será o valor da métrica elevado ao valor que você passou.</p>
+<p> 
+ </p>
+<h4 id="operador-de-agrupamento"><a class="header" href="#operador-de-agrupamento">Operador de agrupamento</a></h4>
+<p>O operador de agrupamento é utilizado para agrupar expressões. </p>
+<pre><code class="language-PROMQL">(metrica + 1) / 2
+</code></pre>
+<p> </p>
+<p>Perceba que o parenteses foi utilizado para agrupar a expressão <code>(metrica + 1)</code>. Onde <code>metrica</code> é a métrica que você deseja somar e <code>1</code> é o valor que você deseja somar a <code>metrica</code>. Essa parte da expressão será avaliada primeiro e o resultado será dividido por 2.</p>
+<p> 
+ </p>
+<h4 id="operador-de-concatenação"><a class="header" href="#operador-de-concatenação">Operador de concatenação</a></h4>
+<p>O operador de concatenação é utilizado para concatenar strings. </p>
+<pre><code class="language-PROMQL">&quot;string_a&quot; + &quot;string_b&quot;
+</code></pre>
+<p> </p>
+<p>Onde <code>string_a</code> é a primeira string que você deseja concatenar e <code>string_b</code> é a segunda string que você deseja concatenar. O resultado será a concatenação das duas strings, ou seja, a primeira string seguida da segunda string.</p>
+<p> 
+ </p>
+<h4 id="operador-de-comparação-de-strings"><a class="header" href="#operador-de-comparação-de-strings">Operador de comparação de strings</a></h4>
+<p>O operador de comparação de strings é utilizado para comparar se duas strings são iguais. </p>
+<pre><code class="language-PROMQL">&quot;string_a&quot; == &quot;string_b&quot;
+</code></pre>
+<p> </p>
+<p>Onde <code>string_a</code> é a primeira string que você deseja comparar e <code>string_b</code> é a segunda string que você deseja comparar. O resultado será verdadeiro se as duas strings forem iguais.</p>
+<p> 
+ </p>
+<h4 id="chega-de-operadores-por-hoje"><a class="header" href="#chega-de-operadores-por-hoje">Chega de operadores por hoje</a></h4>
+<p>Conforme você for avançando nos estudos, você irá perceber que esses operadores são muito úteis para criar expressões mais complexas e que podem ser utilizadas para criar alertas mais precisos. Ainda temos alguns operadores que não foram abordados aqui, mas que você pode encontrar na documentação oficial do Prometheus e tbm no decorrer do treinamento.</p>
+<p> 
+ </p>
+<h3 id="o-node-exporter"><a class="header" href="#o-node-exporter">O Node Exporter	</a></h3>
+<p>Precisamos falar do exporter mais famoso do universo Prometheus, o sensacional Node Exporter. Com o Node Exporter você consegue coletar métricas de um servidor Linux ou em computadores MacOS, como por exemplo, o uso de CPU, disco, memória, open files, etc.</p>
+<p>O Node Exporter é um projeto open source e escrito em Go. Ele é executado no Linux como um serviço e coleta e expõe as métricas do sistema operacional.</p>
+<p> 
+ </p>
+<h4 id="os-collectors"><a class="header" href="#os-collectors">Os Collectors</a></h4>
+<p>O Node Exporter possui os <code>collectors</code> que são os responsáveis por capturar as métricas do sistema operacional. Por padrão, o Node Exporter vem com um monte de coletores habilitados, mas você pode habilitar outros, caso queira.</p>
+<p>Para que você possa consultar a lista de <code>collectors</code> que vem habilitados por padrão, você pode acessar o link abaixo:</p>
+<p><a href="https://github.com/prometheus/node_exporter#enabled-by-default">Lista dos Collectors habilitados por padrão</a></p>
+<p> </p>
+<p>Temos ainda a lista com os <code>collectors</code> que estão desabilitados por padrão:</p>
+<p><a href="https://github.com/prometheus/node_exporter#disabled-by-default">Lista dos Collectors desabilitados por padrão</a></p>
+<p> </p>
+<p>Vou comentar de alguns <code>collectors</code> que são muito úteis:</p>
+<ul>
+<li><code>arp</code>: Coleta métricas de ARP (Address Resolution Protocol) como por exemplo, o número de entradas ARP, o número de resoluções ARP, etc.</li>
+<li><code>bonding</code>: Coleta métricas de interfaces em modo bonding.</li>
+<li><code>conntrack</code>: Coleta métricas de conexões via Netfilter como por exemplo, o número de conexões ativas, o número de conexões que estão sendo rastreadas, etc.</li>
+<li><code>cpu</code>: Coleta métricas de CPU.</li>
+<li><code>diskstats</code>: Coleta métricas de IO de disco como por exemplo o número de leituras e escritas.</li>
+<li><code>filefd</code>: Coleta métricas de arquivos abertos.</li>
+<li><code>filesystem</code>: Coleta métricas de sistema de arquivos, como tamanho, uso, etc.</li>
+<li><code>hwmon</code>: Coleta métricas de hardware como por exemplo a temperatura.</li>
+<li><code>ipvs</code>: Coleta métricas de IPVS.</li>
+<li><code>loadavg</code>: Coleta métricas de carga do sistema operacional.</li>
+<li><code>mdadm</code>: Coleta métricas de RAID como por exemplo o número de discos ativos.</li>
+<li><code>meminfo</code>: Coleta métricas de memória como por exemplo o uso de memória, o número de buffers, caches, etc.</li>
+<li><code>netdev</code>: Coleta métricas de rede como por exemplo o número de pacotes recebidos e enviados.</li>
+<li><code>netstat</code>: Coleta métricas de rede como por exemplo o número de conexões TCP e UDP.</li>
+<li><code>os</code>: Coleta métricas de sistema operacional.</li>
+<li><code>selinux</code>: Coleta métricas de SELinux como estado e políticas.</li>
+<li><code>sockstat</code>: Coleta métricas de sockets.</li>
+<li><code>stat</code>: Coleta métricas de sistema como uptime, forks, etc.</li>
+<li><code>time</code>: Coleta métricas de tempo como sincronização de relógio.</li>
+<li><code>uname</code>: Coleta métricas de informações.</li>
+<li><code>vmstat</code>: Coleta métricas de memória virtual.</li>
+</ul>
+<p> </p>
+<p>Mais para frente vamos ver como habilitar ou desabilitar <code>collectors</code> no Node Exporter.</p>
+<p> 
+ </p>
+<h4 id="instalação-do-node-exporter-no-linux"><a class="header" href="#instalação-do-node-exporter-no-linux">Instalação do Node Exporter no Linux</a></h4>
+<p>Vamos instalar o Node Exporter para que possamos ter ainda mais métricas para brincar com o nosso Prometheus, e claro, conhecer esse exporter que é praticamente a escolha padrão da maioria dos ambientes quando estamos falando de métricas de um servidor Linux.</p>
+<p>O Node Exporter é um arquivo binário e que precisamos baixar do site oficial do projeto.</p>
+<p>Abaixo segue a URL para download do Node Exporter:</p>
+<pre><code class="language-bash">https://prometheus.io/download/#node_exporter
+</code></pre>
+<p> </p>
+<p>Acesse a URL e veja qual a última versão disponível para download. No momento em que escrevo esse mateira, a última versão disponível é a 1.3.1.</p>
+<p>Vamos fazer o download do arquivo binário do Node Exporter:</p>
+<pre><code class="language-bash">wget https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz
+</code></pre>
+<p> </p>
+<p>Com o arquivo já em nossa máquina, vamos descompactar-lo:</p>
+<pre><code class="language-bash">tar -xvzf node_exporter-1.3.1.linux-amd64.tar.gz
+</code></pre>
+<p> </p>
+<p>Como falamos antes, o Node Exporter é apenas um binário Go, portanto é bem simples fazer a sua instalação em uma máquina Linux. Básicamente vamos seguir o mesmo processo que fizemos para instalar o Prometheus.</p>
+<p>Bora mover o arquivo <code>node_exporter</code> para o diretório <code>/usr/local/bin</code>:</p>
+<pre><code class="language-bash">sudo mv node_exporter-1.3.1.linux-amd64/node_exporter /usr/local/bin/
+</code></pre>
+<p> </p>
+<p>Vamos ver se está tudo ok com o nosso Node Exporter:</p>
+<pre><code class="language-bash">node_exporter --version
+</code></pre>
+<p> </p>
+<p>A saída deve ser parecida com essa:</p>
+<pre><code class="language-bash">node_exporter, version 1.3.1 (branch: HEAD, revision: a2321e7b940ddcff26873612bccdf7cd4c42b6b6)
+  build user:       root@243aafa5525c
+  build date:       20211205-11:09:49
+  go version:       go1.17.3
+  platform:         linux/amd64
+</code></pre>
+<p> </p>
+<p>Tudo em paz, vamos seguir com a instalação.</p>
+<p>Vamos criar o usuário <code>node_exporter</code> para ser o responsável pela execução do serviço:</p>
+<pre><code class="language-bash">sudo addgroup --system node_exporter
+sudo adduser --shell /sbin/nologin --system --group node_exporter
+</code></pre>
+<p> </p>
+<p>Agora vamos criar o arquivo de configuração do serviço do Node Exporter para o Systemd:</p>
+<pre><code class="language-bash">sudo vim /etc/systemd/system/node_exporter.service
+</code></pre>
+<p> </p>
+<p>Vamos adicionar o seguinte conteúdo:</p>
+<pre><code class="language-bash">[Unit] # Inicio do arquivo de configuração do serviço
+Description=Node Exporter # Descrição do serviço
+Wants=network-online.target # Define que o serviço depende da rede para iniciar
+After=network-online.target # Define que o serviço deverá ser iniciado após a rede estar disponível
+
+[Service] # Define as configurações do serviço
+User=node_exporter # Define o usuário que irá executar o serviço
+Group=node_exporter # Define o grupo que irá executar o serviço
+Type=simple # Define o tipo de serviço
+ExecStart=/usr/local/bin/node_exporter # Define o caminho do binário do serviço
+
+[Install] # Define as configurações de instalação do serviço
+WantedBy=multi-user.target # Define que o serviço será iniciado utilizando o target multi-user
+</code></pre>
+<p> </p>
+<p><strong>Importante</strong>: Não esqueça de tirar os comentários do arquivo de configuração do serviço, inclusive tem o arquivo sem comentários no repositório do Github do projeto.
+Combinado?</p>
+<p> </p>
+<p>Como você já sabe, toda vez que adicionamos um novo serviço no Systemd, precisamos dar um reload para que o serviço seja reconhecido:</p>
+<pre><code class="language-bash">sudo systemctl daemon-reload
+</code></pre>
+<p> </p>
+<p>E agora vamos iniciar o serviço:</p>
+<pre><code class="language-bash">sudo systemctl start node_exporter
+</code></pre>
+<p> </p>
+<p>Precisamos ver se está tudo em paz com o nosso serviço:</p>
+<pre><code class="language-bash">sudo systemctl status node_exporter
+</code></pre>
+<p> </p>
+<p>Como é bom ver essa saída sempre quando criamos e iniciamos um novo serviço:</p>
+<pre><code class="language-bash">     Loaded: loaded (/etc/systemd/system/node_exporter.service; disabled; vendor preset: enabled)
+     Active: active (running) since Wed 2022-09-07 15:15:00 CEST; 3s ago
+   Main PID: 50853 (node_exporter)
+      Tasks: 6 (limit: 76911)
+     Memory: 2.9M
+        CPU: 5ms
+     CGroup: /system.slice/node_exporter.service
+             └─50853 /usr/local/bin/node_exporter
+</code></pre>
+<p> </p>
+<p>O nosso querido e idolatrado Node Exporter está rodando. Agora vamos habilitar o serviço para que ele seja iniciado sempre que o servidor for reiniciado:</p>
+<pre><code class="language-bash">sudo systemctl enable node_exporter
+</code></pre>
+<p> </p>
+<p>Importante mencionar que o nosso Node Exporter roda na porta 9100. Para acessar as métricas coletadas pelo Node Exporter, basta acessar a URL <code>http://&lt;IP_DA_MAQUINA&gt;:9100/metrics</code>.</p>
+<p>Antes de ver as métricas, bora ver se o Node Exporter está utilizando a porta 9100.
+Temos o comando <code>ss</code> que nos permite ver as conexões TCP e UDP que estão abertas em nossa máquina. Vamos usar esse comando para ver se o Node Exporter está escutando na porta 9100:</p>
+<pre><code class="language-bash">ss -atunp | grep 9100
+</code></pre>
+<p> </p>
+<p>A saída deve ser parecida com essa:</p>
+<pre><code class="language-bash">tcp   LISTEN    0      4096                      *:9100                *:*                                       
+</code></pre>
+<p> </p>
+<p>Muito bom! Está tudo certo com o nosso Node Exporter. Agora vamos ver as métricas coletadas por ele:</p>
+<pre><code class="language-bash">curl http://localhost:9100/metrics
+</code></pre>
+<p> </p>
+<p>Lembre-se de mudar o <code>localhost</code> para o IP da sua máquina, caso tenha feito a instalação em outra máquina.</p>
+<p>Voltando as métricas coletadas pelo Node Exporter, a saída é gigantesca, são mais de 2 mil métricas, muita coisa. hahaha</p>
+<h4 id="adicionando-o-node-exporter-no-prometheus"><a class="header" href="#adicionando-o-node-exporter-no-prometheus">Adicionando o Node Exporter no Prometheus</a></h4>
+<p>Lembre-se que essas métricas ainda não estão no Prometheus. Para que elas estejam, precisamos configurar o Prometheus para coletar as métricas do Node Exporter, ou seja, configurar o Prometheus para fazer o <code>scrape</code> do Node Exporter, e para isso precisamos criar mais um <code>job</code> no arquivo de configuração do Prometheus para definir o nosso novo <code>target</code>.</p>
+<p>Vamos adicionar o seguinte conteúdo no arquivo de configuração do Prometheus:</p>
+<pre><code class="language-bash">  - job_name: 'node_exporter'
+	static_configs:
+	  - targets: ['localhost:9100']
+</code></pre>
+<p> </p>
+<p><strong>Importante</strong>: Lembrando novamente para que você mude o <code>localhost</code> para o IP da sua máquina, caso tenha feito a instalação em outra máquina.</p>
+<p>O arquivo deverá ficar assim:</p>
+<pre><code class="language-bash">global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+scrape_configs:
+  - job_name: &quot;prometheus&quot;
+    static_configs:
+      - targets: [&quot;localhost:9090&quot;]
+
+  - job_name: &quot;Meu Primeiro Exporter&quot;
+    static_configs:
+      - targets: [&quot;localhost:8899&quot;]
+  
+  - job_name: 'segundo-exporter'
+    static_configs:
+      - targets: ['localhost:7788']
+
+  - job_name: 'node_exporter'
+	static_configs:
+	  - targets: ['localhost:9100']
+</code></pre>
+<p> </p>
+<p>Eu nem vou deixar o arquivo comentado aqui, pois você já sabe como funciona o arquivo de configuração do Prometheus, né? hahaha</p>
+<p>Agora vamos reiniciar o Prometheus para que ele leia as novas configurações:</p>
+<pre><code class="language-bash">sudo systemctl restart prometheus
+</code></pre>
+<p> </p>
+<p>Vamos ver se o nosso novo <code>job</code> foi criado com sucesso:</p>
+<pre><code class="language-bash">curl http://localhost:9090/targets
+</code></pre>
+<p> </p>
+<p>Caso você queira ver o novo target via interface web do Prometheus, basta acessar a URL <code>http://localhost:9090/targets</code>. Se liga no print abaixo:</p>
+<p><img src="images/prometheus-targets-day3.png" alt="Prometheus Targets" /></p>
+<p>Está lá, o nosso novo <code>job</code> foi criado com sucesso. Agora vamos ver se o Prometheus está coletando as métricas do Node Exporter. Vamos passar o nome do <code>job</code> para o Prometheus, assim a nossa query ficará ainda mais específica:</p>
+<pre><code class="language-bash">curl -GET http://localhost:9090/api/v1/query --data-urlencode &quot;query=node_cpu_seconds_total{job='node_exporter'}&quot; | jq .
+</code></pre>
+<p> </p>
+<p>A saída também é bastante grande, e a máquina que eu estou testando tem 32 CPUs, então vou colocar aqui aqui somente uma pequena parte da saída:</p>
+<pre><code class="language-json">{
+  &quot;status&quot;: &quot;success&quot;,
+  &quot;data&quot;: {
+    &quot;resultType&quot;: &quot;vector&quot;,
+    &quot;result&quot;: [
+      {
+        &quot;metric&quot;: {
+          &quot;__name__&quot;: &quot;node_cpu_seconds_total&quot;,
+          &quot;cpu&quot;: &quot;0&quot;,
+          &quot;instance&quot;: &quot;localhost:9100&quot;,
+          &quot;job&quot;: &quot;node_exporter&quot;,
+          &quot;mode&quot;: &quot;idle&quot;
+        },
+        &quot;value&quot;: [
+          1662558580.478,
+          &quot;32077.95&quot;
+        ]
+      },
+      {
+        &quot;metric&quot;: {
+          &quot;__name__&quot;: &quot;node_cpu_seconds_total&quot;,
+          &quot;cpu&quot;: &quot;0&quot;,
+          &quot;instance&quot;: &quot;localhost:9100&quot;,
+          &quot;job&quot;: &quot;node_exporter&quot;,
+          &quot;mode&quot;: &quot;iowait&quot;
+        },
+        &quot;value&quot;: [
+          1662558580.478,
+          &quot;2.28&quot;
+        ]
+      },
+      {
+</code></pre>
+<p>Agora vamos fazer a mesma query, mas lá na interface web do Prometheus:</p>
+<p><img src="images/prometheus-query-day3.png" alt="Prometheus Query" /></p>
+<p> 
+ </p>
+<h3 id="habilitando-novos-collectors-no-node-exporter"><a class="header" href="#habilitando-novos-collectors-no-node-exporter">Habilitando novos collectors no Node Exporter</a></h3>
+<p>Uma coisa bem interessante em relação ao Node Exporter é a quantidade de <code>collectors</code> que ele possui. Esses <code>collectors</code> são responsáveis por coletar as métricas de cada serviço que você quiser monitorar. Por exemplo, se você quiser monitorar os serviços que são gerenciados pelo <code>systemd</code>, você pode habilitar o <code>collector</code> do <code>systemd</code> no Node Exporter, vamos ver como fazer isso.</p>
+<p> </p>
+<p>Primeira coisa é criar um novo arquivo onde vamos colocar todas os <code>collectors</code> que queremos habilitar no Node Exporter, no nossa caso, somente o módulo do <code>systemd</code>. </p>
+<p>Vamos criar o arquivo <code>/etc/node_exporter/node_exporter_options</code> e o diretório <code>/etc/node_exporter/</code> caso ele não exista:</p>
+<pre><code class="language-bash">sudo mkdir /etc/node_exporter
+sudo vim /etc/node_exporter/node_exporter_options
+</code></pre>
+<p> </p>
+<p>Agora vamos adicionar a variável de ambiente <code>OPTIONS</code> no arquivo <code>/etc/node_exporter/node_exporter_options</code>:</p>
+<pre><code class="language-bash">OPTIONS=&quot;--collector.systemd&quot;
+</code></pre>
+<p> </p>
+<p>Vamos ajustar as permissões do arquivo <code>/etc/node_exporter/node_exporter_options</code>:</p>
+<pre><code class="language-bash">sudo chown -R node_exporter:node_exporter /etc/node_exporter/
+</code></pre>
+<p> </p>
+<p>E no arquivo de configuração do serviço do Node Exporter para o SystemD, vamos adicionar a variável de ambiente <code>OPTIONS</code> e o arquivo vai ficar assim:</p>
+<pre><code class="language-bash">[Unit]
+Description=Node Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=node_exporter
+Group=node_exporter
+Type=simple
+EnvironmentFile=/etc/node_exporter/node_exporter_options
+ExecStart=/usr/local/bin/node_exporter $OPTIONS
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+<p> </p>
+<p>Pronto, adicionamos o nosso novo arquivo que contém a variável de ambiente <code>OPTIONS</code> e agora vamos reiniciar o serviço do Node Exporter para que ele leia as novas configurações:</p>
+<pre><code class="language-bash">sudo systemctl daemon-reload
+sudo systemctl restart node_exporter
+</code></pre>
+<p> </p>
+<p>Agora vamos ver se o Node Exporter está coletando as métricas do <code>systemd</code>:</p>
+<pre><code class="language-bash">curl -GET http://localhost:9100/metrics | grep systemd
+</code></pre>
+<p> </p>
+<p>A saída é bem grande, então vou colocar aqui somente uma pequena parte da saída:</p>
+<pre><code class="language-bash">node_scrape_collector_success{collector=&quot;systemd&quot;} 1
+# HELP node_systemd_socket_accepted_connections_total Total number of accepted socket connections
+# TYPE node_systemd_socket_accepted_connections_total counter
+node_systemd_socket_accepted_connections_total{name=&quot;acpid.socket&quot;} 0
+node_systemd_socket_accepted_connections_total{name=&quot;apport-forward.socket&quot;} 0
+node_systemd_socket_accepted_connections_total{name=&quot;avahi-daemon.socket&quot;} 0
+node_systemd_socket_accepted_connections_total{name=&quot;cups.socket&quot;} 0
+node_systemd_socket_accepted_connections_total{name=&quot;dbus.socket&quot;} 0
+node_systemd_socket_accepted_connections_total{name=&quot;dm-event.socket&quot;} 0
+node_systemd_socket_accepted_connections_total{name=&quot;docker.socket&quot;} 0
+node_systemd_socket_accepted_connections_total{name=&quot;libvirtd-admin.socket&quot;} 0
+node_systemd_socket_accepted_connections_total{name=&quot;libvirtd-ro.socket&quot;} 0
+node_systemd_socket_accepted_connections_total{name=&quot;libvirtd.socket&quot;} 0
+node_systemd_socket_accepted_connections_total{name=&quot;lvm2-lvmpolld.socket&quot;} 0
+node_systemd_socket_accepted_connections_total{name=&quot;nordvpnd.socket&quot;} 0
+node_systemd_socket_accepted_connections_total{name=&quot;snapd.socket&quot;} 0
+node_systemd_socket_accepted_connections_total{name=&quot;syslog.socket&quot;} 0
+node_systemd_socket_accepted_connections_total{name=&quot;systemd-fsckd.socket&quot;} 0
+
+</code></pre>
+<p> </p>
+<p>Done! Tarefa concluída e super tranquilo de fazer. Agora você já sabe como habilitar novos <code>collectors</code> no Node Exporter e coletar novas métricas! \o/</p>
+<p> 
+ </p>
+<h3 id="algumas-queries-capturando-métricas-do-node-exporter"><a class="header" href="#algumas-queries-capturando-métricas-do-node-exporter">Algumas queries capturando métricas do Node Exporter</a></h3>
+<p>Agora que já sabemos como coletar as métricas do Node Exporter, vamos fazer algumas queries para capturar algumas métricas do Node Exporter.</p>
+<p> </p>
+<p><strong>1. Quantas CPU tem a minha máquina?</strong></p>
+<pre><code class="language-bash">count(node_cpu_seconds_total{job='node_exporter', mode='idle'})
+</code></pre>
+<p> </p>
+<p><img src="images/prometheus-query-day3-2.png" alt="Prometheus Query" /></p>
+<p> </p>
+<p>Estamos pedindo o Prometheus para contar quantas métricas temos com o nome <code>node_cpu_seconds_total</code>, que estão associadas ao <code>job</code> <code>node_exporter</code> e que o <code>mode</code> é <code>idle</code>. O resultado é 32, ou seja, a minha máquina tem 32 CPUs.</p>
+<p>Utilizei o modo <code>idle</code> para contar as CPUs. Cada CPU possui alguns modos, como <code>idle</code>, <code>iowait</code>, <code>irq</code>, <code>nice</code>, <code>softirq</code>, <code>steal</code>, <code>system</code> e <code>user</code>. Se eu não passasse o <code>mode</code> na query, o resultado seria 256, pois teríamos 32 CPUs e cada uma delas possui 8 modos. </p>
+<p> </p>
+<p>Entendeu?</p>
+<p>Você precisa ter criatividade no momento de criar as suas queries, e lembre-se, cada pessoa tem a sua lógica para criar as queries, mas o importante é você entender o que está fazendo e ter a busca constante da melhor e mais performática query, certo?</p>
+<p> </p>
+<p><strong>2. Qual a porcentagem de uso de CPU da minha máquina?</strong></p>
+<pre><code class="language-bash">100 - avg by (cpu) (irate(node_cpu_seconds_total{job='node_exporter', mode='idle'}[5m])) * 100
+</code></pre>
+<p> </p>
+<p><img src="images/prometheus-query-day3-3.png" alt="Prometheus Query" /></p>
+<p> </p>
+<p>Estamos pedindo o Prometheus para calcular a média <code>avg</code> por <code>by</code> CPU <code>node_cpu_seconds_total</code>, que estão associadas as labels <code>job</code> <code>node_exporter</code> e que o <code>mode</code> é <code>idle</code>. O resultado será <code>100</code> menos <code>-</code> a média por CPU <code>avg by (cpu)</code> do uso de CPU <code>node_cpu_seconds_total</code>, que é calculado pela taxa de variação <code>irate</code> de 5 minutos <code>5m</code>.</p>
+<p>Parece confuso quando escrito, eu sei. Mas vamos quebrar essa query em partes:</p>
+<p> </p>
+<p>Primeiro, vamos calcular a média por CPU do uso de CPU, que é calculado pela taxa de variação de 5 minutos:</p>
+<pre><code class="language-bash">avg by (cpu) (irate(node_cpu_seconds_total{job='node_exporter', mode='idle'}[5m]))
+</code></pre>
+<p> </p>
+<p>Agora vamos multiplicar o resultado por 100, para que o resultado seja em porcentagem:</p>
+<pre><code class="language-bash">avg by (cpu) (irate(node_cpu_seconds_total{job='node_exporter', mode='idle'}[5m])) * 100
+</code></pre>
+<p> </p>
+<p>E por fim, vamos subtrair o resultado de 100 para que o resultado seja a porcentagem de uso de CPU, pois o modo <code>idle</code> é o tempo que a CPU ficou ociosa e o que precisamos é o tempo que a CPU ficou em uso, por isso a subtração.</p>
+<p>Por exemplo, se eu tenho 30% <code>idle</code>, então eu tenho 70% de uso de CPU. Entendeu?
+Então se eu pegar o 100 e subtrair o 30, eu tenho 70, que é a porcentagem de uso de CPU. Agora você entendeu, vai!</p>
+<p>Pronto, agora a query já está completa e totalmente explicada! </p>
+<p> </p>
+<pre><code class="language-bash">100 - avg by (cpu) (irate(node_cpu_seconds_total{job='node_exporter', mode='idle'}[5m])) * 100
+</code></pre>
+<p> </p>
+<p><strong>3. Qual a porcentagem de uso de memória da minha máquina?</strong></p>
+<pre><code class="language-bash">100 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100
+</code></pre>
+<p> </p>
+<p><img src="images/prometheus-query-day3-4.png" alt="Prometheus Query" /></p>
+<p> </p>
+<p>Estamos pedindo o Prometheus para calcular a porcentagem de uso de memória da minha máquina, que é calculado pela subtração de 100 menos a porcentagem de memória disponível <code>node_memory_MemAvailable_bytes</code> dividido pela memória total <code>node_memory_MemTotal_bytes</code> multiplicado por 100.</p>
+<p>Parece confuso quando escrito, eu sei. Mas vamos quebrar essa query em partes:</p>
+<p> </p>
+<p>Primeiro é calculado o que está dentro dos parênteses, que é a porcentagem de memória disponível <code>node_memory_MemAvailable_bytes</code> dividido pela memória total <code>node_memory_MemTotal_bytes</code>:</p>
+<pre><code class="language-bash">node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes
+</code></pre>
+<p> </p>
+<p>Agora vamos multiplicar o resultado por 100, para que o resultado seja em porcentagem:</p>
+<pre><code class="language-bash">(node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100
+</code></pre>
+<p> </p>
+<p>E por fim, vamos subtrair o resultado de 100 para que o resultado seja a porcentagem de uso de memória, pois o que precisamos é o tempo que a memória ficou em uso, por isso a subtração.</p>
+<p>Por exemplo, se eu tenho 30% <code>MemAvailable</code>, então eu tenho 70% de uso de memória. Mesmo esquema do exemplo anterior.</p>
+<p> </p>
+<pre><code class="language-bash">100 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100
+</code></pre>
+<p> </p>
+<p><strong>4. Qual a porcentagem de uso de disco da minha máquina?</strong></p>
+<pre><code class="language-bash">100 - (node_filesystem_avail_bytes{mountpoint=&quot;/&quot;} / node_filesystem_size_bytes{mountpoint=&quot;/&quot;}) * 100
+</code></pre>
+<p> </p>
+<p><img src="images/prometheus-query-day3-5.png" alt="Prometheus Query" /></p>
+<p> </p>
+<p>Estamos pedindo o Prometheus para calcular a porcentagem de uso de disco da minha máquina, que é calculado pela subtração de 100 menos a porcentagem de disco disponível <code>node_filesystem_avail_bytes</code> dividido pelo tamanho total do disco <code>node_filesystem_size_bytes</code> multiplicado por 100.</p>
+<p>Vamos deixar isso mais simples, vamos quebrar essa query:</p>
+<p> </p>
+<p>Primeiro é calculado o que está dentro dos parênteses, que é o espaço do disco disponível <code>node_filesystem_avail_bytes</code> dividido pelo tamanho total do disco <code>node_filesystem_size_bytes</code>:</p>
+<pre><code class="language-bash">node_filesystem_avail_bytes{mountpoint=&quot;/&quot;} / node_filesystem_size_bytes{mountpoint=&quot;/&quot;}
+</code></pre>
+<p> </p>
+<p>Agora vamos multiplicar o resultado por 100, para que o resultado seja em porcentagem:</p>
+<pre><code class="language-bash">(node_filesystem_avail_bytes{mountpoint=&quot;/&quot;} / node_filesystem_size_bytes{mountpoint=&quot;/&quot;}) * 100
+</code></pre>
+<p> </p>
+<p>E por fim, vamos subtrair o resultado de 100 para que o resultado seja a porcentagem de utilização do disco, por isso a subtração.</p>
+<pre><code class="language-bash">100 - (node_filesystem_avail_bytes{mountpoint=&quot;/&quot;} / node_filesystem_size_bytes{mountpoint=&quot;/&quot;}) * 100
+</code></pre>
+<p> </p>
+<p><strong>5. Quanto de espaço está em uso na partição / em gigas?</strong></p>
+<pre><code class="language-bash">(node_filesystem_size_bytes{mountpoint=&quot;/&quot;} - node_filesystem_avail_bytes{mountpoint=&quot;/&quot;}) / 1024 / 1024 / 1024
+</code></pre>
+<p> </p>
+<p><img src="images/prometheus-query-day3-6.png" alt="Prometheus Query" /></p>
+<p> </p>
+<p>Estamos pedindo o Prometheus para calcular o espaço em uso na partição <code>/</code> em gigas, que é calculado pela subtração do tamanho total do disco <code>node_filesystem_size_bytes</code> menos o espaço do disco disponível <code>node_filesystem_avail_bytes</code> dividido por 1024 (para converter para kilobytes), dividido por 1024 (para converter para megabytes) e dividido por 1024 (para converter para gigabytes), simples não?</p>
+<p>Essa eu nem vou quebrar em partes, pois tenho certeza que você já entendeu como funciona.</p>
+<p> 
+ </p>
+<h3 id="chega-por-hoje"><a class="header" href="#chega-por-hoje">Chega por hoje!</a></h3>
+<p>Acho que já temos bastante conteúdo para hoje, então vamos parar por aqui. Já temos bastante conteúdo para você começar a brincar com o Prometheus e ter mais liberdade para criar as suas próprias queries e configurações.
+Agora, precisamos muito que você pratique, que você olhe com carinho tudo o que você aprendeu hoje e que você coloque em prática, agora! Não deixe para amanhã o que você pode fazer hoje, não é mesmo? hahhahahah</p>
+<p> 
+ </p>
+<h3 id="lição-de-casa"><a class="header" href="#lição-de-casa">Lição de casa</a></h3>
+<p>Hoje a sua tarefa é praticar a criação de queries para extrair o máximo de informação do Node Exporter.
+No final, você deve ter uma lista com as queries que você criou e que você entendeu como elas funcionam. A mesma coisa para as novas métricas que você conheceu, bora criar uma lista com as 5 mais legais que você encontrou e que você entendeu como elas funcionam.</p>
+<p> 
+ </p>
+<h3 id="referências"><a class="header" href="#referências">Referências</a></h3>
+<ul>
+<li><a href="https://prometheus.io/docs/prometheus/latest/querying/basics/">Prometheus - Querying</a></li>
+<li><a href="https://prometheus.io/docs/prometheus/latest/querying/functions/">Prometheus - Querying - Functions</a></li>
+<li><a href="https://prometheus.io/docs/prometheus/latest/querying/operators/">Prometheus - Querying - Operators</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../day-2/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../day-4/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../day-2/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../day-4/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

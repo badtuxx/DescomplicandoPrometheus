@@ -1,0 +1,1048 @@
+<!DOCTYPE HTML>
+<html lang="pt" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Descomplicando o Prometheus</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/css/style.css">
+        <link rel="stylesheet" href="../theme/css/mdbook-admonish.css">
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introdução</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../BOOKSUMMARY.html">Sumário</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Capítulos</li><li class="chapter-item expanded "><a href="../day-1/index.html"><strong aria-hidden="true">1.</strong> Dia 1</a></li><li class="chapter-item expanded "><a href="../day-2/index.html" class="active"><strong aria-hidden="true">2.</strong> Dia 2</a></li><li class="chapter-item expanded "><a href="../day-3/index.html"><strong aria-hidden="true">3.</strong> Dia 3</a></li><li class="chapter-item expanded "><a href="../day-4/index.html"><strong aria-hidden="true">4.</strong> Dia 4</a></li><li class="chapter-item expanded "><a href="../day-5/index.html"><strong aria-hidden="true">5.</strong> Dia 5</a></li><li class="chapter-item expanded "><a href="../day-6/index.html"><strong aria-hidden="true">6.</strong> Dia 6</a></li><li class="chapter-item expanded "><a href="../day-7/index.html"><strong aria-hidden="true">7.</strong> Dia 7</a></li><li class="chapter-item expanded "><a href="../day-8/index.html"><strong aria-hidden="true">8.</strong> Dia 8</a></li><li class="chapter-item expanded "><a href="../day-9/index.html"><strong aria-hidden="true">9.</strong> Dia 9</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Descomplicando o Prometheus</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/badtuxx/DescomplicandoPrometheus" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/badtuxx/DescomplicandoPrometheus/edit/main/pt/src/day-2/README.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <h1 id="descomplicando-o-prometheus"><a class="header" href="#descomplicando-o-prometheus">Descomplicando o Prometheus</a></h1>
+<h2 id="day-2"><a class="header" href="#day-2">DAY-2</a></h2>
+<h3 id="o-que-iremos-ver-hoje"><a class="header" href="#o-que-iremos-ver-hoje">O que iremos ver hoje?</a></h3>
+<p>Seja muito bem-vinda e muito bem-vindo para o seu segundo dia de treinamento! Sim, eu considero esse livro um treinamento e não somente um guia de como obter o melhor do sensacional Prometheus!</p>
+<p>Hoje nós vamos aprender como criar as nossa primeiras <em>queries</em> e para isso vamos precisar entender o modelo de dados que o Prometheus utiliza, vamos entender no detalhe o que é uma métrica para o Prometheus e vamos aprender como criar a nossa propria métrica e as nossas primeiras queries.</p>
+<p>Vamos criar o nosso primeiro exporter utilizando Python Docker. Vamos entender os tipos de dados que o Prometheus utiliza, como utiliza-los e pra que servem.</p>
+<p>Vamos conhecer as nossas primeiras funções para que possamos ter ainda mais poderes para criar as nossa queries PromQL.</p>
+<p> </p>
+<h3 id="conteúdo-do-day-2"><a class="header" href="#conteúdo-do-day-2">Conteúdo do Day-2</a></h3>
+<details>
+<summary class="summary">DAY-2</summary>
+<ul>
+<li><a href="#o-data-model-do-prometheus">O Data Model do Prometheus</a></li>
+<li><a href="#as-queries-do-prometheus-e-o-promql">As queries do Prometheus e o PromQL</a></li>
+<li><a href="#o-nosso-primeiro-exporter">O nosso primeiro exporter</a>
+<ul>
+<li><a href="#nosso-primeiro-exporter-no-container">Nosso Primeiro Exporter no Container</a></li>
+</ul>
+</li>
+<li><a href="#os-targets-do-prometheus">Os Targets do Prometheus</a></li>
+<li><a href="#visualizando-as-m%C3%A9tricas-do-nosso-primeiro-exporter">Visualizando as métricas do nosso primeiro exporter</a></li>
+<li><a href="#conhecendo-um-pouco-mais-sobre-os-tipos-de-dados-do-prometheus">Conhecendo um pouco mais sobre os tipos de dados do Prometheus</a> 
+<ul>
+<li><a href="#gauge-medidor">gauge: Medidor</a></li>
+<li><a href="#counter-contador">counter: Contador</a></li>
+<li><a href="#summary-resumo">summary: Resumo</a></li>
+<li><a href="#histogram-histograma">histogram: Histograma</a></li>
+</ul>
+</li>
+<li><a href="#chega-por-hoje">Chega por hoje!</a></li>
+<li><a href="#li%C3%A7%C3%A3o-de-casa">Lição de casa</a></li>
+</ul>
+</details>
+<p> 
+ </p>
+<h3 id="o-data-model-do-prometheus"><a class="header" href="#o-data-model-do-prometheus">O Data Model do Prometheus</a></h3>
+<p>O formato de dados que o Prometheus utiliza é bastante simples, vamos pegar uma métrica e fazer uma consulta para saber o valor atual dela, assim você poderá entender melhor esse tal de <em>data model</em>.</p>
+<p>Vamos fazer uma query para saber o valor atual da métrica <code>up</code> do servidor onde Prometheus está rodando.</p>
+<pre><code>up
+</code></pre>
+<p> </p>
+<p>Lembrando que estamos executando a query na porta 9090, que é a porta padrão do Prometheus, lá no navegador, certo?</p>
+<p>Somente para que você não tenha duvidas, vamos abrir o navegador e digitar:</p>
+<pre><code>http://localhost:9090/
+
+</code></pre>
+<p> </p>
+<p>Se liga no print do navegador:</p>
+<p><img src="images/resultado-query-up.png" alt="Query buscando o valor atual da métrica up" /></p>
+<p> </p>
+<p>Aqui, o resultado dessa query é:</p>
+<pre><code>up{instance=&quot;localhost:9090&quot;,job=&quot;prometheus&quot;} 1.0
+</code></pre>
+<p> </p>
+<p>Nós precisamos entender o que essa linha está dizendo, o Prometheus sempre vai seguir um padrão, e você entendendo essa padrão tudo ficará muito mais fácil.</p>
+<p>Ahhh, caso você queira pegar o resultado da query via terminal, basta digitar:</p>
+<pre><code>curl -GET http://localhost:9090/api/v1/query --data-urlencode &quot;query=up&quot;
+</code></pre>
+<p> </p>
+<p>Somente para explicar o que a linha do curl acima faz, vamos explicar o que está acontecendo.</p>
+<p> </p>
+<p>Vamos lá!</p>
+<ul>
+<li>
+<p>O <code>curl</code> é um programa que permite fazer requisições HTTP, ou seja, você pode fazer requisições para uma URL e receber uma resposta. Nesse caso estamos pedindo para que ele faça um GET na URL <code>http://localhost:9090/api/v1/query</code> e envie uma query para o Prometheus.</p>
+</li>
+<li>
+<p>O <code>curl</code> está fazendo uma requisição para a URL <code>http://localhost:9090/api/v1/query</code>, que é a URL padrão do Prometheus.</p>
+</li>
+<li>
+<p>O <code>curl</code> está passando uma query para o Prometheus, que é a query que você estamos querendo saber o valor, ou seja, a nossa métrica <code>up</code>. <em>&quot;query=up&quot;</em></p>
+</li>
+<li>
+<p>E ainda estamos passando o parâmetro <code>--data-urlencode</code> para o <code>curl</code>, que é um parâmetro que permite você fazer um  POST com dados via URL, similar ao parâmetro <code>--data</code> do <code>curl</code>.</p>
+</li>
+</ul>
+<p> </p>
+<p>O resultado será algo parecido com a saída abaixo:</p>
+<pre><code class="language-json">{
+  &quot;status&quot;: &quot;success&quot;,
+  &quot;data&quot;: {
+    &quot;resultType&quot;: &quot;vector&quot;,
+    &quot;result&quot;: [
+      {
+        &quot;metric&quot;: {
+            &quot;__name__&quot;: &quot;up&quot;,
+            &quot;instance&quot;: &quot;localhost:9090&quot;,
+            &quot;job&quot;: &quot;prometheus&quot;
+            },
+        &quot;value&quot;: [
+            1661595487.119,
+            &quot;1&quot;
+            ]
+        }
+        ]
+    }
+}
+</code></pre>
+<p> </p>
+<p>Bem, o resultado da query que queriamos já está aqui, mostrei das duas formas, via interface web usando o navegador ou via terminal usando o <code>curl</code>.</p>
+<p>Agora vamos entender o que está acontecendo.</p>
+<p>O que o Prometheus retornou?</p>
+<p>Vou fazer rabiscar para eu conseguir explicar melhor. :D</p>
+<p>Primeiro vamos entender que o resultado está dividido em duas partes:</p>
+<ul>
+<li>
+<p>O 'identificador' do resultado, que é o nome da métrica que você está buscando e suas labels. Ahh, as <em>labels</em> são informações que ajudam a melhorar o filtro da sua query. Por exemplo, podemos buscar a mesma métrica, mas com diferentes labels, como por exemplo, com o label <code>instance</code> como <code>localhost:9090</code>, poderíamos ter outras <code>instance</code> como <code>webserver-01</code> e <code>webserver-02</code>, por exemplo.</p>
+</li>
+<li>
+<p>O 'valor' do resultado, que é o valor atual da métrica. Essa é a segunda parte do resultado, onde você encontra o valor atual da métrica.</p>
+</li>
+</ul>
+<p>Se liga no desenho que eu fiz para você entender melhor, vamos lá:</p>
+<p><img src="images/desenho-data-model-prometheus-1.jpg" alt="Desenho Data Model do Prometheus" /></p>
+<p> </p>
+<p>Se der um zoom no desenho, vai ver que o resultado está subdivido em mais partes, afinal, além do nome da métrica, temos as labels e seus valores e finalizando com o valor atual da métrica.</p>
+<p>Se liga nesse outro desenho:</p>
+<p><img src="images/desenho-data-model-prometheus-2.jpg" alt="Desenho Data Model do Prometheus" /></p>
+<p> </p>
+<p>O que sabemos então olhando o resultado dessa query é que o nosso servidor está rodando, ou seja, o Prometheus está funcionando corretamente.
+Perceba que somente está o valor '1', não está falando desde quando está em execução, somente trouxe que o valor atual, o que está acontecendo agora é '1', ou seja, está rodando.</p>
+<p>Se o valor fosse '0', significaria que o servidor não está rodando, ou seja, o Prometheus está parado.</p>
+<p>Agora, se eu quero saber o valor da métrica <code>up</code> do servidor onde está rodando o Prometheus na última hora, teriamos que passar esse desejo para a nossa query, que fica assim:</p>
+<pre><code>up{instance=&quot;localhost:9090&quot;,job=&quot;prometheus&quot;}[1h]
+</code></pre>
+<p> </p>
+<p>Nesse caso estamos especificando que queremos os valores da métrica <code>up</code> do servidor <code>localhost:9090</code> do job <code>prometheus</code> da última hora, estamos sendo bem específicos. :)</p>
+<p>Para pedir as métricas da última hora, vamos usar o parâmetro <code>[1h]</code> no final da query.
+Você usar <code>h</code> para hora, <code>d</code> para dia, <code>w</code> para semana, <code>m</code> para mês, <code>y</code> para ano.</p>
+<p><img src="images/desenho-query-prometheus-1.jpg" alt="Desenho Query Simples Prometheus" /></p>
+<p> </p>
+<p>O resultado foi enorme, certo?
+E você não sabe o porquê?</p>
+<p>Lembra que nós configuramos o Prometheus para ele fazer o <em>scrape</em> das métricas que queremos a cada 15 segundos? Então, o resultado vai ser bem grande.</p>
+<p>Vou copiar aqui somente o primeiro resultado para você entender melhor:</p>
+<pre><code>up{instance=&quot;localhost:9090&quot;, job=&quot;prometheus&quot;} 1 @1661595094.114
+</code></pre>
+<p> </p>
+<p>Perceba que agora ele trouxe o @1661595094.114, que é o timestamp da execução do scrape, ou seja, a hora em que o scrape foi capturado.</p>
+<p>Acho que já entendemos o modelo de dados que o Prometheus retorna, então já podemos ir um pouco mais além, bora entender e descomplicar as queries utilizando a poderossa linguagem de query do Prometheus, a PromQL!</p>
+<p> 
+ </p>
+<h3 id="as-queries-do-prometheus-e-o-promql"><a class="header" href="#as-queries-do-prometheus-e-o-promql">As queries do Prometheus e o PromQL</a></h3>
+<p>Como mencionado ainda no Day-1, o <em>PromQL</em> é uma linguagem de query do Prometheus que permite fazer queries completas e super eficientes, e hoje vamos descomplica-la.</p>
+<p>Eu sei que não é nenhuma novidade para você, pois nós já brincamos um pouco durante os exemplos anteriores, mas agora vamos gastar mais energia para que tudo seja mais claro e que possamos ter uma melhor compreensão do PromQL.</p>
+<p>Antes de qualquer coisa, vamos colocar mais algumas métricas em nosso servidor, para podermos se divertir um pouco mais.</p>
+<p>Antes vamos fazer um novo <em>exporter</em> para o Prometheus, o <em>exporter</em> é um programa que é executado no host alvo e o responsável por expor as métricas para o Prometheus capturar.</p>
+<p>Ahhh, PromQL significa <em>Prometheus Query Language</em>. :)</p>
+<p>Vamos entender isso melhor, mas antes vamos criar o nosso primeiro <em>exporter</em> para o Prometheus.</p>
+<p> 
+ </p>
+<h3 id="o-nosso-primeiro-exporter"><a class="header" href="#o-nosso-primeiro-exporter">O nosso primeiro exporter</a></h3>
+<p>Para o nosso exemplo, vamos criar uma aplicação bem simples feita em Python irá exportar as métricas que queremos.</p>
+<p>A métrica que queremos é a quantidade de pessoas que estão na Estação Espacial Internacional nesse momento.
+Então a métrica que queremos é simples, pelo menos por agora:</p>
+<ul>
+<li>Número de astronautas que estão no espaço</li>
+</ul>
+<p>Para saber a quantidade de pessoas que estão no espaço, vamos utilizar a API Rest do <a href="http://open-notify.org/Open-Notify-API/People-In-Space/">OpenNotify</a>.</p>
+<p>Vamos criar um arquivo chamado <code>exporter.py</code> no diretório <code>exporter</code>.</p>
+<p> </p>
+<pre><code class="language-python">import requests # Importa o módulo requests para fazer requisições HTTP
+import json # Importa o módulo json para converter o resultado em JSON
+import time # Importa o módulo time para fazer o sleep
+from prometheus_client import start_http_server, Gauge # Importa o módulo Gauge do Prometheus para criar a nossa métrica e o módulo start_http_server para iniciar o servidor
+
+url_numero_pessoas = 'http://api.open-notify.org/astros.json' # URL para pegar o número de astronautas
+
+def pega_numero_astronautas(): # Função para pegar o número de astronautas
+    try: # Tenta fazer a requisição HTTP
+        &quot;&quot;&quot;
+        Pegar o número de astronautas no espaço 
+        &quot;&quot;&quot;
+        response = requests.get(url_numero_pessoas) # Faz a requisição HTTP
+        data = response.json() # Converte o resultado em JSON
+        return data['number'] # Retorna o número de astronautas
+    except Exception as e: # Se der algum erro
+        print(&quot;Não foi possível acessar a url!&quot;) # Imprime que não foi possível acessar a url
+        raise e # Lança a exceção
+
+def atualiza_metricas(): # Função para atualizar as métricas
+    try:
+        &quot;&quot;&quot;
+        Atualiza as métricas com o número de astronautas e local da estação espacial internacional
+        &quot;&quot;&quot;
+        numero_pessoas = Gauge('numero_de_astronautas', 'Número de astronautas no espaço') # Cria a métrica
+        
+        while True: # Enquanto True
+            numero_pessoas.set(pega_numero_astronautas()) # Atualiza a métrica com o número de astronautas
+            time.sleep(10) # Faz o sleep de 10 segundos
+            print(&quot;O número atual de astronautas no espaço é: %s&quot; % pega_numero_astronautas()) # Imprime o número de astronautas no espaço
+    except Exception as e: # Se der algum erro
+        print(&quot;A quantidade de astronautas não pode ser atualizada!&quot;) # Imprime que não foi possível atualizar a quantidade de astronautas
+        raise e # Lança a exceção
+        
+def inicia_exporter(): # Função para iniciar o exporter
+    try:
+        &quot;&quot;&quot;
+        Iniciar o exporter
+        &quot;&quot;&quot;
+        start_http_server(8899) # Inicia o servidor do Prometheus na porta 8899
+        return True # Retorna True
+    except Exception as e: # Se der algum erro
+        print(&quot;O Servidor não pode ser iniciado!&quot;) # Imprime que não foi possível iniciar o servidor
+        raise e # Lança a exceção
+
+def main(): # Função principal
+    try:
+        inicia_exporter() # Inicia o exporter
+        print('Exporter Iniciado') # Imprime que o exporter foi iniciado
+        atualiza_metricas() # Atualiza as métricas
+    except Exception as e: # Se der algum erro
+        print('\nExporter Falhou e Foi Finalizado! \n\n======&gt; %s\n' % e) # Imprime que o exporter falhou e foi finalizado
+        exit(1) # Finaliza o programa com erro
+
+
+if __name__ == '__main__': # Se o programa for executado diretamente
+    main() # Executa o main
+    exit(0) # Finaliza o programa
+
+</code></pre>
+<p> </p>
+<p>Agora vamos executar o nosso script para ver se está tudo certo.</p>
+<pre><code class="language-bash">chmod +x exporter.py
+python exporter.py
+</code></pre>
+<p> </p>
+<p>Abra um outro terminal e execute o comando <code>curl http://localhost:8899/metrics/</code> para ver se está tudo certo.</p>
+<pre><code class="language-bash">curl http://localhost:8899/metrics/
+</code></pre>
+<p> </p>
+<p>A saída será:</p>
+<pre><code class="language-bash">curl http://localhost:8899/metrics/
+
+
+# HELP python_gc_objects_collected_total Objects collected during gc
+# TYPE python_gc_objects_collected_total counter
+python_gc_objects_collected_total{generation=&quot;0&quot;} 208.0
+python_gc_objects_collected_total{generation=&quot;1&quot;} 33.0
+python_gc_objects_collected_total{generation=&quot;2&quot;} 0.0
+# HELP python_gc_objects_uncollectable_total Uncollectable object found during GC
+# TYPE python_gc_objects_uncollectable_total counter
+python_gc_objects_uncollectable_total{generation=&quot;0&quot;} 0.0
+python_gc_objects_uncollectable_total{generation=&quot;1&quot;} 0.0
+python_gc_objects_uncollectable_total{generation=&quot;2&quot;} 0.0
+# HELP python_gc_collections_total Number of times this generation was collected
+# TYPE python_gc_collections_total counter
+python_gc_collections_total{generation=&quot;0&quot;} 55.0
+python_gc_collections_total{generation=&quot;1&quot;} 4.0
+python_gc_collections_total{generation=&quot;2&quot;} 0.0
+# HELP python_info Python platform information
+# TYPE python_info gauge
+python_info{implementation=&quot;CPython&quot;,major=&quot;3&quot;,minor=&quot;10&quot;,patchlevel=&quot;4&quot;,version=&quot;3.10.4&quot;} 1.0
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# TYPE process_virtual_memory_bytes gauge
+process_virtual_memory_bytes 1.99507968e+08
+# HELP process_resident_memory_bytes Resident memory size in bytes.
+# TYPE process_resident_memory_bytes gauge
+process_resident_memory_bytes 2.7099136e+07
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds 1.66178245236e+09
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# TYPE process_cpu_seconds_total counter
+process_cpu_seconds_total 0.060000000000000005
+# HELP process_open_fds Number of open file descriptors.
+# TYPE process_open_fds gauge
+process_open_fds 6.0
+# HELP process_max_fds Maximum number of open file descriptors.
+# TYPE process_max_fds gauge
+process_max_fds 1024.0
+# HELP number_of_astronauts Number of astronauts in space
+# TYPE number_of_astronauts gauge
+number_of_astronauts 10.0
+</code></pre>
+<p> </p>
+<p>Lembrando que você pode acessar via navegador acessando http://localhost:8899/metrics/.</p>
+<p><img src="images/primeiro-export.png" alt="Print das métricas do nosso primeiro export!" /></p>
+<p>Perceba que estamos passando o path <code>/metrics</code>, mas qualquer path que você passar port agora, o <code>start_http_serve</code> irá responder. Por enquanto vamos deixar dessa forma, mas em breve vamos melhorar isso, mas por agora e para fins didáticos, vamos deixar assim.</p>
+<p> </p>
+<h3 id="nosso-primeiro-exporter-no-container"><a class="header" href="#nosso-primeiro-exporter-no-container">Nosso Primeiro Exporter no Container</a></h3>
+<p>Vamos colocar esse nosso primeiro exporter para rodar em um container Docker.
+Antes de mais nada, faça a instalação do Docker na maioria das distribuições Linux, execute o famoso <code>curl</code>!</p>
+<pre><code class="language-bash">curl -fsSL https://get.docker.com | bash
+</code></pre>
+<p> </p>
+<p>Caso queira saber mais detalhes de como instalar o Docker em outros sistemas operacionais, clique <a href="https://docs.docker.com/install/">aqui</a>.</p>
+<p>Vamos ter certeza de que o Docker está instalado, execute o comando <code>docker --version</code> para verificar se está funcionando.</p>
+<pre><code class="language-bash">docker --version
+</code></pre>
+<p> </p>
+<p>Boa! Agora já podemos criar o nosso Dockerfile para criar a nossa imagem Docker do exporter.</p>
+<pre><code class="language-dockerfile"># Vamos utilizar a imagem slim do Python
+FROM python:3.8-slim
+
+# Adicionando algumas labels para identificar a imagem
+LABEL maintainer Jeferson Fernando &lt;jeferson@linuxtips.com.br&gt;
+LABEL description &quot;Dockerfile para criar o nosso primeiro exporter para o Prometheus&quot;
+
+# Adicionando o exporter.py para a nossa imagem
+COPY . .
+
+# Instalando as bibliotecas necessárias para o exporter
+# através do `requirements.txt`.
+RUN pip3 install -r requirements.txt
+
+# Executando o exporter
+CMD python3 exporter.py
+</code></pre>
+<p> </p>
+<p>Muito bom!
+Já temos o nosso <code>Dockerfile</code> criado, vamos criar a nossa imagem Docker.</p>
+<pre><code class="language-bash">docker build -t primeiro-exporter:0.1 .
+
+Sending build context to Docker daemon  5.632kB
+Step 1/7 : FROM python:3.8-slim
+ ---&gt; bdd3315885d4
+Step 2/7 : LABEL maintainer Jeferson Fernando &lt;jeferson@linuxtips.com.br&gt;
+ ---&gt; Using cache
+ ---&gt; 3d1bad97c1cb
+Step 3/7 : LABEL description &quot;Dockerfile para criar o nosso primeiro exporter para o Prometheus&quot;
+ ---&gt; Using cache
+ ---&gt; 9f41ad63e03a
+Step 4/7 : COPY . /app
+ ---&gt; Using cache
+ ---&gt; 5d9cdbc9dd36
+Step 5/7 : WORKDIR /app
+ ---&gt; Using cache
+ ---&gt; 4164e416a25e
+Step 6/7 : RUN pip3 install -r requirements.txt
+ ---&gt; Using cache
+ ---&gt; 9d4517e8a5c4
+Step 7/7 : CMD python3 exporter.py
+ ---&gt; Using cache
+ ---&gt; 7f971cbc97ce
+Successfully built 7f971cbc97ce
+Successfully tagged primeiro-exporter:0.1
+</code></pre>
+<p> </p>
+<p>Se você quiser ver a imagem criada, execute o comando <code>docker images</code> para verificar.</p>
+<pre><code class="language-bash">docker images | grep primeiro-exporter
+
+primeiro-exporter   0.1   7f971cbc97ce   4 minutes ago   134MB
+</code></pre>
+<p> </p>
+<p>Ótimo! Agora vamos rodar o nosso primeiro exporter.</p>
+<pre><code class="language-bash">docker run -p 8899:8899 --name primeiro-exporter -d primeiro-exporter:0.1
+</code></pre>
+<p> </p>
+<p>Bora verificar se o nosso primeiro exporter está rodando.</p>
+<pre><code class="language-bash">curl -s http://localhost:8899/metrics
+</code></pre>
+<p> </p>
+<p>Está rodando maravilhosamente bem!</p>
+<p> </p>
+<h3 id="os-targets-do-prometheus"><a class="header" href="#os-targets-do-prometheus">Os Targets do Prometheus</a></h3>
+<p>Agora que já temos o nosso exporter rodando maravilhosamente em nosso container Docker, vamos adicionar um novo host alvo para o Prometheus, ou seja, vamos adicionar o nosso primeiro exporter para o Prometheus.</p>
+<p>Caso você queira executar o nosso primeiro exporter em outro computador ou vm, lembre-se de passar corretamento o endereço no momento em que adicionarmos o host alvo lá nas configurações do Prometheus.</p>
+<p>Antes de mais nada, vamos conhecer os hosts alvos que já estão configurados no Prometheus.
+Sempre que falar sobre esses hosts alvos, vamos falar em <code>targets</code>, pois um host alvo é um servidor/serviço que o Prometheus monitora, e ele chama esses hosts alvos de <code>targets</code>.</p>
+<p>Vamos ver os hosts alvos, ou <code>targets</code>, que estão configurados no Prometheus.</p>
+<pre><code class="language-bash">curl -s http://localhost:9090/api/v1/targets
+</code></pre>
+<p> </p>
+<p>Para ficar mais bonita essa saída, vamos converter para JSON e para isso vamos utilizar o comando <code>jq</code>.</p>
+<p>O comando <code>jq</code> é um comando lindo demais do <a href="https://stedolan.github.io/jq/">JSON</a> que permite fazer o parse de um arquivo JSON.</p>
+<p>Se você ainda não tem o <code>jq</code> instalado, execute o comando <code>sudo apt install jq</code> para instalar.</p>
+<pre><code class="language-bash">curl -s http://localhost:9090/api/v1/targets | jq .
+</code></pre>
+<p> </p>
+<p>A saída deve ter ficado bem mais bonita.</p>
+<pre><code class="language-json">{
+  &quot;status&quot;: &quot;success&quot;,
+  &quot;data&quot;: {
+    &quot;activeTargets&quot;: [
+      {
+        &quot;discoveredLabels&quot;: {
+          &quot;__address__&quot;: &quot;localhost:9090&quot;,
+          &quot;__metrics_path__&quot;: &quot;/metrics&quot;,
+          &quot;__scheme__&quot;: &quot;http&quot;,
+          &quot;__scrape_interval__&quot;: &quot;15s&quot;,
+          &quot;__scrape_timeout__&quot;: &quot;10s&quot;,
+          &quot;job&quot;: &quot;prometheus&quot;
+        },
+        &quot;labels&quot;: {
+          &quot;instance&quot;: &quot;localhost:9090&quot;,
+          &quot;job&quot;: &quot;prometheus&quot;
+        },
+        &quot;scrapePool&quot;: &quot;prometheus&quot;,
+        &quot;scrapeUrl&quot;: &quot;http://localhost:9090/metrics&quot;,
+        &quot;globalUrl&quot;: &quot;http://nu-derval:9090/metrics&quot;,
+        &quot;lastError&quot;: &quot;&quot;,
+        &quot;lastScrape&quot;: &quot;2022-08-29T18:18:19.080077725+02:00&quot;,
+        &quot;lastScrapeDuration&quot;: 0.004360807,
+        &quot;health&quot;: &quot;up&quot;,
+        &quot;scrapeInterval&quot;: &quot;15s&quot;,
+        &quot;scrapeTimeout&quot;: &quot;10s&quot;
+      }
+    ],
+    &quot;droppedTargets&quot;: []
+  }
+}
+
+</code></pre>
+<p> </p>
+<p>Perceba que somente temos um host alvo configurado no Prometheus, que é o próprio Prometheus. Perceba que ele está configurado para buscar as métricas na porta 9090, e ele está configurado para buscar as métricas em um intervalo de 15 segundos. A porta 9090 é a porta padrão do Prometheus, a diferença é o path que ele está buscando, que é <code>/metrics</code>.</p>
+<p>Testa a saída do comando <code>curl -s http://localhost:9090/metrics</code> e você verá as métricas do Prometheus.
+IMPORTANTE: Métricas do Prometheus e não do nosso primeiro exporter.</p>
+<p>Voltando a falar dos nossos targets, caso você não goste dessa saída via linha de comando, você pode verificar a saída via browser, claro!</p>
+<pre><code class="language-bash">http://localhost:9090/targets
+</code></pre>
+<p> </p>
+<p>No nosso caso, como já sabemos, somente temos um host alvo configurado no Prometheus, que é o próprio Prometheus.</p>
+<p><img src="images/prometheus-targets-1.png" alt="O único target configurado no Prometheus" /></p>
+<p>O que temos que fazer agora é adicionar o nosso novo target, ou host alvo, ou chame lá como você quiser. hahaha.</p>
+<p> </p>
+<h3 id="adicionando-o-nosso-primeiro-exporter-para-o-prometheus"><a class="header" href="#adicionando-o-nosso-primeiro-exporter-para-o-prometheus">Adicionando o nosso primeiro exporter para o Prometheus</a></h3>
+<p>Primeira coisa que precisamos fazer é editar o arquivo <code>prometheus.yml</code> para adicionar o nosso primeiro exporter.
+Como sabemos, o nosso arquivo <code>prometheus.yml</code> está no diretório <code>/etc/prometheus/</code>.</p>
+<p>Edite o arquivo <code>prometheus.yml</code> para adicionar o seguinte:</p>
+<pre><code class="language-yaml">global: # Configurações globais do Prometheus, ou seja, configurações que serão utilizadas em todos os jobs caso não sejam configuradas separadamente dentro de cada job.
+  
+  scrape_interval: 15s # Intervalo de coleta dos dados, ou seja, a cada 15 segundos o Prometheus vai até o alvo monitorado coletar as métricas, o padrão é 1 minuto.
+  
+  evaluation_interval: 15s # Intervalo para o Prometheus avaliar as regras de alerta, o padrão é 1 minuto. Não estamos utilizando regras para os alertas, vamos manter aqui somente para referência.
+
+  scrape_timeout: 10s # Intervalos para o Prometheus aguardar o alvo monitorado responder antes de considerar que o alvo está indisponível, o padrão é 10 segundos.
+
+rule_files: # Inicio da definição das regras de alerta, nesse primeiro exemplo vamos deixar sem regras, pois não iremos utilizar alertas por agora.
+
+scrape_configs: # Inicio da definição das configurações de coleta, ou seja, como o Prometheus vai coletar as métricas e onde ele vai encontrar essas métricas.
+
+  - job_name: &quot;prometheus&quot; # Nome do job, ou seja, o nome do serviço que o Prometheus vai monitorar.
+
+    static_configs: # Inicio da definição das configurações estáticas, ou seja, configurações que não serão alteradas durante o processo de coleta.
+
+      - targets: [&quot;localhost:9090&quot;] # Endereço do alvo monitorado, ou seja, o endereço do serviço que o Prometheus vai monitorar. Nesse caso é o próprio Prometheus.
+  
+  - job_name: &quot;Primeiro Exporter&quot; # Nome do job que vai coletar as métricas do primeiro exporter.
+    static_configs:
+      - targets: [&quot;localhost:8899&quot;] # Endereço do alvo monitorado, ou seja, o nosso primeiro exporter.
+</code></pre>
+<p> </p>
+<p>Agora que já editamos o arquivo e adicionamos um novo job, precisamos atualizar o Prometheus.</p>
+<pre><code class="language-bash">sudo systemctl restart prometheus
+</code></pre>
+<p> </p>
+<p>Bora conferir se o nosso primeiro exporter já está configurado como target no Prometheus.</p>
+<pre><code class="language-bash">curl -s http://localhost:9090/api/v1/targets | jq . 
+</code></pre>
+<p> </p>
+<p>A saída mudou, não?!?</p>
+<pre><code class="language-json">{
+  &quot;status&quot;: &quot;success&quot;,
+  &quot;data&quot;: {
+    &quot;activeTargets&quot;: [
+      {
+        &quot;discoveredLabels&quot;: {
+          &quot;__address__&quot;: &quot;localhost:8899&quot;,
+          &quot;__metrics_path__&quot;: &quot;/metrics&quot;,
+          &quot;__scheme__&quot;: &quot;http&quot;,
+          &quot;__scrape_interval__&quot;: &quot;15s&quot;,
+          &quot;__scrape_timeout__&quot;: &quot;10s&quot;,
+          &quot;job&quot;: &quot;Primeiro Exporter&quot;
+        },
+        &quot;labels&quot;: {
+          &quot;instance&quot;: &quot;localhost:8899&quot;,
+          &quot;job&quot;: &quot;Primeiro Exporter&quot;
+        },
+        &quot;scrapePool&quot;: &quot;Primeiro Exporter&quot;,
+        &quot;scrapeUrl&quot;: &quot;http://localhost:8899/metrics&quot;,
+        &quot;globalUrl&quot;: &quot;http://nu-derval:8899/metrics&quot;,
+        &quot;lastError&quot;: &quot;&quot;,
+        &quot;lastScrape&quot;: &quot;2022-08-29T18:37:17.239059844+02:00&quot;,
+        &quot;lastScrapeDuration&quot;: 0.002143502,
+        &quot;health&quot;: &quot;up&quot;,
+        &quot;scrapeInterval&quot;: &quot;15s&quot;,
+        &quot;scrapeTimeout&quot;: &quot;10s&quot;
+      },
+      {
+        &quot;discoveredLabels&quot;: {
+          &quot;__address__&quot;: &quot;localhost:9090&quot;,
+          &quot;__metrics_path__&quot;: &quot;/metrics&quot;,
+          &quot;__scheme__&quot;: &quot;http&quot;,
+          &quot;__scrape_interval__&quot;: &quot;15s&quot;,
+          &quot;__scrape_timeout__&quot;: &quot;10s&quot;,
+          &quot;job&quot;: &quot;prometheus&quot;
+        },
+        &quot;labels&quot;: {
+          &quot;instance&quot;: &quot;localhost:9090&quot;,
+          &quot;job&quot;: &quot;prometheus&quot;
+        },
+        &quot;scrapePool&quot;: &quot;prometheus&quot;,
+        &quot;scrapeUrl&quot;: &quot;http://localhost:9090/metrics&quot;,
+        &quot;globalUrl&quot;: &quot;http://nu-derval:9090/metrics&quot;,
+        &quot;lastError&quot;: &quot;&quot;,
+        &quot;lastScrape&quot;: &quot;2022-08-29T18:37:19.08239274+02:00&quot;,
+        &quot;lastScrapeDuration&quot;: 0.004655397,
+        &quot;health&quot;: &quot;up&quot;,
+        &quot;scrapeInterval&quot;: &quot;15s&quot;,
+        &quot;scrapeTimeout&quot;: &quot;10s&quot;
+      }
+    ],
+    &quot;droppedTargets&quot;: []
+  }
+}
+</code></pre>
+<p> </p>
+<p>Essa é a saída que é importante para nos sabermos se o nosso primeiro exporter está configurado como target no Prometheus.</p>
+<pre><code class="language-json">&quot;activeTargets&quot;: [
+      {
+        &quot;discoveredLabels&quot;: {
+          &quot;__address__&quot;: &quot;localhost:8899&quot;,
+          &quot;__metrics_path__&quot;: &quot;/metrics&quot;,
+          &quot;__scheme__&quot;: &quot;http&quot;,
+          &quot;__scrape_interval__&quot;: &quot;15s&quot;,
+          &quot;__scrape_timeout__&quot;: &quot;10s&quot;,
+          &quot;job&quot;: &quot;Primeiro Exporter&quot;
+        },
+        &quot;labels&quot;: {
+          &quot;instance&quot;: &quot;localhost:8899&quot;,
+          &quot;job&quot;: &quot;Primeiro Exporter&quot;
+        },
+        &quot;scrapePool&quot;: &quot;Primeiro Exporter&quot;,
+        &quot;scrapeUrl&quot;: &quot;http://localhost:8899/metrics&quot;,
+        &quot;globalUrl&quot;: &quot;http://nu-derval:8899/metrics&quot;,
+        &quot;lastError&quot;: &quot;&quot;,
+        &quot;lastScrape&quot;: &quot;2022-08-29T18:37:17.239059844+02:00&quot;,
+        &quot;lastScrapeDuration&quot;: 0.002143502,
+        &quot;health&quot;: &quot;up&quot;,
+        &quot;scrapeInterval&quot;: &quot;15s&quot;,
+        &quot;scrapeTimeout&quot;: &quot;10s&quot;
+      },
+</code></pre>
+<p> </p>
+<p>Caso queira fazer um <code>grep</code> na saída para ver se o nosso primeiro exporter está na lista de targets, vamos fazer isso:</p>
+<pre><code class="language-bash">curl -s http://localhost:9090/api/v1/targets | jq . | grep -i &quot;localhost:8899&quot;
+</code></pre>
+<p> </p>
+<p>E ainda podemos ver via navegador, conforme abaixo:</p>
+<p><img src="images/prometheus-targets-2.png" alt="O nosso novo target está configurado" /></p>
+<p> </p>
+<h3 id="visualizando-as-métricas-do-nosso-primeiro-exporter"><a class="header" href="#visualizando-as-métricas-do-nosso-primeiro-exporter">Visualizando as métricas do nosso primeiro exporter</a></h3>
+<p>Muito bem, fizemos tudo isso somente para mostrar uma nova métrica aparecendo no Prometheus, além da métrica que já vem por padrão.</p>
+<p>A métrica que criamos é totalmente customizada e nem tem muita utilidade, mas é importante para sabermos todos os detalhes da construção de uma métrica, e como o Prometheus lida com ela, desde o primeiro passo até o último.</p>
+<p>Noiz já entendemos como construir uma métrica do zero, aprendemos como o Prometheus lida e armazena ela, agora vamos ver o que precisamos, nesse primeiro momento, para busca-la utilizando as queries no Prometheus.</p>
+<p>Vamos acessar a interface web do Prometheus e digite a seguinte query na barra de pesquisa:</p>
+<pre><code class="language-PROMQL">numero_de_astronautas
+</code></pre>
+<p> </p>
+<p>Com isso você já receberá o valor da métrica, ou melhor, o último valor que foi armazenado no Prometheus.</p>
+<p><img src="images/prometheus-metric-1.png" alt="O valor da métrica" />
+ </p>
+<p>Via linha de comando você já sabe como fazer, certo?</p>
+<pre><code class="language-bash">curl -s http://localhost:9090/api/v1/query?query=numero_de_astronautas | jq .
+</code></pre>
+<p> </p>
+<p>Você vai receber a seguinte saída:</p>
+<pre><code class="language-json">{
+  &quot;status&quot;: &quot;success&quot;,
+  &quot;data&quot;: {
+    &quot;resultType&quot;: &quot;vector&quot;,
+    &quot;result&quot;: [
+      {
+        &quot;metric&quot;: {
+          &quot;__name__&quot;: &quot;numero_de_astronautas&quot;,
+          &quot;instance&quot;: &quot;localhost:8899&quot;,
+          &quot;job&quot;: &quot;Primeiro Exporter&quot;
+        },
+        &quot;value&quot;: [
+          1661792007.877,
+          &quot;10&quot;
+        ]
+      }
+    ]
+  }
+}
+</code></pre>
+<p> </p>
+<p>Muito bom! A nossa métrica está por lá!
+Uma coisa que podemos fazer é começar a ser mais cirúrgicos, e fazer as queries utilizando o máximo de parâmetros possíveis.</p>
+<p>Por exemplo, podemos passar alguns labels para a query, como o nome do job e o nome do instance.</p>
+<pre><code class="language-PROMQL">numero_de_astronautas{instance=&quot;localhost:8899&quot;,job=&quot;Primeiro Exporter&quot;}
+</code></pre>
+<p> </p>
+<p>O resultado será o mesmo que o anterior, porém agora com os labels passados. :D</p>
+<p>Agora, eu consigo ver o valor dessa métrica nos últimos 5 minutos?</p>
+<p>Claro!</p>
+<pre><code class="language-PROMQL">numero_de_astronautas{instance=&quot;localhost:8899&quot;,job=&quot;Primeiro Exporter&quot;}[5m]
+</code></pre>
+<p> </p>
+<p><img src="images/prometheus-metric-2.png" alt="O valor da métrica" />
+ </p>
+<p>O valor não muda, afinal não é tão fácil assim mudar os astronautas que estão na Estação Espacial. hahaha</p>
+<p>E se adicionarmos mais uma métrica?
+Vamos imaginar que é importante saber onde está a Estação Espacial nesse momento! Eu sei que ela está no espaço, engraçadão!</p>
+<p>O que eu quero saber é em qual parte do planeta Terra (que é redondo) ela está passando por cima? 
+Eu sei que o open-notify tem uma API para isso, vamos adicionar essa nova métrica para o nosso primeiro exporter.</p>
+<p>Vamos editar e adicionar essa nova configuração em nosso script Python, o arquivo <code>exporter.py</code>:</p>
+<p> </p>
+<pre><code class="language-python">import requests # Importa o módulo requests para fazer requisições HTTP
+import json # Importa o módulo json para converter o resultado em JSON
+import time # Importa o módulo time para fazer o sleep
+from prometheus_client import start_http_server, Gauge # Importa o módulo Gauge do Prometheus para criar a nossa métrica e o módulo start_http_server para iniciar o servidor
+
+url_numero_pessoas = 'http://api.open-notify.org/astros.json' # URL para pegar o número de astronautas
+url_local_ISS = 'http://api.open-notify.org/iss-now.json' # URL para pegar a localização do ISS
+
+def pega_local_ISS(): # Função para pegar a localização da ISS
+    try:
+        &quot;&quot;&quot;
+        Pegar o local da estação espacial internacional
+        &quot;&quot;&quot;
+        response = requests.get(url_local_ISS) # Faz a requisição para a URL
+        data = response.json() # Converte o resultado em JSON
+        return data['iss_position'] # Retorna o resultado da requisição
+    except Exception as e: # Caso ocorra algum erro
+        print(&quot;Não foi possível acessar a url!&quot;) # Imprime uma mensagem de erro
+        raise e # Lança a exceção
+
+def pega_numero_astronautas(): # Função para pegar o número de astronautas
+    try: # Tenta fazer a requisição HTTP
+        &quot;&quot;&quot;
+        Pegar o número de astronautas no espaço 
+        &quot;&quot;&quot;
+        response = requests.get(url) # Faz a requisição HTTP
+        data = response.json() # Converte o resultado em JSON
+        return data['number'] # Retorna o número de astronautas
+    except Exception as e: # Se der algum erro
+        print(&quot;Não foi possível acessar a url!&quot;) # Imprime que não foi possível acessar a url
+        raise e # Lança a exceção
+
+def atualiza_metricas(): # Função para atualizar as métricas
+    try:
+        &quot;&quot;&quot;
+        Atualiza as métricas com o número de astronautas e local da estação espacial internacional
+        &quot;&quot;&quot;
+        numero_pessoas = Gauge('numero_de_astronautas', 'Número de astronautas no espaço') # Cria a métrica para o número de astronautas
+        longitude = Gauge('longitude_ISS', 'Longitude da Estação Espacial Internacional') # Cria a métrica para a longitude da estação espacial internacional
+        latitude = Gauge('latitude_ISS', 'Latitude da Estação Espacial Internacional') # Cria a métrica para a latitude da estação espacial internacional
+
+        while True: # Enquanto True
+            numero_pessoas.set(pega_numero_astronautas()) # Atualiza a métrica com o número de astronautas
+            longitude.set(pega_local_ISS()['longitude']) # Atualiza a métrica com a longitude da estação espacial internacional
+            latitude.set(pega_local_ISS()['latitude']) # Atualiza a métrica com a latitude da estação espacial internacional
+            time.sleep(10) # Faz o sleep de 10 segundos
+            print(&quot;O número atual de astronautas no espaço é: %s&quot; % pega_numero_astronautas()) # Imprime o número atual de astronautas no espaço
+            print(&quot;A longitude atual da Estação Espacial Internacional é: %s&quot; % pega_local_ISS()['longitude']) # Imprime a longitude atual da estação espacial internacional
+            print(&quot;A latitude atual da Estação Espacial Internacional é: %s&quot; % pega_local_ISS()['latitude']) # Imprime a latitude atual da estação espacial internacional
+    except Exception as e: # Se der algum erro
+        print(&quot;Problemas para atualizar as métricas! \n\n====&gt; %s \n&quot; % e) # Imprime que ocorreu um problema para atualizar as métricas
+        raise e # Lança a exceção
+        
+def inicia_exporter(): # Função para iniciar o exporter
+    try:
+        &quot;&quot;&quot;
+        Iniciar o exporter
+        &quot;&quot;&quot;
+        start_http_server(8899) # Inicia o servidor do Prometheus na porta 8899
+        return True # Retorna True
+    except Exception as e: # Se der algum erro
+        print(&quot;O Servidor não pode ser iniciado!&quot;) # Imprime que não foi possível iniciar o servidor
+        raise e # Lança a exceção
+
+def main(): # Função principal
+    try:
+        inicia_exporter() # Inicia o exporter
+        print('Exporter Iniciado') # Imprime que o exporter foi iniciado
+        atualiza_metricas() # Atualiza as métricas
+    except Exception as e: # Se der algum erro
+        print('\nExporter Falhou e Foi Finalizado! \n\n======&gt; %s\n' % e) # Imprime que o exporter falhou e foi finalizado
+        exit(1) # Finaliza o programa com erro
+
+
+if __name__ == '__main__': # Se o programa for executado diretamente
+    main() # Executa o main
+    exit(0) # Finaliza o programa
+
+</code></pre>
+<p> </p>
+<p>Muito bem, já adicionamos as novas instruções para o nosso exporter.
+Basicamente falamos para a biblioteca <code>prometheus_client</code> que temos duas novas métricas:</p>
+<ul>
+<li>longitude_ISS: Longitude da Estação Espacial Internacional</li>
+<li>latitude_ISS: Latitude da Estação Espacial Internacional</li>
+</ul>
+<p> </p>
+<p>Vamos executar o nosso script para saber se está tudo funcionando bem:</p>
+<pre><code class="language-bash">python3 exporter.py
+
+O número atual de astronautas no espaço é: 10
+A longitude atual da Estação Espacial Internacional é: 57.7301
+A latitude atual da Estação Espacial Internacional é: -32.7545
+</code></pre>
+<p> </p>
+<p>Muito bem, está funcionando! As duas novas métricas já estão disponível e sendo expostas. 
+Agora já podemos criar uma nova imagem com a nova versão do nosso script!</p>
+<pre><code class="language-bash">docker build -t primeiro-exporter:1.0 .
+
+Sending build context to Docker daemon  6.656kB
+Step 1/7 : FROM python:3.8-slim
+ ---&gt; bdd3315885d4
+Step 2/7 : LABEL maintainer Jeferson Fernando &lt;jeferson@linuxtips.com.br&gt;
+ ---&gt; Using cache
+ ---&gt; 3d1bad97c1cb
+Step 3/7 : LABEL description &quot;Dockerfile para criar o nosso primeiro exporter para o Prometheus&quot;
+ ---&gt; Using cache
+ ---&gt; 9f41ad63e03a
+Step 4/7 : COPY . /app
+ ---&gt; Using cache
+ ---&gt; 6bc6f9a126f4
+Step 5/7 : WORKDIR /app
+ ---&gt; Using cache
+ ---&gt; 05f03d2025c2
+Step 6/7 : RUN pip3 install -r requirements.txt
+ ---&gt; Using cache
+ ---&gt; 3f2ec4cdfe6a
+Step 7/7 : CMD python3 exporter.py
+ ---&gt; Using cache
+ ---&gt; 6d63ade160c4
+Successfully built 6d63ade160c4
+Successfully tagged primeiro-exporter:1.0
+</code></pre>
+<p> </p>
+<p>Vamos executar e conferir o resultado!</p>
+<pre><code class="language-bash">docker run -d -p 8899:8899 primeiro-exporter:1.0
+</code></pre>
+<p> </p>
+<p>Vamos conferir se as nossas métricas estão chegando no Prometheus.
+Vamos primeiro verificar a <code>longitude_ISS</code>:</p>
+<pre><code class="language-bash">curl -s http://localhost:9090/api/v1/query\?query\=longitude_ISS | jq .
+</code></pre>
+<p> </p>
+<p>Agora bora conferir a a <code>latitude_ISS</code>:</p>
+<pre><code class="language-bash">curl -s http://localhost:9090/api/v1/query\?query\=latitude_ISS | jq .
+</code></pre>
+<p> </p>
+<p>Evidente que podemos conferir tudo isso via interface web. </p>
+<p>Vamos verificar a <code>latitude_ISS</code> nos últimos 05 minutos:</p>
+<pre><code class="language-PROMQL">latitude_ISS{instance=&quot;localhost:8899&quot;,job=&quot;Primeiro Exporter&quot;}[5m]
+</code></pre>
+<p> </p>
+<p><img src="images/resultado-query-latitude.png" alt="resultado da nossa query buscando a métrica sobre a latitude" /></p>
+<p> </p>
+<h3 id="conhecendo-um-pouco-mais-sobre-os-tipos-de-dados-do-prometheus"><a class="header" href="#conhecendo-um-pouco-mais-sobre-os-tipos-de-dados-do-prometheus">Conhecendo um pouco mais sobre os tipos de dados do Prometheus</a></h3>
+<p>Vocês sabem que quando estamos descomplicando algo, nós gostamos de ir a fundo e conhecer no detalhe, tudo o que precisamos para ser um expert no assunto. </p>
+<p>Aqui com o Prometheus não seria diferente, queremos que você conheça o Prometheus da forma como nós acreditamos ser importante para os desafios do mundo atual, no ambiente das melhores empresas de tecnologia da mundo.</p>
+<p>Estou dizendo isso, pois vamos ter que conhecer com um pouco mais de detalhes os tipos de métricas que podemos criar.</p>
+<p>Quais os tipos de dados que o Prometheus suporta e que podemos utilizar quando estamos criando os nossos exporters?</p>
+<p>Quando nós criamos o nosso primeiro exporter, nós apenas utilizamos um tipo de dado, o <code>gauge</code> que é o tipo de dado utilizado para crirar métricas que podem ser atualizadas.</p>
+<p>Esse é apenas um dos tipos de dados que podemos trabalhar no Prometheus, vamos conhecer mais alguns:</p>
+<p> </p>
+<h4 id="gauge-medidor"><a class="header" href="#gauge-medidor"><strong>gauge: Medidor</strong></a></h4>
+<ul>
+<li>
+<p>O tipo de dado <code>gauge</code> é o tipo de dado utilizado para criar métricas que podem ter seus valores alterados para cima ou para baixo, por exemplo, a ultilização de memória ou cpu. Se quiser trazer para exemplos da vida real, podemos falar que aquelas filas que você odeia é o tipo de dado <code>gauge</code>, ou então a temperatura da sua cidade, ela pode ser alterada para cima ou para baixo, ou seja, é um medidor, é um <code>gauge</code>! :D
+Um exemplo de métrica do tipo <code>gauge</code> é a métrica <code>memory_usage</code>, que é uma métrica que mostra a utilização de memória.</p>
+<pre><code class="language-PROMQL">memory_usage{instance=&quot;localhost:8899&quot;,job=&quot;Primeiro Exporter&quot;}
+</code></pre>
+</li>
+</ul>
+<p> </p>
+<h4 id="counter-contador"><a class="header" href="#counter-contador"><strong>counter: Contador</strong></a></h4>
+<ul>
+<li>
+<p>O tipo de dado <code>counter</code> é o tipo de dado utilizado que vai ser incrementado no decorrer do tempo, por exemplo, quando eu quero contar os erros em uma aplicação no decorrer da última hora.
+O valor atual do <code>counter</code> quase nunca é importante, pois o que queremos dele são os valores durante uma janela de tempo, por exemplo, quantas vezes a minha aplicação falhou durante o final de semana.
+Normalmente as métricas <code>counter</code> possuem o sufixo <code>_total</code> para indicar que é o total de valores que foram contados, por exemplo:</p>
+<pre><code class="language-PROMQL">requests_total{instance=&quot;localhost:8899&quot;,job=&quot;Primeiro Exporter&quot;}
+</code></pre>
+</li>
+</ul>
+<p> </p>
+<h4 id="histogram-histograma"><a class="header" href="#histogram-histograma"><strong>histogram: Histograma</strong></a></h4>
+<ul>
+<li>
+<p>O tipo de dado <code>histogram</code> é o tipo de dado que te permite especificar o seu valor através de buckets predefinidos, por exemplo, o tempo de execução de uma aplicação. Com o <code>histogram</code> eu consigo contar todas as requisições que minha aplicação respondeu entre 0 e 0,5 segundos, ou então as requisições que tiveram respostas entre 1,0 e 2,5 e assim por diante.
+Por padrão, os buckets predefinidos são até no máximo 10 segundos, se você quiser mais, você pode criar seus próprios buckets personalizados.
+Um coisa super importante, o Prometheus irá contar cada item em cada bucket, e também a soma dos valores.
+Uma métrica do tipo <code>histogram</code> inclui alguns itens importantes são adicionados ao final do nome da métrica para indicar o tipo de dado e o tamanho do bucket, por exemplo:</p>
+<pre><code class="language-PROMQL">requests_duration_seconds_bucket{le=&quot;0.5&quot;}
+</code></pre>
+<p>Onde <code>le</code> é o valor limite do bucket, o valor <code>0.5</code> indica que o valor do bucket é até 0,5 segundos, ou seja, aqui nesse bucket poderiam estar os requisições que tiveram respostas entre 0 e 0,5 segundos.</p>
+<p>O <code>_bucket</code> é um sufixo que indica que o valor é um bucket.</p>
+<p>Ainda temos alguns sufixos que são importantes e que podem ser úteis para nós:</p>
+<ul>
+<li>
+<p>_count: Contador</p>
+<ul>
+<li>O sufixo <code>_count</code> indica que o valor é um contador, ou seja, o valor é incrementado a cada vez que a métrica é atualizada.</li>
+</ul>
+</li>
+<li>
+<p>_sum: Soma</p>
+<ul>
+<li>O sufixo <code>_sum</code> indica que o valor é uma soma, ou seja, o valor é somado a cada vez que a métrica é atualizada.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>_bucket: Bucket</p>
+<ul>
+<li>
+<p>O sufixo <code>_bucket</code> indica que o valor é um bucket, ou seja, o valor é um bucket.</p>
+<p>O ponto alto do <code>histogram</code> é a excelente flexibilidades, pois percentuais e as janelas de tempos podem definidas durante a criação das queries, o ponto negativo é a precisão é um pouco inferior quando comparado com o <code>summary</code>.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p> </p>
+<h4 id="summary-resumo"><a class="header" href="#summary-resumo"><strong>summary: Resumo</strong></a></h4>
+<ul>
+<li>
+<p>O tipo de dado <code>summary</code> é bem parecido com o <code>histogram</code>, com a diferença que os buckets, aqui chamados de <code>quantiles</code>, são definidos por um valor entre 0 e 1, ou seja, o valor do bucket é o valor que está entre os quantiles.</p>
+<p>Da mesma forma como no <code>histogram</code>, podemos criar métricas do tipo <code>summary</code> com alguns itens importantes adicionados ao final do nome da métrica, por exemplo:</p>
+<pre><code class="language-PROMQL">requests_duration_seconds_sum{instance=&quot;localhost:8899&quot;,job=&quot;Primeiro Exporter&quot;}
+</code></pre>
+<p>Utilizamos o sufixo <code>_sum</code> indica que o valor é uma soma, ou seja, o valor é somado a cada vez que a métrica é atualizada e o sufixo <code>_count</code> para indicar que o valor é um contador, ou seja, o valor é incrementado a cada vez que a métrica é atualizada.</p>
+<p>O ponto alto do <code>summary</code> é a excelente precisão e o ponto baixo é a baixa flexibilidades, pois percentuais e as janelas de tempos precisam ser definidos durante a criação da métrica e não é possível agregar métricas do tipo <code>summary</code> com outras métricas do tipo <code>summary</code> durante a criação das queries.</p>
+</li>
+</ul>
+<p>Percebam que em nosso primeiro exporter, nós somente utilizamos métricas do tipo <code>gauge</code>, pois queremos saber quantas pessoas estão no espaço e também a localização da ISS (International Space Station) ao longo do tempo. </p>
+<p>Faz sentido agora? 
+Fala a verdade!
+Em voz alta! ahahahha!</p>
+<p>Em breve vamos criar outros tipos de dados para o Prometheus tratar, agora vamos focar novamente nas queries! </p>
+<p> </p>
+<h3 id="chega-por-hoje"><a class="header" href="#chega-por-hoje">Chega por hoje!</a></h3>
+<p>Muito bem! </p>
+<p>Agora é hora de reforçar os conceitos aprendidos até agora.</p>
+<p>Então é hora de você ler novamente todo o material e começar a práticar. </p>
+<p>Não esqueça, a coisa mais importante aqui nesse momento é a prática, e não apenas o conhecimento. O conhecimento é a base, mas o que faz com que você domine o assunto é a prática.</p>
+<p>Então já sabe, né?</p>
+<p>Curtiu o dia de hoje? Posso contar com o seu feedback nas redes sociais?</p>
+<p>Bora ajudar o projeto e o treinamento a ficarem cada dia melhores!</p>
+<p> 
+ </p>
+<h3 id="lição-de-casa"><a class="header" href="#lição-de-casa">Lição de casa</a></h3>
+<p>Agora você tem uma missão, é hora de brincar com tudo o que aprendemos hoje, e claro, tudo o que você puder adicionar a sessão de estudos para deixar o seu aprendizado mais rápido.</p>
+<p>A sua lição hoje é criar novas queries somente consumindo as métricas que já estão disponíveis no Prometheus e que você conhece.</p>
+<p>Sem preguiça e deixar a imaginação comandar, vamos criar novas queries para nos ajudar a entender melhor o que está acontecendo, certo?</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../day-1/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../day-3/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../day-1/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../day-3/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

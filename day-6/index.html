@@ -1,0 +1,500 @@
+<!DOCTYPE HTML>
+<html lang="pt" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Descomplicando o Prometheus</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/css/style.css">
+        <link rel="stylesheet" href="../theme/css/mdbook-admonish.css">
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introdução</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../BOOKSUMMARY.html">Sumário</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Capítulos</li><li class="chapter-item expanded "><a href="../day-1/index.html"><strong aria-hidden="true">1.</strong> Dia 1</a></li><li class="chapter-item expanded "><a href="../day-2/index.html"><strong aria-hidden="true">2.</strong> Dia 2</a></li><li class="chapter-item expanded "><a href="../day-3/index.html"><strong aria-hidden="true">3.</strong> Dia 3</a></li><li class="chapter-item expanded "><a href="../day-4/index.html"><strong aria-hidden="true">4.</strong> Dia 4</a></li><li class="chapter-item expanded "><a href="../day-5/index.html"><strong aria-hidden="true">5.</strong> Dia 5</a></li><li class="chapter-item expanded "><a href="../day-6/index.html" class="active"><strong aria-hidden="true">6.</strong> Dia 6</a></li><li class="chapter-item expanded "><a href="../day-7/index.html"><strong aria-hidden="true">7.</strong> Dia 7</a></li><li class="chapter-item expanded "><a href="../day-8/index.html"><strong aria-hidden="true">8.</strong> Dia 8</a></li><li class="chapter-item expanded "><a href="../day-9/index.html"><strong aria-hidden="true">9.</strong> Dia 9</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Descomplicando o Prometheus</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/badtuxx/DescomplicandoPrometheus" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/badtuxx/DescomplicandoPrometheus/edit/main/pt/src/day-6/README.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <h1 id="descomplicando-o-prometheus"><a class="header" href="#descomplicando-o-prometheus">Descomplicando o Prometheus</a></h1>
+<h2 id="day-6"><a class="header" href="#day-6">DAY-6</a></h2>
+<h3 id="o-que-iremos-ver-hoje"><a class="header" href="#o-que-iremos-ver-hoje">O que iremos ver hoje</a></h3>
+<p>Durante o dia de hoje iremos aprender sobre todas as possibilidades que temos com a utilização do Prometheus + Kubernetes!
+Hoje é dia de conhecer o sensacional <a href="https://github.com/prometheus-operator/kube-prometheus">kube-prometheus</a>, projeto esse criado pelos mesmos criadores do <a href="https://github.com/prometheus-operator/prometheus-operator">Prometheus Operator</a>, que nos permite monitorar o nosso cluster de Kubernetes de forma simples e eficiente. Além disso, iremos aprender como utilizar o <a href="https://github.com/kubernetes-sigs/prometheus-adapter">Prometheus Adapter</a> para que possamos utilizar o nosso querido e lindo Prometheus como fonte de dados para o <a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/">Horizontal Pod Autoscaler</a>, ou seja, iremos aprender como utilizar o nosso querido e lindo Prometheus para escalar nossos pods de forma automática!
+E ainda de quebra você vai aprender como instalar o Kubernetes, mais do que isso, você vai aprender como instalar um cluster EKS! Sim, você vai aprender como instalar um cluster EKS, o cluster de Kubernetes da AWS, através da ferramenta <a href="https://eksctl.io/">eksctl</a>, que é uma ferramenta de linha de comando que nos permite instalar um cluster EKS em minutos!</p>
+<h3 id="conteúdo-do-day-6"><a class="header" href="#conteúdo-do-day-6">Conteúdo do Day-6</a></h3>
+<details>
+<summary>DAY-6</summary>
+<ul>
+<li><a href="#descomplicando-o-prometheus">Descomplicando o Prometheus</a>
+<ul>
+<li><a href="#day-6">DAY-6</a>
+<ul>
+<li><a href="#o-que-iremos-ver-hoje">O que iremos ver hoje</a></li>
+<li><a href="#conte%C3%BAdo-do-day-6">Conteúdo do Day-6</a></li>
+<li><a href="#o-que-%C3%A9-o-kube-prometheus">O que é o kube-prometheus</a>
+<ul>
+<li><a href="#instalando-o-nosso-cluster-kubernetes">Instalando o nosso cluster Kubernetes</a></li>
+<li><a href="#instalando-o-kube-prometheus">Instalando o Kube-Prometheus</a></li>
+<li><a href="#acessando-o-grafana">Acessando o Grafana</a></li>
+<li><a href="#acessando-o-prometheus">Acessando o Prometheus</a></li>
+<li><a href="#acessando-o-alertmanager">Acessando o AlertManager</a></li>
+</ul>
+</li>
+<li><a href="#chega-por-hoje">Chega por hoje!</a></li>
+<li><a href="#li%C3%A7%C3%A3o-de-casa">Lição de casa</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</details>
+<h3 id="o-que-é-o-kube-prometheus"><a class="header" href="#o-que-é-o-kube-prometheus">O que é o kube-prometheus</a></h3>
+<p>O kube-prometheus é um conjunto de manifestos do Kubernetes que nos permite ter o Prometheus Operator, Grafana, AlertManager, Node Exporter, Kube-State-Metrics, Prometheus-Adapter instalados e configurados de forma tranquila e com alta disponibilidade. Além disso, ele nos permite ter uma visão completa do nosso cluster de Kubernetes. Ele nos permite monitorar todos os componentes do nosso cluster de Kubernetes, como por exemplo: kube-scheduler, kube-controller-manager, kubelet, kube-proxy, etc.</p>
+<h4 id="instalando-o-nosso-cluster-kubernetes"><a class="header" href="#instalando-o-nosso-cluster-kubernetes">Instalando o nosso cluster Kubernetes</a></h4>
+<p>Como dissemos, para esse nosso exemplo iremos utilizar o cluster de Kubernetes da AWS, o EKS. Para instalar o nosso cluster EKS, iremos utilizar a ferramenta <a href="https://eksctl.io/">eksctl</a>, portanto precisamos instalá-la em nossa máquina. Para instalar a ferramenta, basta executar o seguinte comando:</p>
+<pre><code class="language-bash">curl --silent --location &quot;https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz&quot; | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+</code></pre>
+<p>Precisamos ter o CLI da aws instalado em nossa máquina, para isso, basta executar o seguinte comando:</p>
+<pre><code class="language-bash">curl &quot;https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip&quot; -o &quot;awscliv2.zip&quot;
+unzip awscliv2.zip
+sudo ./aws/install
+</code></pre>
+<p>Pronto, agora você já tem o <code>eksctl</code> e o <code>aws</code> instalados em sua máquina.</p>
+<p>Para que possamos criar tudo o que precisamos na AWS, é importante que você tenha uma conta na AWS, e que tenha as credenciais de acesso configuradas em sua máquina. Para configurar as credenciais de acesso, basta executar o seguinte comando:</p>
+<pre><code class="language-bash">aws configure
+</code></pre>
+<p>O comando acima irá solicitar que você informe a sua <code>AWS Access Key ID</code>, a sua <code>AWS Secret Access Key</code>, a sua <code>Default region name</code>, e o seu <code>Default output format</code>. Para saber mais sobre como configurar as credenciais de acesso, basta acessar a <a href="https://docs.aws.amazon.com/pt_br/cli/latest/userguide/cli-configure-quickstart.html">documentação oficial da AWS</a>.</p>
+<p>No comando acima estamos baixando o binário do <code>eksctl</code> compactado e descompactando ele na pasta <code>/tmp</code>, e depois movendo o binário para a pasta <code>/usr/local/bin</code>.</p>
+<p>Lembrando que estou instando em uma máquina Linux, caso que esteja utilizando uma máquina Mac ou Windows, basta acessar a página de releases do projeto e baixar a versão adequada para o seu sistema operacional.</p>
+<p>E enquanto você faz a instalação, vale a pena mencionar que o <code>eksctl</code> é uma ferramenta criada pela WeaveWorks, empresa que criou o <a href="https://fluxcd.io/">Flux</a>, que é um projeto de GitOps para Kubernetes, além de ter o Weavenet, que é um CNI para Kubernetes, e o Weave Scope, que é uma ferramenta de visualização de clusters de Kubernetes e muito mais, recomendo que vocês dêem uma olhada nos projetos, é sensacional!</p>
+<p>Bem, agora você já tem o <code>eksctl</code> instalado em sua máquina, então vamos criar o nosso cluster EKS! Para isso, basta executar o seguinte comando:</p>
+<pre><code class="language-bash">eksctl create cluster --name=eks-cluster --version=1.24 --region=us-east-1 --nodegroup-name=eks-cluster-nodegroup --node-type=t3.medium --nodes=2 --nodes-min=1 --nodes-max=3 --managed
+</code></pre>
+<p>O comando acima irá criar um cluster EKS com o nome <code>eks-cluster</code>, na região <code>us-east-1</code>, com 2 nós do tipo <code>t3.medium</code>, e com um mínimo de 1 nó e um máximo de 3 nós. Além disso, o comando acima irá criar um nodegroup chamado <code>eks-cluster-nodegroup</code>. O <code>eksctl</code> irá cuidar de toda a infraestrutura necessária para o funcionamento do nosso cluster EKS. A versão do Kubernetes que será instalada no nosso cluster será a <code>1.24</code>.</p>
+<p>Após a criação do nosso cluster EKS, precisamos instalar o <code>kubectl</code> em nossa máquina. Para instalar o <code>kubectl</code>, basta executar o seguinte comando:</p>
+<pre><code class="language-bash">curl -LO &quot;https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl&quot;
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
+</code></pre>
+<p>O comando acima irá baixar o binário do <code>kubectl</code> e o colocar na pasta <code>/usr/local/bin</code>, e dar permissão de execução para o binário.</p>
+<p>Agora que já temos o <code>kubectl</code> instalado em nossa máquina, precisamos configurar o <code>kubectl</code> para utilizar o nosso cluster EKS. Para isso, basta executar o seguinte comando:</p>
+<pre><code class="language-bash">aws eks --region us-east-1 update-kubeconfig --name eks-cluster
+</code></pre>
+<p>Aonde <code>us-east-1</code> é a região do nosso cluster EKS, e <code>eks-cluster</code> é o nome do nosso cluster EKS. Esse comando é necessário para que o <code>kubectl</code> saiba qual cluster ele deve utilizar, ele irá pegar as credenciais do nosso cluster EKS e armazenar no arquivo <code>~/.kube/config</code>.</p>
+<p><strong>LEMBRE-SE</strong>: Você não precisa ter o Kubernetes rodando no EKS, fique a vontade para escolher onde preferir para seguir o treinamento.</p>
+<p>Vamos ver se o <code>kubectl</code> está funcionando corretamente? Para isso, basta executar o seguinte comando:</p>
+<pre><code class="language-bash">kubectl get nodes
+</code></pre>
+<p>Se tudo estiver funcionando corretamente, você deverá ver uma lista com os nós do seu cluster EKS. :D</p>
+<p>Antes de seguirmos em frente, vamos conhecer algums comandos do eksctl, para que possamos gerenciar o nosso cluster EKS. Para listar os clusters EKS que temos em nossa conta, basta executar o seguinte comando:</p>
+<pre><code class="language-bash">eksctl get cluster -A
+</code></pre>
+<p>O parametro <code>-A</code> é para listar os clusters EKS de todas as regiões. Para listar os clusters EKS de uma região específica, basta executar o seguinte comando:</p>
+<pre><code class="language-bash">eksctl get cluster -r us-east-1
+</code></pre>
+<p>Para aumentar o número de nós do nosso cluster EKS, basta executar o seguinte comando:</p>
+<pre><code class="language-bash">eksctl scale nodegroup --cluster=eks-cluster --nodes=3 --nodes-min=1 --nodes-max=3 --name=eks-cluster-nodegroup -r us-east-1
+</code></pre>
+<p>Para diminuir o número de nós do nosso cluster EKS, basta executar o seguinte comando:</p>
+<pre><code class="language-bash">eksctl scale nodegroup --cluster=eks-cluster --nodes=1 --nodes-min=1 --nodes-max=3 --name=eks-cluster-nodegroup -r us-east-1
+</code></pre>
+<p>Para deletar o nosso cluster EKS, basta executar o seguinte comando:</p>
+<pre><code class="language-bash">eksctl delete cluster --name=eks-cluster -r us-east-1
+</code></pre>
+<p>Mas não delete o nosso cluster EKS, vamos utilizar ele para os próximos passos! hahahah</p>
+<h4 id="instalando-o-kube-prometheus"><a class="header" href="#instalando-o-kube-prometheus">Instalando o Kube-Prometheus</a></h4>
+<p>Agora que já temos o nosso cluster EKS criado, vamos instalar o Kube-Prometheus. Para isso, basta executar o seguinte comando:</p>
+<pre><code class="language-bash">git clone https://github.com/prometheus-operator/kube-prometheus
+cd kube-prometheus
+kubectl create -f manifests/setup
+</code></pre>
+<p>Com o comando acima nós estamos clonando o repositório oficial do projeto, e aplicando os manifests necessários para a instalação do Kube-Prometheus. Após a execução do comando acima, você deverá ver uma mensagem parecida com a seguinte:</p>
+<pre><code class="language-bash">customresourcedefinition.apiextensions.k8s.io/alertmanagerconfigs.monitoring.coreos.com created
+customresourcedefinition.apiextensions.k8s.io/alertmanagers.monitoring.coreos.com created
+customresourcedefinition.apiextensions.k8s.io/podmonitors.monitoring.coreos.com created
+customresourcedefinition.apiextensions.k8s.io/probes.monitoring.coreos.com created
+customresourcedefinition.apiextensions.k8s.io/prometheuses.monitoring.coreos.com created
+customresourcedefinition.apiextensions.k8s.io/prometheusrules.monitoring.coreos.com created
+customresourcedefinition.apiextensions.k8s.io/servicemonitors.monitoring.coreos.com created
+customresourcedefinition.apiextensions.k8s.io/thanosrulers.monitoring.coreos.com created
+namespace/monitoring created
+</code></pre>
+<p>Basicamente o que fizemos foi a instalação de alguns CRDs (Custom Resource Definitions) que são como extensões do Kubernetes, e que são utilizados pelo Kube-Prometheus e com isso o Kubernetes irá reconhecer esses novos recursos, como por exemplo o <code>PrometheusRule</code> e o <code>ServiceMonitor</code> que irei falar mais a frente.</p>
+<p>O processo de instalação dos CRDs pode demorar alguns minutos, então vamos aguardar a instalação terminar. :D</p>
+<p>Para verificar se a instalação dos CRDs foi concluída, o comando abaixo deverá funcionar,se ainda não funcionar, aguarde alguns minutos e tente novamente.</p>
+<pre><code class="language-bash">kubectl get servicemonitors -A
+</code></pre>
+<p>Após a instalação dos CRDs, vamos instalar o Prometheus e o Alertmanager. Para isso, basta executar o seguinte comando:</p>
+<pre><code class="language-bash">kubectl apply -f manifests/
+</code></pre>
+<p>Com o comando acima nós estamos aplicando os manifests necessários para a instalação do Prometheus e do Alertmanager. Após a execução do comando acima, você deverá ver uma mensagem parecida com a seguinte:</p>
+<pre><code class="language-bash">alertmanager.monitoring.coreos.com/main created
+networkpolicy.networking.k8s.io/alertmanager-main created
+poddisruptionbudget.policy/alertmanager-main created
+prometheusrule.monitoring.coreos.com/alertmanager-main-rules created
+secret/alertmanager-main created
+service/alertmanager-main created
+serviceaccount/alertmanager-main created
+servicemonitor.monitoring.coreos.com/alertmanager-main created
+clusterrole.rbac.authorization.k8s.io/blackbox-exporter created
+clusterrolebinding.rbac.authorization.k8s.io/blackbox-exporter created
+configmap/blackbox-exporter-configuration created
+deployment.apps/blackbox-exporter created
+networkpolicy.networking.k8s.io/blackbox-exporter created
+service/blackbox-exporter created
+serviceaccount/blackbox-exporter created
+servicemonitor.monitoring.coreos.com/blackbox-exporter created
+secret/grafana-config created
+secret/grafana-datasources created
+configmap/grafana-dashboard-alertmanager-overview created
+configmap/grafana-dashboard-apiserver created
+configmap/grafana-dashboard-cluster-total created
+configmap/grafana-dashboard-controller-manager created
+configmap/grafana-dashboard-grafana-overview created
+configmap/grafana-dashboard-k8s-resources-cluster created
+configmap/grafana-dashboard-k8s-resources-namespace created
+configmap/grafana-dashboard-k8s-resources-node created
+configmap/grafana-dashboard-k8s-resources-pod created
+configmap/grafana-dashboard-k8s-resources-workload created
+configmap/grafana-dashboard-k8s-resources-workloads-namespace created
+configmap/grafana-dashboard-kubelet created
+configmap/grafana-dashboard-namespace-by-pod created
+configmap/grafana-dashboard-namespace-by-workload created
+configmap/grafana-dashboard-node-cluster-rsrc-use created
+configmap/grafana-dashboard-node-rsrc-use created
+configmap/grafana-dashboard-nodes-darwin created
+configmap/grafana-dashboard-nodes created
+configmap/grafana-dashboard-persistentvolumesusage created
+configmap/grafana-dashboard-pod-total created
+configmap/grafana-dashboard-prometheus-remote-write created
+configmap/grafana-dashboard-prometheus created
+configmap/grafana-dashboard-proxy created
+configmap/grafana-dashboard-scheduler created
+configmap/grafana-dashboard-workload-total created
+configmap/grafana-dashboards created
+deployment.apps/grafana created
+networkpolicy.networking.k8s.io/grafana created
+prometheusrule.monitoring.coreos.com/grafana-rules created
+service/grafana created
+serviceaccount/grafana created
+servicemonitor.monitoring.coreos.com/grafana created
+prometheusrule.monitoring.coreos.com/kube-prometheus-rules created
+clusterrole.rbac.authorization.k8s.io/kube-state-metrics created
+clusterrolebinding.rbac.authorization.k8s.io/kube-state-metrics created
+deployment.apps/kube-state-metrics created
+networkpolicy.networking.k8s.io/kube-state-metrics created
+prometheusrule.monitoring.coreos.com/kube-state-metrics-rules created
+service/kube-state-metrics created
+serviceaccount/kube-state-metrics created
+servicemonitor.monitoring.coreos.com/kube-state-metrics created
+prometheusrule.monitoring.coreos.com/kubernetes-monitoring-rules created
+servicemonitor.monitoring.coreos.com/kube-apiserver created
+servicemonitor.monitoring.coreos.com/coredns created
+servicemonitor.monitoring.coreos.com/kube-controller-manager created
+servicemonitor.monitoring.coreos.com/kube-scheduler created
+servicemonitor.monitoring.coreos.com/kubelet created
+clusterrole.rbac.authorization.k8s.io/node-exporter created
+clusterrolebinding.rbac.authorization.k8s.io/node-exporter created
+daemonset.apps/node-exporter created
+networkpolicy.networking.k8s.io/node-exporter created
+prometheusrule.monitoring.coreos.com/node-exporter-rules created
+service/node-exporter created
+serviceaccount/node-exporter created
+servicemonitor.monitoring.coreos.com/node-exporter created
+clusterrole.rbac.authorization.k8s.io/prometheus-k8s created
+clusterrolebinding.rbac.authorization.k8s.io/prometheus-k8s created
+networkpolicy.networking.k8s.io/prometheus-k8s created
+poddisruptionbudget.policy/prometheus-k8s created
+prometheus.monitoring.coreos.com/k8s created
+prometheusrule.monitoring.coreos.com/prometheus-k8s-prometheus-rules created
+rolebinding.rbac.authorization.k8s.io/prometheus-k8s-config created
+rolebinding.rbac.authorization.k8s.io/prometheus-k8s created
+rolebinding.rbac.authorization.k8s.io/prometheus-k8s created
+rolebinding.rbac.authorization.k8s.io/prometheus-k8s created
+role.rbac.authorization.k8s.io/prometheus-k8s-config created
+role.rbac.authorization.k8s.io/prometheus-k8s created
+role.rbac.authorization.k8s.io/prometheus-k8s created
+role.rbac.authorization.k8s.io/prometheus-k8s created
+service/prometheus-k8s created
+serviceaccount/prometheus-k8s created
+servicemonitor.monitoring.coreos.com/prometheus-k8s created
+apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created
+clusterrole.rbac.authorization.k8s.io/prometheus-adapter created
+clusterrole.rbac.authorization.k8s.io/system:aggregated-metrics-reader created
+clusterrolebinding.rbac.authorization.k8s.io/prometheus-adapter created
+clusterrolebinding.rbac.authorization.k8s.io/resource-metrics:system:auth-delegator created
+clusterrole.rbac.authorization.k8s.io/resource-metrics-server-resources created
+configmap/adapter-config created
+deployment.apps/prometheus-adapter created
+networkpolicy.networking.k8s.io/prometheus-adapter created
+poddisruptionbudget.policy/prometheus-adapter created
+rolebinding.rbac.authorization.k8s.io/resource-metrics-auth-reader created
+service/prometheus-adapter created
+serviceaccount/prometheus-adapter created
+servicemonitor.monitoring.coreos.com/prometheus-adapter created
+clusterrole.rbac.authorization.k8s.io/prometheus-operator created
+clusterrolebinding.rbac.authorization.k8s.io/prometheus-operator created
+deployment.apps/prometheus-operator created
+networkpolicy.networking.k8s.io/prometheus-operator created
+prometheusrule.monitoring.coreos.com/prometheus-operator-rules created
+service/prometheus-operator created
+serviceaccount/prometheus-operator created
+servicemonitor.monitoring.coreos.com/prometheus-operator created
+</code></pre>
+<p>Com isso fizemos a instalação da Stack do nosso Kube-Prometheus, que é composta pelo Prometheus, pelo Alertmanager, Blackbox Exporter e Grafana. :D
+Perceba que ele já está configurando um monte de outras coisas como os ConfigMaps, Secrets, ServiceAccounts, etc. </p>
+<p>Para verificar se a instalação foi concluída, basta executar o seguinte comando:</p>
+<pre><code class="language-bash">kubectl get pods -n monitoring
+</code></pre>
+<p>O resultado esperado é o seguinte:</p>
+<pre><code class="language-bash">NAME                                  READY   STATUS    RESTARTS   AGE
+alertmanager-main-0                   2/2     Running   0          57s
+alertmanager-main-1                   2/2     Running   0          57s
+alertmanager-main-2                   2/2     Running   0          57s
+blackbox-exporter-cbb9c96b-t8z68      3/3     Running   0          94s
+grafana-589787799d-pxsts              1/1     Running   0          80s
+kube-state-metrics-557d857c5d-kt8dd   3/3     Running   0          78s
+node-exporter-2n6sz                   2/2     Running   0          74s
+node-exporter-mwq6b                   2/2     Running   0          74s
+prometheus-adapter-758645c65b-54c7g   1/1     Running   0          64s
+prometheus-adapter-758645c65b-cmjrv   1/1     Running   0          64s
+prometheus-k8s-0                      2/2     Running   0          57s
+prometheus-k8s-1                      2/2     Running   0          57s
+prometheus-operator-c766b9756-vndp9   2/2     Running   0          63s
+</code></pre>
+<p>Pronto, já temos o Prometheus, Alertmanager, Blackbox Exporter, Node Exporter e Grafana instalados. :D
+Nesse meu cluster, eu estou com dois nodes, por isso temos dois pods do Node Exporter e dois pods do Prometheus chamados de <code>prometheus-k8s-0</code> e <code>prometheus-k8s-1</code>.</p>
+<h4 id="acessando-o-grafana"><a class="header" href="#acessando-o-grafana">Acessando o Grafana</a></h4>
+<p>Agora que já temos o nosso Kube-Prometheus instalado, vamos acessar o nosso Grafana e verificar se está tudo funcionando corretamente. Para isso, vamos utilizar o <code>kubectl port-forward</code> para acessar o Grafana localmente. Para isso, basta executar o seguinte comando:</p>
+<pre><code class="language-bash">kubectl port-forward -n monitoring svc/grafana 33000:3000
+</code></pre>
+<p>Agora que já temos o nosso Grafana rodando localmente, vamos acessar o nosso Grafana através do navegador. Para isso, basta acessar a seguinte URL: <code>http://localhost:33000</code>. Após acessar a URL, você deverá ver uma tela de login do Grafana, como na imagem abaixo:</p>
+<p><img src="images/login-grafana.png" alt="Grafana Login" /></p>
+<p>Para acessar o Grafana, vamos utilizar o usuário <code>admin</code> e a senha <code>admin</code>, e já no primeiro login ele irá pedir para você alterar a senha. Você já conhece o Grafana, não preciso mais apresenta-los, certo? :D</p>
+<p><img src="images/muda-senha-grafana.png" alt="Grafana Senha Nova" /></p>
+<p>O importante aqui é ver a quantidade de Dashboards criados pelo Kube-Prometheus. :D 
+Temos Dashboards que mostram detalhes do API Server e de diversos componentes do Kubernetes, como Node, Pod, Deployment, etc.</p>
+<p><img src="images/grafana-dashs.png" alt="Grafana Dashboards" /></p>
+<p>Também temos Dashboards que mostram detalhes do nosso cluster EKS, como por exemplo o dashboard <code>Kubernetes / Compute Resources / Cluster</code>, que mostra detalhes de CPU e memória utilizados por todos os nós do nosso cluster EKS.</p>
+<p><img src="images/grafana-cluster.png" alt="Grafana Clusters" /></p>
+<p>Dashboards que mostram detalhes do nosso cluster EKS, como por exemplo o dashboard <code>Kubernetes / Compute Resources / Namespace (Pods)</code>, que mostra detalhes de CPU e memória utilizados por todos os pods de todos os namespaces do nosso cluster EKS.</p>
+<p><img src="images/grafana-pods.png" alt="Grafana Dashboards" /></p>
+<p>Ainda temos Dashboards que mostram detalhes do nosso cluster EKS, como por exemplo o dashboard <code>Kubernetes / Compute Resources / Namespace (Workloads)</code>, que mostra detalhes de CPU e memória utilizados por todos os deployments, statefulsets e daemonsets de todos os namespaces do nosso cluster EKS.</p>
+<p><img src="images/grafana-workloads.png" alt="Grafana Dashboards" /></p>
+<p>Também temos Dashboards que mostram detalhes do nosso cluster EKS, como por exemplo o dashboard <code>Kubernetes / Compute Resources / Node</code>, que mostra detalhes de CPU e memória utilizados por todos os nós do nosso cluster EKS.</p>
+<p><img src="images/grafana-node.png" alt="Grafana Dashboards" /></p>
+<p>Também temos Dashboards que mostram detalhes do nosso cluster EKS, como por exemplo o dashboard <code>Kubernetes / Compute Resources / Pod (Containers)</code>, que mostra detalhes de CPU e memória utilizados por todos os containers de todos os pods do nosso cluster EKS.</p>
+<p><img src="images/grafana-pods-containers.png" alt="Grafana Dashboards" /></p>
+<p>Eu não vou ficar aqui dando spoilers, vai lá você e confere a quantidade enorme de Dashboards que o Kube-Prometheus já vem com ele. \o/</p>
+<h4 id="acessando-o-prometheus"><a class="header" href="#acessando-o-prometheus">Acessando o Prometheus</a></h4>
+<p>Agora que já temos o nosso Kube-Prometheus instalado, vamos acessar o nosso Prometheus e verificar se está tudo funcionando corretamente. Para isso, vamos utilizar o <code>kubectl port-forward</code> para acessar o Prometheus localmente. Para isso, basta executar o seguinte comando:</p>
+<pre><code class="language-bash">kubectl port-forward -n monitoring svc/prometheus-k8s 39090:9090
+</code></pre>
+<p>Pronto, agora já podemos fazer a mesma coisa que fizemos anteriormente para acessar o Grafana, a diferença aqui é que estamos utilizando uma porta diferente, a porta <code>39090</code> ao invés da porta <code>33000</code> que usamos para o Grafana.</p>
+<p>Lembre-se que essa porta é local somente, a porta onde o serviço do Prometheus está rodando é a porta <code>9090</code>, e a do Grafana é a porta <code>3000</code>.</p>
+<p><img src="images/prometheus.png" alt="Prometheus" /></p>
+<h4 id="acessando-o-alertmanager"><a class="header" href="#acessando-o-alertmanager">Acessando o AlertManager</a></h4>
+<p>Aqui basicamente repetimos o que fizemos para acessar o Prometheus, só que agora para acessar o AlertManager. Para isso, vamos utilizar o <code>kubectl port-forward</code> para acessar o AlertManager localmente. Para isso, basta executar o seguinte comando:</p>
+<pre><code class="language-bash">kubectl port-forward -n monitoring svc/alertmanager-main 39093:9093
+</code></pre>
+<p>Pronto, agora você já pode acessar o seu serviço de forma simples e segura, sem precisar expor o serviço para o mundo externo. :D</p>
+<p>E claro, caso você queira, fique a vontado para criar um ingress para o seu serviço, ou até mesmo um LoadBalancer, caso você esteja utilizando o AWS EKS. :D</p>
+<p><img src="images/alertmanager.png" alt="AlertManager" /></p>
+<h3 id="chega-por-hoje"><a class="header" href="#chega-por-hoje">Chega por hoje!</a></h3>
+<p>Hoje foi o dia de ver o que é o kube-prometheus e como podemos instalar ele no nosso cluster Kubernetes. De quebra, vimos como criar um cluster EKS através do eksctl e como instalar o kube-prometheus no nosso cluster.</p>
+<p>Vimos ainda como acessar o nosso Prometheus, AlertManager e Grafana. Vimos as diversas opções de dashboards disponíveis no Grafana.</p>
+<p>Vimos o que é um ServiceMonitor e criamos o nosso primeiro, bem simples, mas somente como exemplo, afinal ainda vamos ver muita coisa sobre ele. :D</p>
+<h3 id="lição-de-casa"><a class="header" href="#lição-de-casa">Lição de casa</a></h3>
+<p>Você precisa ter o seu cluster criado e o nosso kube-prometheus instalado. :D
+Eu não vou ficar pedindo muito hoje, somente que você tenha certeza que seu cluster e seu kube-prometheus estão funcionando corretamente, portanto, acesse as interfaces do Prometheus, AlertManager e Grafana e veja se tudo está tudo lindo! :D</p>
+<p>Se divirta! #VAIIII</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../day-5/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../day-7/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../day-5/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../day-7/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

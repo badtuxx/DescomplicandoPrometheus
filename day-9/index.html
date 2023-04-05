@@ -1,0 +1,390 @@
+<!DOCTYPE HTML>
+<html lang="pt" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Descomplicando o Prometheus</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../theme/css/style.css">
+        <link rel="stylesheet" href="../theme/css/mdbook-admonish.css">
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introdução</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../BOOKSUMMARY.html">Sumário</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><li class="part-title">Capítulos</li><li class="chapter-item expanded "><a href="../day-1/index.html"><strong aria-hidden="true">1.</strong> Dia 1</a></li><li class="chapter-item expanded "><a href="../day-2/index.html"><strong aria-hidden="true">2.</strong> Dia 2</a></li><li class="chapter-item expanded "><a href="../day-3/index.html"><strong aria-hidden="true">3.</strong> Dia 3</a></li><li class="chapter-item expanded "><a href="../day-4/index.html"><strong aria-hidden="true">4.</strong> Dia 4</a></li><li class="chapter-item expanded "><a href="../day-5/index.html"><strong aria-hidden="true">5.</strong> Dia 5</a></li><li class="chapter-item expanded "><a href="../day-6/index.html"><strong aria-hidden="true">6.</strong> Dia 6</a></li><li class="chapter-item expanded "><a href="../day-7/index.html"><strong aria-hidden="true">7.</strong> Dia 7</a></li><li class="chapter-item expanded "><a href="../day-8/index.html"><strong aria-hidden="true">8.</strong> Dia 8</a></li><li class="chapter-item expanded "><a href="../day-9/index.html" class="active"><strong aria-hidden="true">9.</strong> Dia 9</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Descomplicando o Prometheus</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/badtuxx/DescomplicandoPrometheus" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/badtuxx/DescomplicandoPrometheus/edit/main/pt/src/day-9/README.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- Page table of contents -->
+                        <div class="sidetoc"><nav class="pagetoc"></nav></div>
+
+                        <h1 id="descomplicando-o-prometheus"><a class="header" href="#descomplicando-o-prometheus">Descomplicando o Prometheus</a></h1>
+<h2 id="day-9"><a class="header" href="#day-9">DAY-9</a></h2>
+<h3 id="o-que-iremos-ver-hoje"><a class="header" href="#o-que-iremos-ver-hoje">O que iremos ver hoje?</a></h3>
+<p>Hoje é dia de falar sobre o relabeling, uma sensacional técnica para deixar as suas métricas ainda mais organizadas e fáceis de serem consultadas.</p>
+<p>Com o relabeling você consegue adicionar novas labels, remover labels, juntar labels, e muito mais.</p>
+<p>Tenho certeza que depois do dia de hoje você irá ver com outros olhos as métricas e como elas podem ser organizadas.</p>
+<p>Basicamente hoje vamos brincar com o nosso ServiceMonitor/PodMonitor  e brincar com as labels, regras e relabelings... Relabeling tudo que é lugar. hahaha :D</p>
+<p>Bora lá! </p>
+<h3 id="conteúdo-do-day-9"><a class="header" href="#conteúdo-do-day-9">Conteúdo do Day-9</a></h3>
+<details>
+<summary class="summary">DAY-9</summary>
+<ul>
+<li><a href="#descomplicando-o-prometheus">Descomplicando o Prometheus</a>
+<ul>
+<li><a href="#day-9">DAY-9</a>
+<ul>
+<li><a href="#o-que-iremos-ver-hoje">O que iremos ver hoje?</a></li>
+<li><a href="#conte%C3%BAdo-do-day-9">Conteúdo do Day-9</a></li>
+<li><a href="#o-que-%C3%A9-relabeling">O que é Relabeling?</a>
+<ul>
+<li><a href="#como-funciona-o-relabeling">Como funciona o Relabeling?</a></li>
+<li><a href="#exemplos-de-uso-do-relabeling">Exemplos de uso do Relabeling</a>
+<ul>
+<li><a href="#removendo-uma-m%C3%A9trica-baseado-em-uma-label"> Removendo uma métrica baseado em uma label</a></li>
+<li><a href="#junta-duas-labels-em-uma-s%C3%B3">Junta duas labels em uma só</a></li>
+<li><a href="#adicionando-uma-nova-label">Adicionando uma nova label</a></li>
+<li><a href="#armazenando-somente-m%C3%A9tricas-espec%C3%ADficas">Armazenando somente métricas específicas</a></li>
+<li><a href="#mapeando-todas-as-labels-do-kubernetes">Mapeando todas as labels do Kubernetes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#as-meta-labels-do-prometheus">As meta labels do Prometheus</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</details>
+<h4 id="o-que-é-relabeling"><a class="header" href="#o-que-é-relabeling">O que é Relabeling?</a></h4>
+<p>Hoje iremos falar sobre o relabeling, que é uma das funcionalidades mais poderosas do Prometheus. O relabeling é uma funcionalidade que permite que você faça alterações nos metadados de seus targets, como por exemplo, adicionar labels, remover labels, modificar labels, etc.</p>
+<p>Por exemplo, você pode usar o relabel para renomear uma label ou removê-la completamente, ou para adicionar uma nova label com um valor específico. O relabel também pode ser usado para filtrar métricas com base em suas labels ou para ajustar seus valores.</p>
+<h5 id="como-funciona-o-relabeling"><a class="header" href="#como-funciona-o-relabeling">Como funciona o Relabeling?</a></h5>
+<p>O relabeling é feito através de regras que são aplicadas a cada target. Essas regras são definidas no arquivo de configuração do Prometheus, no bloco <code>relabelings</code> conforme o exemplo abaixo:</p>
+<pre><code class="language-yaml">      relabelings: # regras de relabeling
+        - sourceLabels: [__meta_kubernetes_service_label_team] # label original que será usada como base para a regra
+          regex: '(.*)' # regex que será aplicada na label original
+          targetLabel: team # label que será criada
+          replacement: '${1}' # valor que será atribuído a label criada, neste caso, o valor da label original
+</code></pre>
+<p>Somente para ficar mais claro, vou colocar abaixo todo o nosso arquivo de configuração do <code>ServiceMonitor</code>:</p>
+<pre><code class="language-yaml">apiVersion: monitoring.coreos.com/v1 # versão da API
+kind: ServiceMonitor # tipo de recurso, no caso, um ServiceMonitor do Prometheus Operator
+metadata: # metadados do recurso
+  name: nginx-servicemonitor # nome do recurso
+  labels: # labels do recurso
+    app: nginx # label que identifica o app
+spec: # especificação do recurso
+  selector: # seletor para identificar os pods que serão monitorados
+    matchLabels: # labels que identificam os pods que serão monitorados
+      app: nginx # label que identifica o app que será monitorado
+  endpoints: # endpoints que serão monitorados
+    - interval: 10s # intervalo de tempo entre as requisições
+      path: /metrics # caminho para a requisição
+      targetPort: 9113 # porta do target
+      relabelings: # regras de relabeling
+        - sourceLabels: [__meta_kubernetes_service_label_team] # label original que será usada como base para a regra
+          regex: '(.*)' # regex que será aplicada na label original
+          targetLabel: team # label que será criada
+          replacement: '${1}' # valor que será atribuído a label criada, neste caso, o valor da label original
+</code></pre>
+<p>Percebe, somente adicionamos o bloco <code>relabelings</code> e dentro dele adicionamos as regras de relabeling. Agora, vamos entender como funciona cada uma dessas regras.</p>
+<ul>
+<li><code>sourceLabels</code>: é a label original que será usada como base para a regra. Neste caso, estamos usando a label <code>__meta_kubernetes_service_label_team</code> que vou explicar logo menos o que significa.</li>
+<li><code>regex</code>: é a regex que será aplicada na label original. Neste caso, estamos usando a regex <code>(.*)</code> que significa que será aplicada a regex em toda a label original.</li>
+<li><code>targetLabel</code>: é a label que será criada. Neste caso, estamos criando a label <code>team</code>.</li>
+<li><code>replacement</code>: é o valor que será atribuído a label criada. Neste caso, estamos atribuindo o valor da label original.</li>
+</ul>
+<p>Simples demais, né? Evidente que existem outras regras que podem ser usadas, e tudo vai depender da sua necessidade e da sua criatividade! Acessar a documentação oficial do projeto com certa frequência é super importante, portanto, o faça!</p>
+<h5 id="exemplos-de-uso-do-relabeling"><a class="header" href="#exemplos-de-uso-do-relabeling">Exemplos de uso do Relabeling</a></h5>
+<h6 id="removendo-uma-métrica-baseado-em-uma-label"><a class="header" href="#removendo-uma-métrica-baseado-em-uma-label">Removendo uma métrica baseado em uma label</a></h6>
+<p>Essa regra de relabeling está definindo que a etiqueta endpoint será removida (drop) das métricas coletadas pelo Prometheus. Isso significa que todas as métricas coletadas que possuem essa etiqueta serão descartadas e não estarão disponíveis para consulta posterior.</p>
+<p>É sempre muito bom usar essa regra com muita atenção, pois ela pode fazer com que você perca muitas métricas que podem ser muito importantes para você.</p>
+<pre><code class="language-yaml">      relabelings: # regras de relabeling
+        - sourceLabels: [app] # label original que será usada como base para a regra
+          action: drop # ação que será aplicada na label original
+</code></pre>
+<p>Com isso, toda métrica que possuir a label <code>app</code> não será coletada pelo Prometheus.</p>
+<h6 id="junta-duas-labels-em-uma-só"><a class="header" href="#junta-duas-labels-em-uma-só">Junta duas labels em uma só</a></h6>
+<p>Caso queira juntar duas labels em uma só, é super simples. </p>
+<p>Em nosso exemplo, vamos unir as labels app e team para criar um label chamado <code>app_team</code>:</p>
+<pre><code class="language-yaml">      relabelings: # regras de relabeling
+        - sourceLabels: [app, team] # labels originais que serão usadas como base para a regra
+          targetLabel: app_team # label que será criada
+          regex: (.*);(.*) # regex que será aplicada nas labels originais, neste caso, estamos usando uma regex que irá separar as labels originais em dois grupos
+          replacement: ${1}_${2} # junção das labels originais
+</code></pre>
+<p>Com isso, criamos uma terceira label chamada <code>app_team</code> que é a junção das labels <code>app</code> e <code>team</code>.</p>
+<h6 id="adicionando-uma-nova-label"><a class="header" href="#adicionando-uma-nova-label">Adicionando uma nova label</a></h6>
+<p>Vamos imaginar agora que queremos adicionar uma nova label em nossa métrica. No nosso exemplo, nós estamos com o nosso cluster EKS rodando na região <code>us-east-1</code>, certo? E se nós adicionarmos uma label chamada <code>region</code> com o valor <code>us-east-1</code> em todas as nossas métricas para esse <code>target</code>? Seria legal hein!</p>
+<p>Para fazer isso, basta adicionar a seguinte regra:</p>
+<pre><code class="language-yaml">      relabelings: # regras de relabeling
+        - sourceLabels: [] # Valor vazio, pois não estamos usando nenhuma label original
+          targetLabel: region # label que será criada
+          replacement: us-east-1 # valor que será atribuído a label criada
+</code></pre>
+<h6 id="armazenando-somente-métricas-específicas"><a class="header" href="#armazenando-somente-métricas-específicas">Armazenando somente métricas específicas</a></h6>
+<p>Agora é o seguinte, eu somente quero armazenas as métricas que possuem a label <code>app</code> com o valor <code>nginx</code> ou <code>redis</code>. Como eu faço isso?</p>
+<p>Bom, é super simples, basta adicionar a seguinte regra:</p>
+<pre><code class="language-yaml">      relabelings: # regras de relabeling
+        - sourceLabels: [app] # label original que será usada como base para a regra
+          regex: '(nginx|redis)' # regex que será aplicada na label original
+          action: keep # ação que será aplicada na label original
+</code></pre>
+<p>Perceba que estamos usando a regex <code>(nginx|redis)</code> que significa que iremos armazenar somente as métricas que possuem a label <code>app</code> com o valor <code>nginx</code> ou <code>redis</code> e ainda estamos usando a ação <code>keep</code> que significa que iremos armazenar somente as métricas que possuem essas labels.</p>
+<h6 id="mapeando-todas-as-labels-do-kubernetes"><a class="header" href="#mapeando-todas-as-labels-do-kubernetes">Mapeando todas as labels do Kubernetes</a></h6>
+<p>Uma forma super simples de adicionar todas as labels que estão declaradas em um service ou pod é usando a meta label <code>__meta_kubernetes_service_label_&lt;nome_da_label&gt;</code> ou <code>__meta_kubernetes_pod_label_&lt;nome_da_label&gt;</code>. </p>
+<p>Porém e se quisermos fazer isso de forma dinâmica? Como podemos fazer isso?</p>
+<p>Vamos para um exemplo onde iremos pegar todas as labels de um service e adicionar em uma métrica. Vamos supor que temos um service com o seguinte arquivo:</p>
+<pre><code class="language-yaml">apiVersion: v1 # versão da API
+kind: Service # tipo de recurso, no caso, um Service
+metadata: # metadados do recurso
+  name: nginx-svc # nome do recurso
+  labels: # labels do recurso
+    app: nginx # label para identificar o svc
+    team: platform-engineering
+    environment: production
+    version: 1.0.0
+    type: web
+spec: # especificação do recurso
+  ports: # definição da porta do svc 
+  - port: 9113 # porta do svc
+    name: metrics # nome da porta
+  selector: # seletor para identificar os pods/deployment que esse svc irá expor
+    app: nginx # label que identifica o pod/deployment que será exposto
+</code></pre>
+<p>Adicionamos algumas tags em nosso arquivo somente para ficar mais fácil de entender o exemplo.</p>
+<p>Agora vamos adicionar a nossa regra para pegar todas as labels desse service e adiciona-las como labels da nossa métrica.</p>
+<pre><code class="language-yaml">      relabelings: # regras de relabeling
+        - action: labelmap # ação que será aplicada na label original
+          regex: __meta_kubernetes_service_label_(.+) # regex que será aplicada na label original
+</code></pre>
+<p>No exemplo acima, usamos a <code>action</code> <code>labelmap</code> que irá mapear todas as labels do service para labels da métrica. Usamos a regex <code>__meta_kubernetes_service_label_(.+)</code> que irá pegar todas as labels do service, e através do <code>.+</code> irá mapear todas as labels para labels da métrica.</p>
+<p>Com isso, todas as labels que estão declaradas no service serão adicionadas como labels da métrica. \o/</p>
+<h4 id="as-meta-labels-do-prometheus"><a class="header" href="#as-meta-labels-do-prometheus">As meta labels do Prometheus</a></h4>
+<p>Um coisa que é super importante é ter um bom entendimento sobre as meta labels que o Prometheus disponibiliza. Essas meta labels são labels que são adicionadas automaticamente pelo Prometheus e que podem ser usadas para criar regras de relabeling entre outras coisas.</p>
+<p>Por exemplo, temos a meta label <code>__meta_kubernetes_service_label_team</code> que usei no exemplo anterior. Essa meta label é adicionada automaticamente, e possui a seguinte estrutura: <code>__meta_kubernetes_service_label_&lt;nome_da_label&gt;</code>.</p>
+<p>No caso, em meu service eu adicionei a label <code>team</code> com o valor <code>platform-engineering</code>. Vamos dar um olhada como ficou o arquivo onde definimos o service:</p>
+<pre><code class="language-yaml">apiVersion: v1 # versão da API
+kind: Service # tipo de recurso, no caso, um Service
+metadata: # metadados do recurso
+  name: nginx-svc # nome do recurso
+  labels: # labels do recurso
+    app: nginx # label para identificar o svc
+    team: platform-engineering
+spec: # especificação do recurso
+  ports: # definição da porta do svc 
+  - port: 9113 # porta do svc
+    name: metrics # nome da porta
+  selector: # seletor para identificar os pods/deployment que esse svc irá expor
+    app: nginx # label que identifica o pod/deployment que será exposto
+</code></pre>
+<p>Veja que agora nós temos a label <code>team</code> com o valor <code>platform-engineering</code>, sendo assim o Prometheus vai adicionar a meta label <code>__meta_kubernetes_service_label_team</code> com o valor <code>platform-engineering</code> em todas as métricas que forem coletadas a partir desse service.</p>
+<p>Simples demais, como tudo no Prometheus e Kubernetes!</p>
+<p>Abaixo vou listar algumas das meta labels que o Prometheus disponibiliza:</p>
+<ul>
+<li><code>__meta_kubernetes_pod_name</code>: nome do pod</li>
+<li><code>__meta_kubernetes_pod_node_name</code>: nome do node onde o pod está rodando</li>
+<li><code>__meta_kubernetes_pod_label_&lt;labelname&gt;</code>: valor da label do pod</li>
+<li><code>__meta_kubernetes_pod_annotation_&lt;annotationname&gt;</code>: valor da annotation do pod</li>
+<li><code>__meta_kubernetes_pod_container_name</code>: nome do container</li>
+<li><code>__meta_kubernetes_pod_container_port_number</code>: número da porta do container</li>
+<li><code>__meta_kubernetes_pod_container_port_name</code>: nome da porta do container</li>
+<li><code>__meta_kubernetes_service_name</code>: nome do service</li>
+<li><code>__meta_kubernetes_service_label_&lt;labelname&gt;</code>: valor da label do service</li>
+<li><code>__meta_kubernetes_service_annotation_&lt;annotationname&gt;</code>: valor da annotation do service</li>
+<li><code>__meta_kubernetes_endpoint_port_name</code>: nome da porta do endpoint</li>
+<li><code>__meta_kubernetes_namespace</code>: namespace do pod/service/deployment</li>
+<li><code>__meta_kubernetes_node_name</code>: nome do node</li>
+<li><code>__meta_kubernetes_node_label_&lt;labelname&gt;</code>: valor da label do node</li>
+<li><code>__meta_kubernetes_node_annotation_&lt;annotationname&gt;</code>: valor da annotation do node</li>
+<li><code>__meta_kubernetes_node_address_&lt;addressname&gt;</code>: valor do endereço do node</li>
+</ul>
+<p>A lista é enorme e você pode conferir no link abaixo:</p>
+<p>https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config</p>
+<p>E claro que nem tudo é sobre Kubernetes! Existem me labels que não são específicas do Kubernetes, como por exemplo, caso você esteja utilizando a AWS, você pode usar a meta label <code>__meta_ec2_instance_id</code> para pegar o ID da instância ou ainda o <code>__meta_ec2_public_ip</code> para pegar o IP público de uma instância.</p>
+<p>Agora, se você estiver utilizando o GCP, você pode usar a meta label <code>__meta_gce_instance_id</code> para pegar o ID da instância ou ainda o <code>__meta_gce_public_ip</code> para pegar o IP público de uma instância, padrão é tudo, não é mesmo?</p>
+<p>Se for Azure? Claro que temos e ainda, seguimos o mesmo padrão, ou melhor, quase o mesmo padrão. A meta label <code>__meta_azure_machine_id</code> é para pegar o ID da instância e o <code>__meta_azure_machine_public_ip</code> para pegar o IP público de uma instância.</p>
+<p>Mais uma vez, da um olhada na documentação oficial do projeto para saber mais sobre as meta labels disponíveis.</p>
+<p>Segue o link para a documentação oficial: https://prometheus.io/docs/prometheus/latest/configuration/configuration/</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../day-8/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../day-8/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
