@@ -337,34 +337,36 @@ kubectl port-forward -n monitoring svc/grafana 33000:3000
 
 Agora que já temos o nosso Grafana rodando localmente, vamos acessar o nosso Grafana através do navegador. Para isso, basta acessar a seguinte URL: `http://localhost:33000`. Após acessar a URL, você deverá ver uma tela de login do Grafana, como na imagem abaixo:
 
-![Grafana Login](ADICIONAR URL DA IMAGEM)
+![Grafana Login](images/login-grafana.png)
 
 Para acessar o Grafana, vamos utilizar o usuário `admin` e a senha `admin`, e já no primeiro login ele irá pedir para você alterar a senha. Você já conhece o Grafana, não preciso mais apresenta-los, certo? :D
+
+![Grafana Senha Nova](images/muda-senha-grafana.png)
 
 O importante aqui é ver a quantidade de Dashboards criados pelo Kube-Prometheus. :D 
 Temos Dashboards que mostram detalhes do API Server e de diversos componentes do Kubernetes, como Node, Pod, Deployment, etc.
 
-![Grafana Dashboards](ADICIONAR URL DA IMAGEM)
+![Grafana Dashboards](images/grafana-dashs.png)
 
 Também temos Dashboards que mostram detalhes do nosso cluster EKS, como por exemplo o dashboard `Kubernetes / Compute Resources / Cluster`, que mostra detalhes de CPU e memória utilizados por todos os nós do nosso cluster EKS.
 
-![Grafana Dashboards](ADICIONAR URL DA IMAGEM)
+![Grafana Clusters](images/grafana-cluster.png)
 
 Dashboards que mostram detalhes do nosso cluster EKS, como por exemplo o dashboard `Kubernetes / Compute Resources / Namespace (Pods)`, que mostra detalhes de CPU e memória utilizados por todos os pods de todos os namespaces do nosso cluster EKS.
 
-![Grafana Dashboards](ADICIONAR URL DA IMAGEM)
+![Grafana Dashboards](images/grafana-pods.png)
 
 Ainda temos Dashboards que mostram detalhes do nosso cluster EKS, como por exemplo o dashboard `Kubernetes / Compute Resources / Namespace (Workloads)`, que mostra detalhes de CPU e memória utilizados por todos os deployments, statefulsets e daemonsets de todos os namespaces do nosso cluster EKS.
 
-![Grafana Dashboards](ADICIONAR URL DA IMAGEM)
+![Grafana Dashboards](images/grafana-workloads.png)
 
 Também temos Dashboards que mostram detalhes do nosso cluster EKS, como por exemplo o dashboard `Kubernetes / Compute Resources / Node`, que mostra detalhes de CPU e memória utilizados por todos os nós do nosso cluster EKS.
 
-![Grafana Dashboards](ADICIONAR URL DA IMAGEM)
+![Grafana Dashboards](images/grafana-node.png)
 
 Também temos Dashboards que mostram detalhes do nosso cluster EKS, como por exemplo o dashboard `Kubernetes / Compute Resources / Pod (Containers)`, que mostra detalhes de CPU e memória utilizados por todos os containers de todos os pods do nosso cluster EKS.
 
-![Grafana Dashboards](ADICIONAR URL DA IMAGEM)
+![Grafana Dashboards](images/grafana-pods-containers.png)
 
 Eu não vou ficar aqui dando spoilers, vai lá você e confere a quantidade enorme de Dashboards que o Kube-Prometheus já vem com ele. \o/
 
@@ -380,6 +382,8 @@ Pronto, agora já podemos fazer a mesma coisa que fizemos anteriormente para ace
 
 Lembre-se que essa porta é local somente, a porta onde o serviço do Prometheus está rodando é a porta `9090`, e a do Grafana é a porta `3000`.
 
+![Prometheus](images/prometheus.png)
+
 
 #### Acessando o AlertManager
 
@@ -393,10 +397,12 @@ Pronto, agora você já pode acessar o seu serviço de forma simples e segura, s
 
 E claro, caso você queira, fique a vontado para criar um ingress para o seu serviço, ou até mesmo um LoadBalancer, caso você esteja utilizando o AWS EKS. :D
 
+![AlertManager](images/alertmanager.png)
+
 
 ### Chega por hoje!
 
-Hoje foi o dia de ver o que é o kube-prometheus e como podemos instalar ele no nosso cluster Kubernetes. De quebra, vimos como criar um cluster EKS através do eksctl e como instalar o kube-prometheus no nosso cluster.
+Hoje foi o dia de ver o que é o kube-prometheus e como podemos instala-lo em nosso cluster Kubernetes. De quebra, vimos como criar um cluster EKS através do eksctl e como instalar o kube-prometheus no nosso cluster.
 
 Vimos ainda como acessar o nosso Prometheus, AlertManager e Grafana. Vimos as diversas opções de dashboards disponíveis no Grafana.
 
