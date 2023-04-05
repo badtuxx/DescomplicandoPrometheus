@@ -20,7 +20,7 @@ Enfim, sem mais spoilers, vamos começar a explorar o Prometheus, Kube-Prometheu
 ### Conteúdo do Day-7
 
 <details>
-<summary>DAY-7</summary>
+<summary class="summary">DAY-7</summary>
 
 - [Descomplicando o Prometheus](#descomplicando-o-prometheus)
   - [DAY-7](#day-7)
@@ -465,14 +465,14 @@ kind: PodMonitor # tipo de recurso, no caso, um PodMonitor do Prometheus Operato
 metadata: # metadados do recurso
   name: nginx-podmonitor # nome do recurso
   labels: # labels do recurso
-    app: nginx # label que identifica o app
+    app: nginx-pod # label que identifica o app
 spec:
   namespaceSelector: # seletor de namespaces
     matchNames: # namespaces que serão monitorados
       - default # namespace que será monitorado
   selector: # seletor para identificar os pods que serão monitorados
     matchLabels: # labels que identificam os pods que serão monitorados
-      app: nginx # label que identifica o app que será monitorado
+      app: nginx-pod # label que identifica o app que será monitorado
   podMetricsEndpoints: # endpoints que serão monitorados
     - interval: 10s # intervalo de tempo entre as requisições
       path: /metrics # caminho para a requisição
@@ -490,7 +490,7 @@ kind: Pod # tipo de recurso, no caso, um Pod
 metadata: # metadados do recurso
   name: nginx-pod # nome do recurso
   labels: # labels do recurso
-    app: nginx # label que identifica o app
+    app: nginx-pod # label que identifica o app
 spec: # especificações do recursos
   containers: # containers do template 
     - name: nginx-container # nome do container

@@ -17,7 +17,7 @@ Vamos conhecer as nossas primeiras funções para que possamos ter ainda mais po
 ### Conteúdo do Day-2
 
 <details>
-<summary>DAY-2</summary>
+<summary class="summary">DAY-2</summary>
 
 - [O Data Model do Prometheus](#o-data-model-do-prometheus)
 - [As queries do Prometheus e o PromQL](#as-queries-do-prometheus-e-o-promql)

@@ -9,7 +9,7 @@ title = "Descomplicando o Prometheus"
 cname = "livro.descomplicandoprometheus.com.br" 
 git-repository-url = "https://github.com/badtuxx/DescomplicandoPrometheus"
 edit-url-template = "https://github.com/badtuxx/DescomplicandoPrometheus/edit/main/pt/{path}"
-additional-css = ["theme/css/style.css"]
+additional-css = ["theme/css/style.css", "theme/css/mdbook-admonish.css"]
 
 [output.html.search]
 limit-results = 20
@@ -19,3 +19,9 @@ boost-hierarchy = 2
 boost-paragraph = 1
 expand = true
 heading-split-level = 2
+
+[preprocessor]
+
+[preprocessor.admonish]
+command = "mdbook-admonish"
+assets_version = "2.0.0" # do not edit: managed by `mdbook-admonish install`
