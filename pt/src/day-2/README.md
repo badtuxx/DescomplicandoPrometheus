@@ -827,7 +827,7 @@ def pega_numero_astronautas(): # Função para pegar o número de astronautas
         """
         Pegar o número de astronautas no espaço 
         """
-        response = requests.get(url) # Faz a requisição HTTP
+        response = requests.get(url_numero_pessoas) # Faz a requisição HTTP
         data = response.json() # Converte o resultado em JSON
         return data['number'] # Retorna o número de astronautas
     except Exception as e: # Se der algum erro
