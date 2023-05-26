@@ -43,7 +43,7 @@ O Grafana é uma poderosa aplicação web que nos permite visualizar, em tempo r
 
 Basicamente o Grafana permite que você crie queries super elaboradas para consultar os dados em TSDBs, como o Prometheus, e depois criar dashboards e alertas incríveis.
 
-O Grafa é uma ferramenta que eu uso muito, e que eu recomendo muito, mesmo que você não tenha o Prometheus, o Grafana pode usar dados de diversas fontes, como por exemplo o MySQL, o PostgreSQL, o MongoDB, etc.
+O Grafana é uma ferramenta que eu uso muito, e que eu recomendo muito, mesmo que você não tenha o Prometheus, o Grafana pode usar dados de diversas fontes, como por exemplo o MySQL, o PostgreSQL, o MongoDB, etc.
 
 Como falei, o Grafana não utiliza somente o Prometheus como fonte, como `datasource`, ele possui suporte a diferentes fontes de dados, como por exemplo:
 
