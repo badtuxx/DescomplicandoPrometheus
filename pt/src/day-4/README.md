@@ -117,7 +117,7 @@ sudo add-apt-repository "deb https://packages.grafana.com/oss/deb stable main"
 
 &nbsp;
 
-Vamos executat o comando `apt-get update` para atualizar o nosso cache de pacotes e na sequência vamos instalar o Grafana:
+Vamos executar o comando `apt-get update` para atualizar o nosso cache de pacotes e na sequência vamos instalar o Grafana:
 
 ```bash
 sudo apt-get update
