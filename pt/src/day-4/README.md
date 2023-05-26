@@ -161,7 +161,7 @@ Se a saída do comando for parecida com essa, então o Grafana está rodando:
 
 Como falamos, o Grafana é uma aplicação web, sendo assim, precisamos acessar a aplicação através de um navegador, para isso vamos acessar a URL `http://localhost:3000`:
 
-![Grafana - Login](images/grafana-login.png)
+![Grafana - Login](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-login.png)
 
 &nbsp;
 
@@ -170,13 +170,13 @@ O usuário padrão do Grafana é `admin` e a senha padrão é `admin`, quando n�
 
 Vamos logar utilizando o usuário `admin` e a senha `admin`:
 
-![Grafana - Home](images/grafana-mudar-senha.png)
+![Grafana - Home](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-mudar-senha.png)
 
 &nbsp;
 
 Perceba que em seu primeiro login, ele pede para você mudar a senha do usuário `admin`, então vamos mudar a senha para `giropops`, no meu caso, no de seu, você que manda. hahaha
 
-![Grafana - Home](images/grafana-home.png)
+![Grafana - Home](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-home.png)
 
 &nbsp;
 
@@ -191,21 +191,21 @@ Nos ainda vamos ver mais detalhes do Grafana no Day-4, mas somente para não dei
 
 Primeira coisa que precisamos fazer é acessar a página de configuração do Data Source, para isso vamos clicar no menu lateral esquerdo em `Configuration` e depois em `Data Sources`:
 
-![Grafana - Data Sources](images/grafana-data-sources.png)
+![Grafana - Data Sources](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-data-sources.png)
 
 &nbsp;
 
-![Grafana - Add Data Source](images/grafana-data-source-2.png)
+![Grafana - Add Data Source](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-data-source-2.png)
 
 &nbsp;
 
 Agora vamos clicar no botão `Add data source` e selecionar o Prometheus:
 
-![Grafana - Add Data Source](images/grafana-add-data-source.png)
+![Grafana - Add Data Source](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-add-data-source.png)
 
 &nbsp;
 
-![Grafana - Add Data Source](images/grafana-add-data-source-2.png)
+![Grafana - Add Data Source](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-add-data-source-2.png)
 
 &nbsp;
 
@@ -217,17 +217,17 @@ Por agora, não vamos adicionar nenhuma informação extra, como por exemplo tip
 
 Agora é clicar no botão `Save & Test` para salvar as configurações e testar a conexão com o Prometheus:
 
-![Grafana - Add Data Source](images/grafana-add-data-source-3.png)
+![Grafana - Add Data Source](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-add-data-source-3.png)
 
 &nbsp;
 
 Se tudo deu certo, vamos ver a seguinte mensagem:
 
-![Grafana - Add Data Source](images/grafana-add-data-source-4.png)
+![Grafana - Add Data Source](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-add-data-source-4.png)
 
 &nbsp;
 
-![Grafana - Add Data Source](images/grafana-add-data-source-5.png)
+![Grafana - Add Data Source](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-add-data-source-5.png)
 
 &nbsp;
 
@@ -242,19 +242,19 @@ Muito bem! Chegou o grande momento de criarmos o nosso primeiro Dashboard no Gra
 
 Primeiro passo, vamos clicar no menu lateral esquerdo em `Dashboard` e na sequência vamos clicar no botão `New Dashboard`:
 
-![Grafana - New Dashboard](images/grafana-new-dashboard.png)
+![Grafana - New Dashboard](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-new-dashboard.png)
 
 &nbsp;
 
 Agora vamos escolher o tipo de Dashboard que queremos criar, vamos clicar em `Add new panel`:
 
-![Grafana - New Dashboard](images/grafana-new-dashboard-2.png)
+![Grafana - New Dashboard](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-new-dashboard-2.png)
 
 &nbsp;
 
 Pronto, agora já podemos começar a criar o nosso primeiro dashboard. :D
 
-![Grafana - New Dashboard](images/grafana-new-dashboard-3.png)
+![Grafana - New Dashboard](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-new-dashboard-3.png)
 
 &nbsp;
 
@@ -266,19 +266,19 @@ Pra ficar mais fácil, vamos dividir essa tela em 3 zonas:
 
 3. A terceira zona é a zona de configuração do `Query`, onde podemos escolher qual métrica queremos visualizar no painel.
 
-![Grafana - New Dashboard](images/grafana-new-dashboard-dividido.png)
+![Grafana - New Dashboard](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-new-dashboard-dividido.png)
 
 &nbsp;
 
 Vamos começar pela zona de configuração do painel, vamos clicar no botão `Panel Title` e vamos mudar o título do painel para `CPU Usage`:
 
-![Grafana - New Dashboard](images/grafana-new-dashboard-4.png)
+![Grafana - New Dashboard](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-new-dashboard-4.png)
 
 &nbsp;
 
 Agora vamos definir o data source que queremos utilizar para alimentar o painel, por agora somente temos o do Prometheus, e ele já está selecionado, então vamos deixar assim mesmo.
 
-![Grafana - New Dashboard](images/grafana-new-dashboard-5.png)
+![Grafana - New Dashboard](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-new-dashboard-5.png)
 
 
 &nbsp;
@@ -288,47 +288,47 @@ O primeiro modo, que está se tornando o padrão, é o modo `Builder`, que facil
 
 Vamos construir nessa primeira vez a query utilizando o modo `Builder`, então vamos clicar no botão `Builder`:
 
-![Grafana - New Dashboard](images/grafana-new-dashboard-6.png)
+![Grafana - New Dashboard](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-new-dashboard-6.png)
 
 &nbsp;
 
 Agora vamos em `Metrics` e vamos selecionar a métrica `node_cpu_seconds_total`:
 
-![Grafana - New Dashboard](images/grafana-new-dashboard-7.png)
+![Grafana - New Dashboard](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-new-dashboard-7.png)
 
 &nbsp;
 
 Vamos pedir para filtrar pelo label `mode` e vamos selecionar o valor `idle`:
 
-![Grafana - New Dashboard](images/grafana-new-dashboard-8.png)
+![Grafana - New Dashboard](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-new-dashboard-8.png)
 
 &nbsp;
 
 Precisamos ainda utilizar a função `rate` para calcular a taxa de variação da métrica, então vamos clicar em `+ Operations`, depois em `Range functions` e por fim, selecionar a função `rate`, agora temos aque adicionar o intervalo de tempo que queremos utilizar no campo `Range`:
 
-![Grafana - New Dashboard](images/grafana-new-dashboard-9.png)
+![Grafana - New Dashboard](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-new-dashboard-9.png)
 
 &nbsp;
 
-![Grafana - New Dashboard](images/grafana-new-dashboard-10.png)
+![Grafana - New Dashboard](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-new-dashboard-10.png)
 
 &nbsp;
 
 E finalizando, vamos adicionar uma legenda para o gráfico, vamos clicar em `Options` e depois em `Legend` e vamos adicionar a legenda `{{cpu}}`:
 
-![Grafana - New Dashboard](images/grafana-new-dashboard-11.png)
+![Grafana - New Dashboard](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-new-dashboard-11.png)
 
 &nbsp;
 
 Agora vamos clicar no botão `Run queries` para executar a query e vermos o resultado:
 
-![Grafana - New Dashboard](images/grafana-new-dashboard-12.png)
+![Grafana - New Dashboard](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-new-dashboard-12.png)
 
 &nbsp;
 
 Agora precisamos clicar em `Apply` para salvar as configurações do painel:
 
-![Grafana - New Dashboard](images/grafana-new-dashboard-13.png)
+![Grafana - New Dashboard](https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-4/images/grafana-new-dashboard-13.png)
 
 &nbsp;
 
