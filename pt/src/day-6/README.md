@@ -169,7 +169,7 @@ O processo de instalação dos CRDs pode demorar alguns minutos, então vamos ag
 Para verificar se a instalação dos CRDs foi concluída, o comando abaixo deverá funcionar,se ainda não funcionar, aguarde alguns minutos e tente novamente.
 
 ```bash
-kubectl get servicemonitors -A
+kubectl get customresourcedefinition -A
 ```
 
 Após a instalação dos CRDs, vamos instalar o Prometheus e o Alertmanager. Para isso, basta executar o seguinte comando:
